@@ -1,0 +1,80 @@
+/* Collapsed to zero height until open, then the card grows (never overlaps the next one). */
+.gallery {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.55s var(--ease-out);
+}
+
+.gallery[data-open='true'] {
+  grid-template-rows: 1fr;
+}
+
+.clip {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.viewport {
+  overflow-y: hidden;
+}
+
+/* Figma's 799 × 186.89px frame; every child is positioned in percentages of it. */
+.stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 799 / 186.892;
+}
+
+.rope,
+.polaroid {
+  position: absolute;
+  max-width: none;
+  pointer-events: none;
+  user-select: none;
+}
+
+.rope {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.25s ease-in;
+}
+
+.gallery[data-open='true'] .rope {
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 0.9s var(--ease-out) 0.05s;
+}
+
+/* Each polaroid swings down from its clip: a short fall with a small rotation that settles with a light overshoot. */
+.polaroid {
+  object-fit: contain;
+  opacity: 0;
+  transform: translateY(-14px) rotate(calc(var(--tilt, 6) * 1deg)) scale(0.94);
+  transform-origin: 50% 6%;
+  transition:
+    opacity 0.2s ease-out,
+    transform 0.3s ease-in;
+}
+
+.gallery[data-open='true'] .polaroid {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.35s ease-out calc(var(--i, 0) * 70ms + 160ms),
+    transform 0.8s cubic-bezier(0.34, 1.45, 0.64, 1) calc(var(--i, 0) * 70ms + 160ms);
+}
+
+/* Phones: keep the photos a readable size and let the strip swipe sideways inside the card. */
+@media (max-width: 599px) {
+  .viewport {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  .stage {
+    min-width: 560px;
+  }
+}

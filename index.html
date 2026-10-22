@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Akash Pandurangan is a Senior Product Designer specialising in product strategy, experience architecture and design systems."
+    />
+    <title>Akash Pandurangan | Senior Product Designer</title>
+    <script>
+      // Apply a saved theme before first paint to avoid a flash of the default (dark) theme.
+      try {
+        if (localStorage.getItem('ap-theme') === 'light') document.documentElement.dataset.theme = 'light'
+      } catch (error) {
+        /* storage unavailable */
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

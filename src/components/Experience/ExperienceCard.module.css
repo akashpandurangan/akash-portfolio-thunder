@@ -1,0 +1,113 @@
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 13px 0;
+  border-radius: 32px;
+  background: var(--color-surface);
+  overflow: hidden;
+  transition: background-color 0.2s ease-out;
+}
+
+/* Same one-step-lighter surface shift the project cards use. */
+.card[data-open='true'] {
+  background: var(--color-surface-raised);
+}
+
+/* The photo strips are exported with a dark backdrop, so these cards stay dark in the light theme. */
+:global(html[data-theme='light']) .card {
+  --color-surface: #121212;
+  --color-surface-raised: #171717;
+  --color-heading: #e5e5e5;
+  --color-text: #fff;
+  --color-text-60: rgba(255, 255, 255, 0.6);
+  --color-tag-bg: rgba(33, 33, 33, 0.5);
+  --color-tag-border: rgba(115, 115, 115, 0.08);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px 21px 0;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.title {
+  color: var(--color-heading);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: -0.4px;
+}
+
+/* Keyboard / touch control for the photos; mouse users just hover the card. */
+.toggle {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--color-tag-border);
+  border-radius: 9999px;
+  background: var(--color-tag-bg);
+  color: var(--color-text-60);
+  transition:
+    color 0.2s ease-out,
+    border-color 0.2s ease-out;
+}
+
+.toggle:hover {
+  color: var(--color-text);
+}
+
+.toggle[aria-expanded='true'] {
+  border-color: rgba(252, 76, 1, 0.45);
+  color: var(--color-accent);
+}
+
+.company {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 21px 11px;
+  color: var(--color-text-60);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 22px;
+}
+
+.company img {
+  flex: none;
+  height: 18px;
+  width: auto;
+}
+
+.description {
+  padding: 8px 21px 11px;
+  color: var(--color-text-60);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 22px;
+}
+
+@media (max-width: 599px) {
+  .card {
+    border-radius: 26px;
+  }
+
+  .header {
+    flex-wrap: wrap;
+    padding-inline: 16px;
+  }
+
+  .company,
+  .description {
+    padding-inline: 16px;
+  }
+}

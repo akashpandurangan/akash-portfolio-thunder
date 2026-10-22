@@ -1,0 +1,64 @@
+.tabs {
+  display: flex;
+  align-items: center;
+  flex: none;
+  height: 48px;
+  padding: 0 8px;
+  border-radius: 9999px;
+  background: var(--color-surface-raised);
+  box-shadow: var(--ring-pill);
+}
+
+.tab {
+  position: relative;
+  padding: 0 14px;
+  color: var(--color-text-60);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.tab + .tab::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  left: 0;
+  width: 1px;
+  background: var(--color-divider);
+}
+
+.tab:hover {
+  color: var(--color-text);
+}
+
+.tab[data-active='true'] {
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+@media (max-width: 599px) {
+  .tabs {
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .tabs::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Keeps all four filters visible on typical phone widths. */
+@media (max-width: 479px) {
+  .tabs {
+    padding: 0 6px;
+  }
+
+  .tab {
+    padding: 0 7px;
+    font-size: 12px;
+  }
+}

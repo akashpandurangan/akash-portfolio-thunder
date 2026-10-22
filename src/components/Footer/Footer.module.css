@@ -1,0 +1,277 @@
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 70px;
+  background: var(--color-bg);
+}
+
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 32px clamp(24px, 6.77vw, 130px);
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+}
+
+.copyright {
+  color: var(--color-text-50);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 118px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-text-50);
+  font-size: 18px;
+  line-height: 28px;
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: var(--color-text);
+}
+
+.arrow {
+  transition: transform 0.25s var(--ease-out);
+}
+
+.external:hover .arrow {
+  transform: translate(2px, -2px);
+}
+
+/* Oversized wordmark, sized in vw so it always spans the full width and is cropped by its box. */
+.wordmark {
+  height: 9.323vw;
+  overflow: hidden;
+  user-select: none;
+}
+
+.wordmarkRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.bolt {
+  position: relative;
+  flex: none;
+  width: 8.958vw;
+  height: 13.802vw;
+  isolation: isolate;
+}
+
+/* Slow breathing glow with one soft pulse near the end of each 11s loop (never a rapid flash). */
+.boltImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  animation: bolt-glow 11s ease-in-out -4s infinite;
+}
+
+/* Smoke and pulse only render inside the bolt's own silhouette. */
+.fx {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  -webkit-mask: url('../../assets/footer/bolt-wordmark.webp') center / 100% 100% no-repeat;
+  mask: url('../../assets/footer/bolt-wordmark.webp') center / 100% 100% no-repeat;
+}
+
+.smoke {
+  position: absolute;
+  bottom: -28%;
+  left: var(--x);
+  width: var(--size);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 128, 52, 0.68), rgba(255, 76, 0, 0.28) 56%, transparent 100%);
+  filter: blur(0.55vw);
+  opacity: 0;
+  animation: smoke-rise var(--dur) linear var(--delay) infinite;
+}
+
+.pulse {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 85% 55% at 50% 38%, rgba(255, 168, 108, 0.85), rgba(255, 98, 24, 0.45) 46%, transparent 74%);
+  opacity: 0;
+  animation: bolt-pulse 11s ease-in-out -4s infinite;
+}
+
+.ember {
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  width: var(--s);
+  height: var(--s);
+  border-radius: 50%;
+  background: #ff8a3d;
+  box-shadow: 0 0 6px 1px rgba(255, 110, 30, 0.85);
+  opacity: 0;
+  pointer-events: none;
+  animation: ember-rise var(--dur) ease-out var(--delay) infinite;
+}
+
+@keyframes bolt-glow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 0.9vw rgba(252, 76, 1, 0.18)) brightness(1);
+  }
+
+  45% {
+    filter: drop-shadow(0 0 1.7vw rgba(252, 76, 1, 0.36)) brightness(1.04);
+  }
+
+  80% {
+    filter: drop-shadow(0 0 0.9vw rgba(252, 76, 1, 0.18)) brightness(1);
+  }
+
+  85% {
+    filter: drop-shadow(0 0 2.8vw rgba(255, 120, 40, 0.65)) brightness(1.2);
+  }
+}
+
+@keyframes bolt-pulse {
+  0%,
+  80% {
+    opacity: 0;
+  }
+
+  85% {
+    opacity: 0.55;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes smoke-rise {
+  0% {
+    opacity: 0;
+    transform: translate(0, 8%) scale(0.6);
+  }
+
+  20% {
+    opacity: 0.85;
+  }
+
+  62% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(14%, -135%) scale(1.5);
+  }
+}
+
+@keyframes ember-rise {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.7);
+  }
+
+  12% {
+    opacity: 1;
+  }
+
+  60% {
+    opacity: 0.8;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(var(--drift, 0), -6vw) scale(0.3);
+  }
+}
+
+/* Ambient motion only runs while the wordmark is on screen. */
+.wordmark[data-active='false'] :is(.boltImage, .smoke, .pulse, .ember) {
+  animation-play-state: paused;
+}
+
+.wordmarkText {
+  color: var(--color-wordmark);
+  font-size: 9.591vw;
+  font-weight: 700;
+  line-height: 7.914vw;
+  letter-spacing: -0.215vw;
+  white-space: nowrap;
+}
+
+@media (max-width: 899px) {
+  .nav {
+    gap: 8px 64px;
+  }
+}
+
+@media (max-width: 599px) {
+  .ember {
+    display: none;
+  }
+}
+
+/* Reduced motion: a still, soft glow instead of smoke, embers and pulses. */
+@media (prefers-reduced-motion: reduce) {
+  .fx,
+  .ember {
+    display: none;
+  }
+
+  .boltImage {
+    animation: none;
+    filter: drop-shadow(0 0 1.2vw rgba(252, 76, 1, 0.25));
+  }
+}
+
+@media (max-width: 599px) {
+  .footer {
+    padding-top: 56px;
+  }
+
+  .top {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .nav {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .column {
+    gap: 20px;
+  }
+
+  .link {
+    font-size: 16px;
+  }
+}

@@ -1,0 +1,38 @@
+.section {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 128px 0;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 48px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (max-width: 899px) {
+  .section {
+    padding-block: 96px;
+  }
+}
+
+@media (max-width: 849px) {
+  .section {
+    padding-inline: var(--gutter);
+  }
+}
+
+@media (max-width: 599px) {
+  .section {
+    padding-block: 72px;
+  }
+
+  .list {
+    gap: 16px;
+    margin-top: 32px;
+  }
+}
