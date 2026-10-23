@@ -11,7 +11,7 @@
  * snapping off. Nothing is left behind: when the charge reaches zero the canvas is cleared and the frame loop stops.
  *
  * One transparent canvas, bounded to the area around the button, drawn beneath the button and never receiving input.
- * The cursor is ignored over the header, so the nav is never zapped. The drawing primitives are shared with the hero.
+ * The cursor is ignored over the header's other controls (and while the full-screen menu is open), so the nav is never zapped. The drawing primitives are shared with the hero.
  */
 
 import { clamp01, hash, rand, strokeBolt } from '../../lib/lightning'
@@ -93,7 +93,7 @@ export function createHireMeLightning({ canvas, button, radius = 240 }) {
 
   /** How charged the cursor's position should make the button: 0 beyond the radius, 1 on top of it. */
   function updateTarget() {
-    if (!rect || !pointer.active || pointer.overHeader) {
+    if (!rect || !pointer.active || pointer.overHeader || document.documentElement.dataset.menu === 'open') {
       targetCharge = 0
       return
     }
@@ -290,7 +290,8 @@ export function createHireMeLightning({ canvas, button, radius = 240 }) {
     pointer.x = event.clientX
     pointer.y = event.clientY
     pointer.active = true
-    pointer.overHeader = event.target instanceof Element && !!event.target.closest('header')
+    // Over the header's other controls nothing fires. The CTA itself may sit inside the header (on mobile) and still counts.
+    pointer.overHeader = event.target instanceof Element && !!event.target.closest('header') && !button.contains(event.target)
     updateTarget()
     if (targetCharge > 0) wake()
   }

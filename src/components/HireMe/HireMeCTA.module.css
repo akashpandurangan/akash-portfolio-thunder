@@ -1,29 +1,33 @@
 /*
- * Fixed to the top-left of the viewport, under the header (z 100) so the nav and the full-screen menu always win.
- * Position: level with the header from 1100px, where the centred 768px nav leaves room on its left; below that it
- * sits just under the header row (20px / 30px top + 48px pills + a small gap). Safe-area insets are respected.
+ * Two placements of the same component; each is hidden outside its own breakpoint (768px is where the header becomes
+ * the full desktop bar), so only one is ever on screen.
+ *
+ * header (below 768px): an ordinary item in the header's left group, so it takes part in the header's flex row.
+ * floating (from 768px): fixed to the top-left of the viewport, under the header (z 100) so the nav always wins. It is
+ * level with the header from 1100px, where the centred 768px nav leaves room on its left, and just under the header
+ * row below that (30px top + 48px pills + a small gap). Safe-area insets are respected.
  */
 .root {
-  position: fixed;
-  z-index: 90;
-  top: calc(env(safe-area-inset-top, 0px) + 74px);
-  left: max(20px, env(safe-area-inset-left, 0px));
   display: flex;
-  pointer-events: none; /* only the button itself takes clicks */
 }
 
-/* While the full-screen menu is open the CTA steps out of the way: not shown, not focusable. */
-:global(html[data-menu='open']) .root {
-  opacity: 0;
-  visibility: hidden;
-  transition:
-    opacity 0.2s ease-out,
-    visibility 0s linear 0.2s;
+.root[data-variant='header'] {
+  flex: none;
+}
+
+.root[data-variant='floating'] {
+  display: none;
+  position: fixed;
+  z-index: 90;
+  top: calc(env(safe-area-inset-top, 0px) + 90px);
+  left: max(24px, env(safe-area-inset-left, 0px));
+  pointer-events: none; /* only the button itself takes clicks */
 }
 
 /* Lightning canvas: placed and sized by the script, bounded to the area around the button. */
 .canvas {
   position: fixed;
+  z-index: -1; /* beneath the header's pills and under the button, above the page */
   pointer-events: none;
 }
 
@@ -118,20 +122,18 @@
   }
 }
 
-@media (min-width: 640px) {
-  .root {
-    left: max(24px, env(safe-area-inset-left, 0px));
-  }
-}
-
 @media (min-width: 768px) {
-  .root {
-    top: calc(env(safe-area-inset-top, 0px) + 90px);
+  .root[data-variant='header'] {
+    display: none;
+  }
+
+  .root[data-variant='floating'] {
+    display: flex;
   }
 }
 
 @media (min-width: 1100px) {
-  .root {
+  .root[data-variant='floating'] {
     top: calc(env(safe-area-inset-top, 0px) + 30px);
   }
 }

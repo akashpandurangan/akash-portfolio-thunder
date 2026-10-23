@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { CONTACT_ANCHOR } from '../../data/links'
+import { useMatchMedia } from '../../hooks/useMatchMedia'
 import { createHireMeLightning } from './hireMeLightning'
 import styles from './HireMeCTA.module.css'
 
 const FINE_POINTER = '(hover: hover) and (pointer: fine)'
 const REDUCED_MOTION = '(prefers-reduced-motion: reduce)'
+// The header turns into the full desktop bar at 768px (see Navbar.module.css); below that it is the compact mobile row.
+const PLACEMENT = { floating: '(min-width: 768px)', header: 'not all and (min-width: 768px)' }
 
 const effectAllowed = () =>
   typeof window !== 'undefined' &&
@@ -12,19 +15,26 @@ const effectAllowed = () =>
   !window.matchMedia(REDUCED_MOTION).matches
 
 /**
- * A "Hire me" pill fixed to the top-left of the screen that leads to the existing Contact section. It sits level with
- * the header where there is room and just under it where there isn't (see the CSS), and mirrors the header's Contact
- * pill in size and type. Moving a mouse toward it charges it: `radius` is how far away (px) that starts.
- * Touch devices and reduced-motion visitors get the plain button; the lightning canvas is never rendered for them.
+ * The "Hire me" pill, leading to the existing Contact section. There is only ever one on screen:
+ *   - `floating` (from 768px): fixed to the top-left of the screen, level with the header where there is room and
+ *     just under it where there isn't;
+ *   - `header` (below 768px): the first item of the header's left group, beside the Akash pill.
+ * The component is rendered in both places and each copy is hidden by CSS outside its own breakpoint, so the hidden
+ * one is neither visible nor focusable, and its lightning engine isn't running.
+ * Moving a mouse toward it charges it: `radius` is how far away (px) that starts. Touch devices and reduced-motion
+ * visitors get the plain button; the lightning canvas is never rendered for them. `onClick` lets the header close
+ * its menu when the CTA is used.
  */
-export default function HireMeCTA({ radius = 240, label = 'Hire me' }) {
+export default function HireMeCTA({ variant = 'floating', radius = 240, label = 'Hire me', onClick }) {
   const canvasRef = useRef(null)
   const buttonRef = useRef(null)
-  const [enabled, setEnabled] = useState(effectAllowed)
+  const [effectOn, setEffectOn] = useState(effectAllowed)
+  const placed = useMatchMedia(PLACEMENT[variant])
+  const enabled = effectOn && placed
 
   useEffect(() => {
     const queries = [window.matchMedia(FINE_POINTER), window.matchMedia(REDUCED_MOTION)]
-    const update = () => setEnabled(effectAllowed())
+    const update = () => setEffectOn(effectAllowed())
     queries.forEach((query) => query.addEventListener('change', update))
     return () => queries.forEach((query) => query.removeEventListener('change', update))
   }, [])
@@ -37,10 +47,10 @@ export default function HireMeCTA({ radius = 240, label = 'Hire me' }) {
   }, [enabled, radius])
 
   return (
-    <div className={styles.root}>
+    <div className={styles.root} data-variant={variant}>
       {/* Decorative, click-through, drawn beneath the button so it never covers the label. */}
       {enabled && <canvas ref={canvasRef} className={styles.canvas} aria-hidden="true" />}
-      <a ref={buttonRef} className={styles.cta} href={CONTACT_ANCHOR.href}>
+      <a ref={buttonRef} className={styles.cta} href={CONTACT_ANCHOR.href} onClick={onClick}>
         {label}
       </a>
     </div>

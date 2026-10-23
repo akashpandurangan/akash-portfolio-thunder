@@ -5,6 +5,7 @@ import moonStarIcon from '../../assets/nav/moon-star.svg'
 import sunIcon from '../../assets/nav/sun-01.svg'
 import { CONTACT_ANCHOR, NAV_LINKS } from '../../data/links'
 import { useScrolled } from '../../hooks/useScrolled'
+import HireMeCTA from '../HireMe/HireMeCTA'
 import styles from './Navbar.module.css'
 
 const MOBILE_MENU_LINKS = [...NAV_LINKS, CONTACT_ANCHOR]
@@ -96,17 +97,21 @@ export default function Navbar({ activeId, theme, onToggleTheme }) {
   return (
     <header ref={headerRef} className={styles.header} data-scrolled={scrolled} data-menu-open={menuOpen}>
       <nav className={styles.nav} aria-label="Primary">
-        <a ref={brandRef} className={`${styles.pill} ${styles.brand}`} href="#home" onClick={closeMenu}>
-          {/* Lightning that arcs through the pill on hover / keyboard focus. Drawn behind the logo and text. */}
-          <svg className={styles.zap} viewBox="0 0 105 48" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-            <path className={styles.zapGlow} pathLength="1" d={ZAP_MAIN} />
-            <path className={styles.zapGlow} pathLength="1" d={ZAP_BRANCH} />
-            <path className={styles.zapCore} pathLength="1" d={ZAP_MAIN} />
-            <path className={styles.zapCore} pathLength="1" d={ZAP_BRANCH} />
-          </svg>
-          <img className={styles.brandIcon} src={logoBolt} alt="" width="16" height="24" />
-          <span className={styles.brandName}>Akash</span>
-        </a>
+        {/* Left group. On mobile it holds the "Hire me" CTA and the brand pill; from 768px it dissolves (display: contents) and the CTA floats. */}
+        <div className={styles.start}>
+          <HireMeCTA variant="header" onClick={closeMenu} />
+          <a ref={brandRef} className={`${styles.pill} ${styles.brand}`} href="#home" onClick={closeMenu}>
+            {/* Lightning that arcs through the pill on hover / keyboard focus. Drawn behind the logo and text. */}
+            <svg className={styles.zap} viewBox="0 0 105 48" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+              <path className={styles.zapGlow} pathLength="1" d={ZAP_MAIN} />
+              <path className={styles.zapGlow} pathLength="1" d={ZAP_BRANCH} />
+              <path className={styles.zapCore} pathLength="1" d={ZAP_MAIN} />
+              <path className={styles.zapCore} pathLength="1" d={ZAP_BRANCH} />
+            </svg>
+            <img className={styles.brandIcon} src={logoBolt} alt="" width="16" height="24" />
+            <span className={styles.brandName}>Akash</span>
+          </a>
+        </div>
 
         <ul ref={linksRef} className={`${styles.pill} ${styles.links}`}>
           {NAV_LINKS.map((link) => {
@@ -130,7 +135,7 @@ export default function Navbar({ activeId, theme, onToggleTheme }) {
           <a ref={contactRef} className={`${styles.pill} ${styles.contact}`} href={CONTACT_ANCHOR.href}>
             {CONTACT_ANCHOR.label}
           </a>
-          <ThemeToggle theme={theme} onToggle={onToggleTheme} className={styles.desktopOnly} buttonRef={toggleRef} />
+          <ThemeToggle theme={theme} onToggle={onToggleTheme} buttonRef={toggleRef} />
           <button
             ref={menuButtonRef}
             type="button"

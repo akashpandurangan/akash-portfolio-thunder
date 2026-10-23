@@ -29,6 +29,19 @@
   transition: max-width 0.45s var(--ease-out);
 }
 
+/*
+ * Mobile header = two groups on one row, pushed to opposite ends by .nav's space-between:
+ *   left  (.start):   "Hire me" + the Akash pill      right (.actions): theme toggle + menu button
+ * Both groups use the same 8px gap and are centred on the row. From 768px this wrapper dissolves, so the desktop
+ * bar is laid out exactly as before (and the CTA floats instead).
+ */
+.start {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+}
+
 .pill {
   display: flex;
   align-items: center;
@@ -70,6 +83,7 @@ button.pill:active {
   gap: 8px;
   padding: 0 16px;
   overflow: hidden;
+  white-space: nowrap;
   color: var(--color-text);
   font-size: 16px;
   font-weight: 600;
@@ -304,10 +318,6 @@ button.pill:active {
   mask: var(--icon) center / 24px 24px no-repeat;
 }
 
-.desktopOnly {
-  display: none;
-}
-
 /* ---- Full-screen mobile menu ---- */
 .menu {
   position: fixed;
@@ -384,12 +394,12 @@ button.pill:active {
     top: 30px;
   }
 
-  .links,
-  .contact {
-    display: flex;
+  .start {
+    display: contents;
   }
 
-  .desktopOnly {
+  .links,
+  .contact {
     display: flex;
   }
 
