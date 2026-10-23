@@ -1,7 +1,8 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import logoBolt from '../../assets/nav/logo-bolt.svg'
-import themeIcon from '../../assets/nav/theme-toggle.svg'
+import moonStarIcon from '../../assets/nav/moon-star.svg'
+import sunIcon from '../../assets/nav/sun-01.svg'
 import { CONTACT_ANCHOR, NAV_LINKS } from '../../data/links'
 import { useScrolled } from '../../hooks/useScrolled'
 import styles from './Navbar.module.css'
@@ -18,6 +19,8 @@ const ZAP_BRANCH = 'M48 23 L55 36 L67 30'
 
 function ThemeToggle({ theme, onToggle, className = '', buttonRef }) {
   const label = theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'
+  // The icon shows what the button switches to: the sun while the page is dark, the moon while it is light.
+  const icon = theme === 'dark' ? sunIcon : moonStarIcon
   return (
     <button
       ref={buttonRef}
@@ -27,7 +30,7 @@ function ThemeToggle({ theme, onToggle, className = '', buttonRef }) {
       aria-label={label}
       title={label}
     >
-      <img src={themeIcon} alt="" width="24" height="24" />
+      <span className={styles.themeIcon} style={{ '--icon': `url("${icon}")` }} aria-hidden="true" />
     </button>
   )
 }

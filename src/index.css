@@ -17,6 +17,9 @@
   --color-accent: #fc4c01;
   --color-tag-bg: rgba(33, 33, 33, 0.5);
   --color-tag-border: rgba(115, 115, 115, 0.08);
+  /* The round brand-logo chips in the hero badge (black with a #474747 edge in the design). */
+  --color-chip-bg: #000;
+  --color-chip-border: #474747;
 
   /*
    * Edge ring that gives pills, cards and the hero their outline. The Figma file draws this at 2px on
@@ -74,6 +77,8 @@
   /* Tags sit lighter than the card they are on, with a hairline border. */
   --color-tag-bg: #fafafa;
   --color-tag-border: var(--color-card-border);
+  --color-chip-bg: #fff;
+  --color-chip-border: rgba(10, 10, 10, 0.16);
   --color-badge-bg: rgba(10, 10, 10, 0.05);
   --color-wordmark: rgba(10, 10, 10, 0.1);
   --color-scrim: rgba(250, 250, 250, 0.85);

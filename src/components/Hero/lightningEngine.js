@@ -12,6 +12,8 @@
  * embers ~0.85s after, at which point the frame loop stops.
  */
 
+import { clamp01, hash, rand, strokeBolt } from '../../lib/lightning'
+
 const LIFE = 520 // ms a main-trail sample stays visible
 const FOLLOW_TAU = 65 // ms; smoothing time constant = the trail's slight delay behind the cursor
 const STEP = [11, 19] // px between trail samples (irregular on purpose)
@@ -29,15 +31,6 @@ const SPARK_LIFE = [380, 720]
 const MAX_EMBERS = 36
 const EMBER_LIFE = [520, 850]
 const BURST_COOLDOWN = 380 // ms between bursts
-
-const rand = (min, max) => min + Math.random() * (max - min)
-const clamp01 = (value) => Math.min(1, Math.max(0, value))
-
-/** Deterministic noise in [-1, 1]; lets a bolt re-roll its kinks without storing them. */
-const hash = (n) => {
-  const s = Math.sin(n * 127.1 + 311.7) * 43758.5453
-  return (s - Math.floor(s)) * 2 - 1
-}
 
 export function createLightningEngine(canvas, host) {
   const ctx = canvas.getContext('2d')
@@ -324,25 +317,7 @@ export function createLightningEngine(canvas, host) {
     }
   }
 
-  /** Layered bolt: wide soft glow, tighter glow, orange body, bright core. `scale` thins the whole stack. */
-  function stroke(pts, alpha, scale, light) {
-    if (pts.length < 2 || alpha <= 0.01) return
-    ctx.beginPath()
-    ctx.moveTo(pts[0].x, pts[0].y)
-    for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y)
-    ctx.strokeStyle = `rgba(252, 76, 1, ${(light ? 0.07 : 0.1) * alpha})`
-    ctx.lineWidth = 26 * scale
-    ctx.stroke()
-    ctx.strokeStyle = `rgba(252, 76, 1, ${0.24 * alpha})`
-    ctx.lineWidth = 12 * scale
-    ctx.stroke()
-    ctx.strokeStyle = light ? `rgba(240, 70, 0, ${0.6 * alpha})` : `rgba(255, 112, 32, ${0.65 * alpha})`
-    ctx.lineWidth = 4 * scale
-    ctx.stroke()
-    ctx.strokeStyle = light ? `rgba(200, 50, 0, ${0.95 * alpha})` : `rgba(255, 232, 212, ${0.97 * alpha})`
-    ctx.lineWidth = 1.6 * scale
-    ctx.stroke()
-  }
+  const stroke = (pts, alpha, scale, light) => strokeBolt(ctx, pts, alpha, scale, light)
 
   /** The bolt as drawn right now: grown out to `progress` of its length, kinks re-rolled for this shimmer `epoch`. */
   function shapeBolt(bolt, epoch, progress) {

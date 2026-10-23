@@ -1,3 +1,25 @@
+/*
+ * Fixed ("reveal") footer. The wrapper scrolls with the page and reserves exactly the footer's height; the footer
+ * itself is pinned to the bottom of the screen, and clip-path limits what can be seen (and clicked) to the wrapper's
+ * box. So the footer stays still while the page slides up and uncovers it. useFixedFooter turns this on only where it
+ * works (fine pointer, no reduced motion, footer shorter than the window); otherwise the footer is plain page content.
+ */
+.reveal {
+  position: relative;
+}
+
+.reveal[data-fixed='true'] {
+  height: var(--footer-height);
+  clip-path: inset(0);
+}
+
+.reveal[data-fixed='true'] .footer {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
 .footer {
   display: flex;
   flex-direction: column;

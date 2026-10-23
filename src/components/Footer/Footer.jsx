@@ -5,6 +5,7 @@ import SmartLink from '../ui/SmartLink'
 import Snackbar from '../ui/Snackbar'
 import CopyableLink from './CopyableLink'
 import { FOOTER_SOCIAL, NAV_LINKS, PROFILE } from '../../data/links'
+import { useFixedFooter } from '../../hooks/useFixedFooter'
 import { useInView } from '../../hooks/useInView'
 import { useSnackbar } from '../../hooks/useSnackbar'
 import styles from './Footer.module.css'
@@ -35,81 +36,99 @@ const EMBERS = [
 const COPY_FAILED = 'Couldn’t copy. Select the text instead.'
 
 export default function Footer() {
-  const [wordmarkRef, inView] = useInView()
+  // Observe the wrapper that scrolls with the page: a fixed footer is always "on screen" for an observer of its own.
+  const [revealRef, inView] = useInView()
+  const { footerRef, fixed, height } = useFixedFooter()
   const [snack, showSnack] = useSnackbar()
   const reportCopy = (message) => (ok) => (ok ? showSnack(message) : showSnack(COPY_FAILED, 'error'))
 
+  // A fixed footer that is still covered by the page can't be seen, so keyboard focus inside it brings it into view.
+  const revealOnFocus = () => {
+    const wrapper = revealRef.current
+    if (fixed && wrapper && wrapper.getBoundingClientRect().bottom > window.innerHeight + 1) {
+      wrapper.scrollIntoView({ block: 'end', behavior: 'instant' })
+    }
+  }
+
   return (
-    <footer className={styles.footer}>
-      <div className={styles.top}>
-        <div className={styles.brand}>
-          <a href="#home" aria-label="Back to top">
-            <img src={boltLogo} alt="" width="20.8" height="32" />
-          </a>
-          <p className={styles.copyright}>
-            {PROFILE.name} © {CURRENT_YEAR}
-          </p>
-        </div>
-
-        <nav className={styles.nav} aria-label="Footer">
-          <ul className={styles.column}>
-            {NAV_LINKS.map((link) => (
-              <li key={link.id}>
-                <a className={styles.link} href={link.href}>
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-
-          <ul className={styles.column}>
-            <CopyableLink
-              href={`mailto:${PROFILE.email}`}
-              text={PROFILE.email}
-              label="email address"
-              onCopy={reportCopy('Email address copied')}
-            />
-            <CopyableLink
-              href={`tel:${PROFILE.phone.replace(/\s/g, '')}`}
-              text={PROFILE.phone}
-              label="phone number"
-              onCopy={reportCopy('Phone number copied')}
-            />
-          </ul>
-
-          <ul className={styles.column}>
-            {FOOTER_SOCIAL.map((link) => (
-              <li key={link.id}>
-                <SmartLink className={`${styles.link} ${styles.external}`} href={link.href} newTab={link.newTab}>
-                  {link.label}
-                  <img className={styles.arrow} src={arrowIcon} alt="" width="20" height="20" />
-                </SmartLink>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
-
-      <div ref={wordmarkRef} className={styles.wordmark} data-active={inView} aria-hidden="true">
-        <div className={styles.wordmarkRow}>
-          <div className={styles.bolt}>
-            <img className={styles.boltImage} src={boltWordmark} alt="" width="172" height="265" />
-            {/* Smoke and pulse are masked to the bolt's own silhouette; embers drift around it. All clipped to the footer art. */}
-            <div className={styles.fx}>
-              {SMOKE.map((wisp, index) => (
-                <span key={index} className={styles.smoke} style={wisp} />
-              ))}
-              <span className={styles.pulse} />
-            </div>
-            {EMBERS.map((ember, index) => (
-              <span key={index} className={styles.ember} style={ember} />
-            ))}
+    <div
+      ref={revealRef}
+      className={styles.reveal}
+      data-fixed={fixed}
+      style={fixed ? { '--footer-height': `${height}px` } : undefined}
+      onFocusCapture={revealOnFocus}
+    >
+      <footer ref={footerRef} className={styles.footer}>
+        <div className={styles.top}>
+          <div className={styles.brand}>
+            <a href="#home" aria-label="Back to top">
+              <img src={boltLogo} alt="" width="20.8" height="32" />
+            </a>
+            <p className={styles.copyright}>
+              {PROFILE.name} © {CURRENT_YEAR}
+            </p>
           </div>
-          <span className={styles.wordmarkText}>{PROFILE.name}</span>
-        </div>
-      </div>
 
-      <Snackbar {...snack} />
-    </footer>
+          <nav className={styles.nav} aria-label="Footer">
+            <ul className={styles.column}>
+              {NAV_LINKS.map((link) => (
+                <li key={link.id}>
+                  <a className={styles.link} href={link.href}>
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+
+            <ul className={styles.column}>
+              <CopyableLink
+                href={`mailto:${PROFILE.email}`}
+                text={PROFILE.email}
+                label="email address"
+                onCopy={reportCopy('Email address copied')}
+              />
+              <CopyableLink
+                href={`tel:${PROFILE.phone.replace(/\s/g, '')}`}
+                text={PROFILE.phone}
+                label="phone number"
+                onCopy={reportCopy('Phone number copied')}
+              />
+            </ul>
+
+            <ul className={styles.column}>
+              {FOOTER_SOCIAL.map((link) => (
+                <li key={link.id}>
+                  <SmartLink className={`${styles.link} ${styles.external}`} href={link.href} newTab={link.newTab}>
+                    {link.label}
+                    <img className={styles.arrow} src={arrowIcon} alt="" width="20" height="20" />
+                  </SmartLink>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+
+        <div className={styles.wordmark} data-active={inView} aria-hidden="true">
+          <div className={styles.wordmarkRow}>
+            <div className={styles.bolt}>
+              <img className={styles.boltImage} src={boltWordmark} alt="" width="172" height="265" />
+              {/* Smoke and pulse are masked to the bolt's own silhouette; embers drift around it. All clipped to the footer art. */}
+              <div className={styles.fx}>
+                {SMOKE.map((wisp, index) => (
+                  <span key={index} className={styles.smoke} style={wisp} />
+                ))}
+                <span className={styles.pulse} />
+              </div>
+              {EMBERS.map((ember, index) => (
+                <span key={index} className={styles.ember} style={ember} />
+              ))}
+            </div>
+            <span className={styles.wordmarkText}>{PROFILE.name}</span>
+          </div>
+        </div>
+
+        <Snackbar {...snack} />
+      </footer>
+    </div>
   )
 }

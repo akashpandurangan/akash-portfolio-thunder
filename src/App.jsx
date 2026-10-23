@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import Loader from './components/Loader/Loader'
 import Navbar from './components/Navbar/Navbar'
+import HireMeCTA from './components/HireMe/HireMeCTA'
 import Hero from './components/Hero/Hero'
 import ContactSection from './components/Contact/ContactSection'
 import ProjectsSection from './components/Projects/ProjectsSection'
@@ -8,6 +9,7 @@ import AboutSection from './components/About/AboutSection'
 import ExperienceSection from './components/Experience/ExperienceSection'
 import Footer from './components/Footer/Footer'
 import { useActiveSection } from './hooks/useActiveSection'
+import { useSmoothScroll } from './hooks/useSmoothScroll'
 import { useTheme } from './hooks/useTheme'
 
 const SECTION_IDS = ['home', 'contact', 'projects', 'about', 'experience']
@@ -18,6 +20,7 @@ export default function App() {
   const [phase, setPhase] = useState(() => (prefersReducedMotion() ? 'done' : 'loading'))
   const [theme, toggleTheme] = useTheme()
   const activeId = useActiveSection(SECTION_IDS)
+  useSmoothScroll()
 
   useEffect(() => {
     const root = document.documentElement
@@ -32,6 +35,7 @@ export default function App() {
     <>
       {phase !== 'done' && <Loader onLeave={handleLeave} onDone={handleDone} />}
       <Navbar activeId={activeId} theme={theme} onToggleTheme={toggleTheme} />
+      <HireMeCTA />
       <main>
         <Hero />
         <ContactSection />

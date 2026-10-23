@@ -3,16 +3,16 @@
   display: inline-flex;
 }
 
-/* Chip artwork and size are unchanged from the Figma design (34 × 24, black pill, #474747 edge). */
+/* Chip artwork and size are unchanged from the Figma design (34 × 24 pill); the colours come from the theme (black in dark, white in light). */
 .chip {
   display: grid;
   place-items: center;
   width: 34px;
   height: 24px;
   padding: 0;
-  border: 1px solid #474747;
+  border: 1px solid var(--color-chip-border);
   border-radius: 100px;
-  background: #000;
+  background: var(--color-chip-bg);
   cursor: pointer;
   transition: border-color 0.2s ease-out;
 }

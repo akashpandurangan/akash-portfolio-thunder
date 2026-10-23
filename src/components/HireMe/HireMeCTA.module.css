@@ -1,0 +1,144 @@
+/*
+ * Fixed to the top-left of the viewport, under the header (z 100) so the nav and the full-screen menu always win.
+ * Position: level with the header from 1100px, where the centred 768px nav leaves room on its left; below that it
+ * sits just under the header row (20px / 30px top + 48px pills + a small gap). Safe-area insets are respected.
+ */
+.root {
+  position: fixed;
+  z-index: 90;
+  top: calc(env(safe-area-inset-top, 0px) + 74px);
+  left: max(20px, env(safe-area-inset-left, 0px));
+  display: flex;
+  pointer-events: none; /* only the button itself takes clicks */
+}
+
+/* While the full-screen menu is open the CTA steps out of the way: not shown, not focusable. */
+:global(html[data-menu='open']) .root {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.2s ease-out,
+    visibility 0s linear 0.2s;
+}
+
+/* Lightning canvas: placed and sized by the script, bounded to the area around the button. */
+.canvas {
+  position: fixed;
+  pointer-events: none;
+}
+
+/* The header Contact pill's size (48px tall, 20px side padding, 14px, fully rounded), filled with the brand orange. */
+.cta {
+  position: relative;
+  pointer-events: auto; /* the wrapper is click-through and pointer-events is inherited, so the button opts back in */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  padding: 0 20px;
+  border-radius: 9999px;
+  background: var(--color-accent);
+  /* a soft bevel (same in both themes), an orange edge and a glow; the edge and glow swell with --charge (0–1, written by the script) */
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 0 rgba(0, 0, 0, 0.16),
+    0 0 0 1px rgba(252, 76, 1, calc(0.3 + 0.5 * var(--charge, 0))),
+    0 0 calc(10px + 26px * var(--charge, 0)) calc(-1px + 3px * var(--charge, 0)) rgba(252, 76, 1, calc(0.22 + 0.45 * var(--charge, 0)));
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  opacity: 0;
+  white-space: nowrap;
+  transition:
+    background-color 0.2s ease-out,
+    color 0.2s ease-out,
+    transform 0.2s var(--ease-out);
+}
+
+/* A barely-there pulse in the glow while idle (opacity only, so it costs nothing and never reaches full strength). */
+.cta::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 16px 0 rgba(252, 76, 1, 0.34);
+  opacity: 0.25;
+  pointer-events: none;
+  animation: hire-idle 5.5s ease-in-out infinite;
+}
+
+.cta:hover {
+  background: var(--color-accent-hover);
+}
+
+/* The page selection style is orange-on-dark, which would vanish on the orange button (the hero button does the same). */
+.cta::selection {
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+}
+
+.cta::-moz-selection {
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+}
+
+.cta:active {
+  transform: scale(0.97);
+}
+
+/* Appears with the rest of the page once the intro loader has left. */
+:global(html[data-ready='true']) .cta {
+  animation: hire-in 0.5s var(--ease-out) 0.35s both;
+}
+
+@keyframes hire-in {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+}
+
+@keyframes hire-idle {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@media (min-width: 640px) {
+  .root {
+    left: max(24px, env(safe-area-inset-left, 0px));
+  }
+}
+
+@media (min-width: 768px) {
+  .root {
+    top: calc(env(safe-area-inset-top, 0px) + 90px);
+  }
+}
+
+@media (min-width: 1100px) {
+  .root {
+    top: calc(env(safe-area-inset-top, 0px) + 30px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta::after {
+    animation: none;
+    opacity: 0.35;
+  }
+}

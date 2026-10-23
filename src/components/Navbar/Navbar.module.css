@@ -290,9 +290,18 @@ button.pill:active {
   padding: 0;
 }
 
-/* The theme glyph is a white line icon, so it flips on the light theme. */
-.iconButton img {
-  filter: var(--icon-filter);
+/*
+ * The theme glyph is a mask filled with the pill's own text colour, so it always matches the "Contact" label
+ * (and follows its hover colour) in both themes instead of being a fixed white / inverted-black image.
+ */
+.themeIcon {
+  display: block;
+  flex: none;
+  width: 24px;
+  height: 24px;
+  background-color: currentColor;
+  -webkit-mask: var(--icon) center / 24px 24px no-repeat;
+  mask: var(--icon) center / 24px 24px no-repeat;
 }
 
 .desktopOnly {
