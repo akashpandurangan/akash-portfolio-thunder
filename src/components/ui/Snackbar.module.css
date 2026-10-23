@@ -1,0 +1,54 @@
+/* A full-width, click-through strip that centres the pill (centring with left: 50% would squeeze it to half the screen). */
+.snackbar {
+  position: fixed;
+  right: 0;
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  left: 0;
+  z-index: 130; /* above the header (100) and the mobile menu */
+  display: flex;
+  justify-content: center;
+  padding: 0 16px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(14px);
+  transition:
+    opacity 0.25s ease-out,
+    transform 0.35s var(--ease-out);
+}
+
+.snackbar[data-open='true'] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Same surface language as the header pills, so it reads in both themes. */
+.message {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 20px 0 13px;
+  border-radius: 9999px;
+  background: var(--color-surface-raised);
+  box-shadow: var(--ring-pill), var(--pill-shadow-scrolled);
+  color: var(--color-text);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.snackbar[data-tone='error'] .icon {
+  background: var(--color-text-50);
+  color: var(--color-bg);
+}

@@ -1,5 +1,4 @@
 import { useEffect, useId, useRef, useState } from 'react'
-import { Images } from 'lucide-react'
 import Tag from '../ui/Tag'
 import PhotoStrip from './PhotoStrip'
 import { useHoverIntent } from '../../hooks/useHoverIntent'
@@ -28,60 +27,78 @@ function useNearViewport(ref, margin = '800px 0px') {
   return near
 }
 
+// Clicks that start on these never toggle the card (the photo strip must stay swipeable and never closes the card).
+const NO_TOGGLE = '[data-gallery], a, input, select, textarea, [data-no-toggle]'
+
+/**
+ * The whole card is the control: hover (with intent) shows the photos, and a click, tap, or Enter / Space
+ * on the focusable job title pins them open. Cards without photos are plain, non-interactive text.
+ */
 export default function ExperienceCard({ role }) {
   const { role: title, period, company, logo, description, photos, photosLabel } = role
 
+  const interactive = photos.some(Boolean)
   const cardRef = useRef(null)
-  const lastPointerType = useRef('mouse')
   const galleryId = useId()
+  const hintId = useId()
   const { hovered, handlers } = useHoverIntent()
   const [pinned, setPinned] = useState(false)
   const loadPhotos = useNearViewport(cardRef)
 
-  // Photos show on deliberate hover, or when pinned open with the button (keyboard) or a tap (touch).
-  const open = hovered || pinned
-  const togglePinned = () => setPinned((value) => !value)
+  const open = interactive && (hovered || pinned)
+
+  const toggle = (event) => {
+    if (!interactive || event.target.closest(NO_TOGGLE)) return
+    // Releasing the mouse after selecting text inside the card shouldn't count as a click on it.
+    const selection = window.getSelection()
+    if (selection && !selection.isCollapsed && cardRef.current?.contains(selection.anchorNode)) return
+    setPinned((value) => !value)
+  }
 
   return (
     <article
       ref={cardRef}
       className={styles.card}
+      data-interactive={interactive}
       data-open={open}
-      onPointerDown={(event) => {
-        lastPointerType.current = event.pointerType
-      }}
-      onClick={(event) => {
-        // Touch has no hover, so a tap on the card toggles the photos (the button handles its own clicks).
-        if (lastPointerType.current === 'touch' && !event.target.closest('button, a')) togglePinned()
-      }}
-      {...handlers}
+      data-pinned={interactive && pinned}
+      onClick={toggle}
+      {...(interactive ? handlers : {})}
     >
       <header className={styles.header}>
-        <h3 className={styles.title}>{title}</h3>
-        <div className={styles.meta}>
-          <Tag>{period}</Tag>
-          <button
-            type="button"
-            className={styles.toggle}
-            onClick={togglePinned}
-            aria-expanded={pinned}
-            aria-controls={galleryId}
-            aria-label={`${pinned ? 'Hide' : 'Show'} ${photosLabel.toLowerCase()}`}
-            title={`${pinned ? 'Hide' : 'Show'} photos`}
-          >
-            <Images size={14} aria-hidden="true" />
-          </button>
-        </div>
+        <h3 className={styles.title}>
+          {interactive ? (
+            <button
+              type="button"
+              className={styles.trigger}
+              aria-expanded={open}
+              aria-controls={galleryId}
+              aria-describedby={hintId}
+            >
+              {title}
+            </button>
+          ) : (
+            title
+          )}
+        </h3>
+        <Tag>{period}</Tag>
       </header>
 
       <p className={styles.company}>
-        <img src={logo.src} alt="" width={logo.width} height={logo.height} />
+        <img className={logo.mono ? styles.logoMono : undefined} src={logo.src} alt="" width={logo.width} height={logo.height} />
         <span>{company}</span>
       </p>
 
       <p className={styles.description}>{description}</p>
 
-      <PhotoStrip id={galleryId} open={open} photos={photos} label={photosLabel} load={loadPhotos} />
+      {interactive && (
+        <>
+          <span id={hintId} className="visually-hidden">
+            {open ? 'Hide' : 'Show'} {photosLabel.toLowerCase()}
+          </span>
+          <PhotoStrip id={galleryId} open={open} photos={photos} label={photosLabel} load={loadPhotos} />
+        </>
+      )}
     </article>
   )
 }

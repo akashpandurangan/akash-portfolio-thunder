@@ -2,6 +2,7 @@
 .gallery {
   display: grid;
   grid-template-rows: 0fr;
+  cursor: default;
   transition: grid-template-rows 0.55s var(--ease-out);
 }
 
@@ -60,6 +61,11 @@
   transition:
     opacity 0.35s ease-out calc(var(--i, 0) * 70ms + 160ms),
     transform 0.8s cubic-bezier(0.34, 1.45, 0.64, 1) calc(var(--i, 0) * 70ms + 160ms);
+}
+
+/* On the light theme the white polaroid frames need a soft shadow to lift off the card. */
+:global(html[data-theme='light']) .polaroid {
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.16)) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.14));
 }
 
 /* Phones: keep the photos a readable size and let the strip swipe sideways inside the card. */

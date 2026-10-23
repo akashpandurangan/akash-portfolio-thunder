@@ -12,8 +12,12 @@
     <title>Akash Pandurangan | Senior Product Designer</title>
     <script>
       // Apply a saved theme before first paint to avoid a flash of the default (dark) theme.
+      // The browser-chrome colour follows too (useTheme keeps it in step afterwards).
       try {
-        if (localStorage.getItem('ap-theme') === 'light') document.documentElement.dataset.theme = 'light'
+        if (localStorage.getItem('ap-theme') === 'light') {
+          document.documentElement.dataset.theme = 'light'
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#fafafa')
+        }
       } catch (error) {
         /* storage unavailable */
       }

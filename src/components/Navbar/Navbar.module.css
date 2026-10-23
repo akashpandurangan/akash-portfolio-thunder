@@ -276,6 +276,7 @@ button.pill:active {
   display: flex;
   align-items: center;
   gap: 8px;
+  transition: gap 0.45s var(--ease-out);
 }
 
 .contact {
@@ -388,7 +389,12 @@ button.pill:active {
     display: none;
   }
 
+  /* Collapsed bar: exactly as wide as its content plus 10px between every item (--nav-compact is measured in Navbar.jsx). */
   .header[data-scrolled='true'] .nav {
-    max-width: 530px;
+    max-width: var(--nav-compact, 548px);
+  }
+
+  .header[data-scrolled='true'] .actions {
+    gap: 10px;
   }
 }

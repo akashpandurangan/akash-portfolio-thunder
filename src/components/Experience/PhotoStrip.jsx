@@ -8,7 +8,7 @@ import styles from './PhotoStrip.module.css'
  */
 export default function PhotoStrip({ id, open, photos, label, load }) {
   return (
-    <div id={id} className={styles.gallery} data-open={open} role="group" aria-label={label} inert={!open}>
+    <div id={id} className={styles.gallery} data-gallery="" data-open={open} role="group" aria-label={label} inert={!open}>
       <div className={styles.clip}>
         <div className={styles.viewport}>
           <div className={styles.stage}>

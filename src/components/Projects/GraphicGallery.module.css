@@ -1,0 +1,52 @@
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 24px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
+/* A row of two small tiles; the row is as tall as its tallest tile and the other one stretches to match. */
+.pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.pair > li {
+  display: grid;
+}
+
+.pair > li > * {
+  height: 100%;
+}
+
+@media (max-width: 759px) {
+  .gallery {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  /* The columns disappear, so every block becomes a direct item of the stack, ordered left 1, right 1, left 2… */
+  .column {
+    display: contents;
+  }
+
+  .block {
+    order: var(--order);
+  }
+}
+
+@media (max-width: 599px) {
+  .gallery,
+  .pair {
+    gap: 16px;
+  }
+}

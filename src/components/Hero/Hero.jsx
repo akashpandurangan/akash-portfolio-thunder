@@ -2,6 +2,8 @@ import boltBackground from '../../assets/hero/bolt-bg.svg'
 import brandSonyLiv from '../../assets/hero/brand-sonyliv.webp'
 import brandTwo from '../../assets/hero/brand-2.svg'
 import brandThree from '../../assets/hero/brand-3.svg'
+import BrandChip from './BrandChip'
+import LightningTrail from './LightningTrail'
 import styles from './Hero.module.css'
 
 /* Entrance delays (ms): the reference staggers badge → headline → summary → actions by roughly 100ms. */
@@ -15,23 +17,24 @@ export default function Hero() {
           <img className={styles.bolt} src={boltBackground} alt="" width="738" height="1002" />
         </div>
         <div className={styles.glow} aria-hidden="true" />
+        <LightningTrail />
 
         <div className={styles.content}>
           <div className={`${styles.item} ${styles.badge}`} style={delay(0)}>
             <span className={styles.badgeLabel}>Selected brands &amp; experiences</span>
             <span className={styles.badgeDivider} aria-hidden="true" />
-            <span className={styles.chips} aria-hidden="true">
-              <span className={styles.chip}>
+            <span className={styles.chips} role="group" aria-label="Selected brands">
+              <BrandChip name="SonyLIV">
                 <span className={styles.sonyCrop}>
                   <img className={styles.sonyImage} src={brandSonyLiv} alt="" />
                 </span>
-              </span>
-              <span className={styles.chip}>
+              </BrandChip>
+              <BrandChip name="Telekom Malaysia">
                 <img src={brandTwo} alt="" width="12.478" height="14" />
-              </span>
-              <span className={styles.chip}>
+              </BrandChip>
+              <BrandChip name="AI Studio">
                 <img src={brandThree} alt="" width="9.83" height="14" />
-              </span>
+              </BrandChip>
             </span>
           </div>
 

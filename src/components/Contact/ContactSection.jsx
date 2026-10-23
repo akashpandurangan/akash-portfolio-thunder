@@ -16,7 +16,8 @@ export default function ContactSection() {
               <SmartLink
                 className={styles.pill}
                 href={link.href}
-                aria-label={link.iconOnly ? link.label : undefined}
+                newTab={link.newTab}
+                aria-label={link.iconOnly ? `${link.label} (opens in a new tab)` : undefined}
                 data-icon-only={link.iconOnly || undefined}
               >
                 {link.icon && (

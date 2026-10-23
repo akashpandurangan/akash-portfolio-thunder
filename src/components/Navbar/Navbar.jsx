@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import logoBolt from '../../assets/nav/logo-bolt.svg'
 import themeIcon from '../../assets/nav/theme-toggle.svg'
@@ -9,14 +9,18 @@ import styles from './Navbar.module.css'
 const MOBILE_MENU_LINKS = [...NAV_LINKS, CONTACT_ANCHOR]
 const DESKTOP_QUERY = '(min-width: 768px)'
 
+// Space between the nav items once the bar collapses on scroll.
+const COMPACT_GAP = 10
+
 // Jagged bolt (plus a short branch) across the brand pill's 105 × 48 box.
 const ZAP_MAIN = 'M2 30 L16 20 L25 28 L39 12 L48 23 L62 8 L71 20 L85 14 L103 27'
 const ZAP_BRANCH = 'M48 23 L55 36 L67 30'
 
-function ThemeToggle({ theme, onToggle, className = '' }) {
+function ThemeToggle({ theme, onToggle, className = '', buttonRef }) {
   const label = theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'
   return (
     <button
+      ref={buttonRef}
       type="button"
       className={`${styles.pill} ${styles.iconButton} ${className}`.trim()}
       onClick={onToggle}
@@ -33,8 +37,32 @@ export default function Navbar({ activeId, theme, onToggleTheme }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const menuButtonRef = useRef(null)
   const menuRef = useRef(null)
+  const headerRef = useRef(null)
+  const brandRef = useRef(null)
+  const linksRef = useRef(null)
+  const contactRef = useRef(null)
+  const toggleRef = useRef(null)
 
   const closeMenu = () => setMenuOpen(false)
+
+  // Size the collapsed bar to its content so every item sits exactly COMPACT_GAP apart, whatever the font renders at.
+  useLayoutEffect(() => {
+    const header = headerRef.current
+    const items = [brandRef, linksRef, contactRef, toggleRef].map((ref) => ref.current)
+    if (!header || items.some((item) => !item)) return undefined
+
+    const measure = () => {
+      const widths = items.map((item) => item.getBoundingClientRect().width)
+      if (widths.some((width) => width === 0)) return // hidden in the mobile layout
+      const total = widths.reduce((sum, width) => sum + width, 0) + COMPACT_GAP * 3
+      header.style.setProperty('--nav-compact', `${Math.round(total * 100) / 100}px`)
+    }
+
+    measure()
+    const observer = new ResizeObserver(measure)
+    items.forEach((item) => observer.observe(item))
+    return () => observer.disconnect()
+  }, [])
 
   // Lock page scroll while the full-screen menu is open, and close it on Escape or when the layout goes desktop.
   useEffect(() => {
@@ -63,9 +91,9 @@ export default function Navbar({ activeId, theme, onToggleTheme }) {
   }, [menuOpen])
 
   return (
-    <header className={styles.header} data-scrolled={scrolled} data-menu-open={menuOpen}>
+    <header ref={headerRef} className={styles.header} data-scrolled={scrolled} data-menu-open={menuOpen}>
       <nav className={styles.nav} aria-label="Primary">
-        <a className={`${styles.pill} ${styles.brand}`} href="#home" onClick={closeMenu}>
+        <a ref={brandRef} className={`${styles.pill} ${styles.brand}`} href="#home" onClick={closeMenu}>
           {/* Lightning that arcs through the pill on hover / keyboard focus. Drawn behind the logo and text. */}
           <svg className={styles.zap} viewBox="0 0 105 48" preserveAspectRatio="none" aria-hidden="true" focusable="false">
             <path className={styles.zapGlow} pathLength="1" d={ZAP_MAIN} />
@@ -77,7 +105,7 @@ export default function Navbar({ activeId, theme, onToggleTheme }) {
           <span className={styles.brandName}>Akash</span>
         </a>
 
-        <ul className={`${styles.pill} ${styles.links}`}>
+        <ul ref={linksRef} className={`${styles.pill} ${styles.links}`}>
           {NAV_LINKS.map((link) => {
             const active = activeId === link.id
             return (
@@ -96,10 +124,10 @@ export default function Navbar({ activeId, theme, onToggleTheme }) {
         </ul>
 
         <div className={styles.actions}>
-          <a className={`${styles.pill} ${styles.contact}`} href={CONTACT_ANCHOR.href}>
+          <a ref={contactRef} className={`${styles.pill} ${styles.contact}`} href={CONTACT_ANCHOR.href}>
             {CONTACT_ANCHOR.label}
           </a>
-          <ThemeToggle theme={theme} onToggle={onToggleTheme} className={styles.desktopOnly} />
+          <ThemeToggle theme={theme} onToggle={onToggleTheme} className={styles.desktopOnly} buttonRef={toggleRef} />
           <button
             ref={menuButtonRef}
             type="button"

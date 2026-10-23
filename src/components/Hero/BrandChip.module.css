@@ -1,0 +1,107 @@
+.wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+/* Chip artwork and size are unchanged from the Figma design (34 × 24, black pill, #474747 edge). */
+.chip {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid #474747;
+  border-radius: 100px;
+  background: #000;
+  cursor: pointer;
+  transition: border-color 0.2s ease-out;
+}
+
+.chip:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-color: rgba(252, 76, 1, 0.6);
+}
+
+/* Tooltip sits above the badge so it never covers the headline. */
+.tip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 11px 6px 9px;
+  border-radius: 10px;
+  background: var(--color-surface-raised);
+  box-shadow:
+    var(--ring-pill),
+    0 8px 20px -8px rgba(0, 0, 0, 0.6);
+  color: var(--color-text);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(calc(-50% + var(--shift, 0px)), 4px);
+  transition:
+    opacity 0.18s ease-out,
+    transform 0.22s var(--ease-out),
+    visibility 0s linear 0.18s;
+}
+
+/* Orange accent dot */
+.tip::before {
+  content: '';
+  flex: none;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 6px rgba(252, 76, 1, 0.7);
+}
+
+/* Arrow, kept pointing at the chip even when the tooltip is nudged to stay on screen. */
+.tip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: calc(50% - var(--shift, 0px));
+  width: 8px;
+  height: 8px;
+  border-radius: 0 0 2px 0;
+  background: var(--color-surface-raised);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.chip:focus-visible + .tip,
+.wrap[data-open='true'] .tip {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(calc(-50% + var(--shift, 0px)), 0);
+  transition-delay: 0s;
+}
+
+@media (hover: hover) {
+  .wrap:hover .tip {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(calc(-50% + var(--shift, 0px)), 0);
+    transition-delay: 0.05s, 0.05s, 0s;
+  }
+
+  .wrap:hover .chip {
+    border-color: rgba(252, 76, 1, 0.5);
+  }
+}
+
+/* Escape dismisses it even while still hovered or focused. */
+.wrap[data-dismissed='true'] .tip {
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(calc(-50% + var(--shift, 0px)), 4px);
+  transition-delay: 0s;
+}

@@ -2,8 +2,11 @@ import boltLogo from '../../assets/footer/bolt-logo.svg'
 import boltWordmark from '../../assets/footer/bolt-wordmark.webp'
 import arrowIcon from '../../assets/footer/arrow-up-right.svg'
 import SmartLink from '../ui/SmartLink'
+import Snackbar from '../ui/Snackbar'
+import CopyableLink from './CopyableLink'
 import { FOOTER_SOCIAL, NAV_LINKS, PROFILE } from '../../data/links'
 import { useInView } from '../../hooks/useInView'
+import { useSnackbar } from '../../hooks/useSnackbar'
 import styles from './Footer.module.css'
 
 const CURRENT_YEAR = new Date().getFullYear()
@@ -29,8 +32,12 @@ const EMBERS = [
   { '--x': '54%', '--y': '28%', '--s': '3px', '--dur': '6.4s', '--delay': '-2.2s', '--drift': '-16px' },
 ]
 
+const COPY_FAILED = 'Couldn’t copy. Select the text instead.'
+
 export default function Footer() {
   const [wordmarkRef, inView] = useInView()
+  const [snack, showSnack] = useSnackbar()
+  const reportCopy = (message) => (ok) => (ok ? showSnack(message) : showSnack(COPY_FAILED, 'error'))
 
   return (
     <footer className={styles.footer}>
@@ -56,22 +63,24 @@ export default function Footer() {
           </ul>
 
           <ul className={styles.column}>
-            <li>
-              <a className={styles.link} href={`mailto:${PROFILE.email}`}>
-                {PROFILE.email}
-              </a>
-            </li>
-            <li>
-              <a className={styles.link} href={`tel:${PROFILE.phone.replace(/\s/g, '')}`}>
-                {PROFILE.phone}
-              </a>
-            </li>
+            <CopyableLink
+              href={`mailto:${PROFILE.email}`}
+              text={PROFILE.email}
+              label="email address"
+              onCopy={reportCopy('Email address copied')}
+            />
+            <CopyableLink
+              href={`tel:${PROFILE.phone.replace(/\s/g, '')}`}
+              text={PROFILE.phone}
+              label="phone number"
+              onCopy={reportCopy('Phone number copied')}
+            />
           </ul>
 
           <ul className={styles.column}>
             {FOOTER_SOCIAL.map((link) => (
               <li key={link.id}>
-                <SmartLink className={`${styles.link} ${styles.external}`} href={link.href}>
+                <SmartLink className={`${styles.link} ${styles.external}`} href={link.href} newTab={link.newTab}>
                   {link.label}
                   <img className={styles.arrow} src={arrowIcon} alt="" width="20" height="20" />
                 </SmartLink>
@@ -99,6 +108,8 @@ export default function Footer() {
           <span className={styles.wordmarkText}>{PROFILE.name}</span>
         </div>
       </div>
+
+      <Snackbar {...snack} />
     </footer>
   )
 }

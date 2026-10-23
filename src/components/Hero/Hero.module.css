@@ -15,7 +15,7 @@
   min-height: min(calc(100svh - 12px), 960px);
   overflow: hidden;
   isolation: isolate;
-  border: 1px solid transparent;
+  /* No border: the edge ring is drawn at the very edge of the background so there is no doubled outline. */
   border-radius: 45px;
   background: var(--color-surface);
 }
@@ -131,16 +131,6 @@
   gap: 4px;
 }
 
-.chip {
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 24px;
-  border: 1px solid #474747;
-  border-radius: 100px;
-  background: #000;
-}
-
 .sonyCrop {
   position: relative;
   width: 14px;
@@ -162,7 +152,7 @@
   color: var(--color-text);
   font-size: 36px;
   font-weight: 700;
-  line-height: 40px;
+  line-height: var(--title-leading, 0.98);
   letter-spacing: -0.025em;
   text-wrap: balance;
 }
@@ -175,7 +165,7 @@
   max-width: 576px;
   color: var(--color-text-60);
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 550;
   line-height: 24px;
   text-wrap: pretty;
 }
@@ -228,15 +218,19 @@
   background: var(--color-accent-hover);
 }
 
-.cta:active {
-  transform: scale(0.98);
+/* The page selection style is orange-on-dark, which would vanish on the orange button. */
+.cta::selection {
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
 }
 
-@supports (corner-shape: squircle) {
-  .focus,
-  .cta {
-    corner-shape: squircle;
-  }
+.cta::-moz-selection {
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+}
+
+.cta:active {
+  transform: scale(0.98);
 }
 
 /* sm — 640px */
@@ -248,12 +242,14 @@
 
   .title {
     font-size: 48px;
-    line-height: 48px;
   }
 
+  /* Three balanced lines from here up (the copy is ~1,740px of text at 18px/550). */
   .summary {
+    max-width: 680px;
     font-size: 18px;
     line-height: 28px;
+    text-wrap: balance;
   }
 
   .actions {
@@ -282,7 +278,13 @@
 
   .title {
     font-size: 60px;
-    line-height: 60px;
+  }
+}
+
+/* The tablet band keeps a touch more air: the glyph clearance between the two lines is only ~2px at 60px type. */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .title {
+    --title-leading: 1;
   }
 }
 
@@ -290,7 +292,6 @@
 @media (min-width: 1024px) {
   .title {
     font-size: 72px;
-    line-height: 72px;
   }
 }
 
@@ -298,7 +299,6 @@
 @media (max-width: 389px) {
   .title {
     font-size: 32px;
-    line-height: 36px;
   }
 }
 

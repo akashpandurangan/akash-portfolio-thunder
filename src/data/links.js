@@ -11,20 +11,19 @@ export const PROFILE = {
 }
 
 /*
- * Link targets.
- * The Figma file contains labels but no URLs for these destinations, so `href` is left empty
- * where nothing was provided. Fill them in here and every place the link appears updates.
+ * Link targets, used by the Contact bar and the footer. Change one here and every place it appears updates.
  * Email and phone come from the footer text in the design; the WhatsApp URL is derived from the phone number.
+ * `newTab` opens a link in a new window even when it is not an absolute URL (the resume is a PDF in /public).
  */
 export const LINKS = {
-  resume: { label: 'Resume', href: '' },
-  linkedin: { label: 'Linked in', href: '', icon: linkedinIcon },
+  resume: { label: 'Resume', href: `${import.meta.env.BASE_URL}Akash_Pandurangan_Senior_Product_Designer.pdf`, newTab: true },
+  linkedin: { label: 'Linked in', href: 'https://www.linkedin.com/in/akashpandurangan/', icon: linkedinIcon },
   mail: { label: 'Mail', href: `mailto:${PROFILE.email}`, icon: mailIcon },
   whatsapp: { label: 'Whatsapp', href: 'https://wa.me/919566951943', icon: whatsappIcon },
-  behance: { label: 'Behance', href: '', icon: behanceIcon },
-  github: { label: 'GitHub', href: '', icon: githubIcon },
-  instagram: { label: 'Instagram', href: '' },
-  x: { label: 'x', href: '' },
+  behance: { label: 'Behance', href: 'https://www.behance.net/akashpandurangan', icon: behanceIcon },
+  github: { label: 'GitHub', href: 'https://github.com/akashpandurangan', icon: githubIcon },
+  instagram: { label: 'Instagram', href: 'https://www.instagram.com/the_justdesign' },
+  x: { label: 'x', href: 'https://x.com/the_justdesign' },
 }
 
 /* Order and presentation in the "Contact" bar. */

@@ -6,23 +6,44 @@
   border-radius: 32px;
   background: var(--color-surface);
   overflow: hidden;
-  transition: background-color 0.2s ease-out;
+  box-shadow: var(--card-edge, 0 0 #0000);
+  transition:
+    background-color 0.2s ease-out,
+    box-shadow 0.2s ease-out;
 }
 
-/* Same one-step-lighter surface shift the project cards use. */
+/* Only cards that actually have photos look (and act) clickable. */
+.card[data-interactive='true'] {
+  cursor: pointer;
+}
+
+/* Same one-step-lighter surface shift the project cards use; shown on hover and while the photos are out. */
 .card[data-open='true'] {
   background: var(--color-surface-raised);
 }
 
-/* The photo strips are exported with a dark backdrop, so these cards stay dark in the light theme. */
+@media (hover: hover) {
+  .card[data-interactive='true']:hover {
+    background: var(--color-surface-raised);
+  }
+}
+
+/* Pinned open (clicked, tapped or Enter / Space): a faint accent edge so it's clear the state is held. */
+.card[data-pinned='true'] {
+  box-shadow:
+    var(--card-edge, 0 0 #0000),
+    inset 0 0 0 1px rgba(252, 76, 1, 0.32);
+}
+
+/* Keyboard focus is drawn around the whole card, since the whole card is the control. */
+.card:has(.trigger:focus-visible) {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* Light theme: a soft edge, since a #f2f2f2 card on the #fafafa page has little contrast of its own. */
 :global(html[data-theme='light']) .card {
-  --color-surface: #121212;
-  --color-surface-raised: #171717;
-  --color-heading: #e5e5e5;
-  --color-text: #fff;
-  --color-text-60: rgba(255, 255, 255, 0.6);
-  --color-tag-bg: rgba(33, 33, 33, 0.5);
-  --color-tag-border: rgba(115, 115, 115, 0.08);
+  --card-edge: var(--ring-surface);
 }
 
 .header {
@@ -33,12 +54,6 @@
   padding: 8px 21px 0;
 }
 
-.meta {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
 .title {
   color: var(--color-heading);
   font-size: 16px;
@@ -47,28 +62,20 @@
   letter-spacing: -0.4px;
 }
 
-/* Keyboard / touch control for the photos; mouse users just hover the card. */
-.toggle {
-  display: grid;
-  place-items: center;
-  width: 24px;
-  height: 24px;
-  border: 1px solid var(--color-tag-border);
-  border-radius: 9999px;
-  background: var(--color-tag-bg);
-  color: var(--color-text-60);
-  transition:
-    color 0.2s ease-out,
-    border-color 0.2s ease-out;
+/* The title is the keyboard / screen-reader control, but it must look like ordinary heading text. */
+.trigger {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: left;
+  cursor: inherit;
 }
 
-.toggle:hover {
-  color: var(--color-text);
-}
-
-.toggle[aria-expanded='true'] {
-  border-color: rgba(252, 76, 1, 0.45);
-  color: var(--color-accent);
+.trigger:focus-visible {
+  outline: none;
 }
 
 .company {
@@ -86,6 +93,11 @@
   flex: none;
   height: 18px;
   width: auto;
+}
+
+/* The KPOST mark is pure white, so it flips to black on the light theme. */
+.company .logoMono {
+  filter: var(--icon-filter);
 }
 
 .description {
