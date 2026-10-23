@@ -417,3 +417,29 @@ button.pill:active {
     gap: 10px;
   }
 }
+
+/*
+ * Very narrow phones. All four controls at full size need ~317px, so below 360px the row is tightened just enough to fit
+ * (down to 320px): smaller side margins and gaps, and less side padding on the Akash pill. Heights, radii and icons
+ * are untouched; at 360px and wider nothing here applies.
+ */
+@media (max-width: 359px) {
+  .header {
+    padding-inline: 12px;
+  }
+
+  .start,
+  .actions {
+    gap: 6px;
+  }
+
+  .brand {
+    padding: 0 12px;
+  }
+}
+
+@media (max-width: 329px) {
+  .header {
+    padding-inline: 8px;
+  }
+}

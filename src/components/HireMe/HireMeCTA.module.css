@@ -122,6 +122,13 @@
   }
 }
 
+/* Very narrow phones: part of the header's tightening (see Navbar.module.css), so all four controls fit down to 320px. */
+@media (max-width: 359px) {
+  .root[data-variant='header'] .cta {
+    padding: 0 16px;
+  }
+}
+
 @media (min-width: 768px) {
   .root[data-variant='header'] {
     display: none;
