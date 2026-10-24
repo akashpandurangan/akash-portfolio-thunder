@@ -22,7 +22,6 @@ export default function Hero() {
         <div className={styles.content}>
           <div className={`${styles.item} ${styles.badge}`} style={delay(0)}>
             <span className={styles.badgeLabel}>Selected brands &amp; experiences</span>
-            <span className={styles.badgeDivider} aria-hidden="true" />
             <span className={styles.chips} role="group" aria-label="Selected brands">
               <BrandChip name="SonyLIV">
                 <span className={styles.sonyCrop}>

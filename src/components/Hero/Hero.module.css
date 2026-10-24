@@ -98,15 +98,13 @@
   }
 }
 
+/* Just the label and the brand logos: no pill behind them. The vertical padding keeps the hero's rhythm unchanged. */
 .badge {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 25px; /* label to logos: what used to be 12px + a 1px divider + 12px */
   margin-bottom: 4px;
-  padding: 4px 4px 4px 16px;
-  border-radius: 9999px;
-  background: var(--color-badge-bg);
-  box-shadow: var(--ring-card);
+  padding: 4px 0;
 }
 
 .badgeLabel {
@@ -117,12 +115,6 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   white-space: nowrap;
-}
-
-.badgeDivider {
-  width: 1px;
-  height: 14px;
-  background: var(--color-divider);
 }
 
 .chips {
@@ -308,11 +300,6 @@
     flex-direction: column;
     gap: 8px;
     padding: 12px 16px;
-    border-radius: 22px;
-  }
-
-  .badgeDivider {
-    display: none;
   }
 }
 
