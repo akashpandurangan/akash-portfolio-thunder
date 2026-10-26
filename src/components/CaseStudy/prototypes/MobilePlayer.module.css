@@ -1,0 +1,329 @@
+/* A phone: a rounded body around a screen that holds the player (16:9) and the details under it. */
+.phone {
+  width: min(100%, 390px);
+  margin-inline: auto;
+  padding: 10px;
+  border-radius: 46px;
+  background: #1a1a1c;
+  box-shadow:
+    0 0 0 1.5px #3a3a3d,
+    0 40px 80px -30px rgba(0, 0, 0, 0.8);
+}
+
+.screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 560px;
+  overflow: hidden;
+  border-radius: 36px;
+  background: #000;
+}
+
+.player {
+  position: relative;
+  flex: none;
+  aspect-ratio: 16 / 9;
+  margin-top: 28px;
+  overflow: hidden;
+  background: #101820;
+}
+
+.tapArea {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.controls {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 8px 10px 6px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.45), transparent 35%, transparent 55%, rgba(0, 0, 0, 0.6));
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease-out;
+}
+
+/* Only the controls themselves take taps; the rest of the layer lets them through to the picture. */
+.player[data-controls='true'] .controls {
+  opacity: 1;
+}
+
+.player[data-controls='true'] .controls button,
+.player[data-controls='true'] .seek {
+  pointer-events: auto;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.iconButton {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: #fff;
+  transition: background-color 0.15s ease-out;
+}
+
+.iconButton:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  transform: translate(-50%, -62%);
+}
+
+.playButton {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  transition: transform 0.2s var(--pv-ease);
+}
+
+.playButton:active {
+  transform: scale(0.94);
+}
+
+.bottom {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0;
+  margin-top: auto;
+  /* The bar's own type is 15px; on a phone the player shows it smaller. */
+  --sb: 0.82px;
+}
+
+.bottom > :last-child {
+  width: 100%;
+}
+
+.skip {
+  margin-bottom: 4px;
+  padding: 0 14px;
+  height: 32px;
+  border-radius: 9999px;
+  background: rgba(60, 74, 90, 0.85);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  backdrop-filter: blur(6px);
+}
+
+.skip:hover {
+  background: rgba(80, 96, 114, 0.95);
+}
+
+.next {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  padding: 18px 22px;
+  background: #000;
+}
+
+.next p {
+  color: var(--pv-dim);
+  font-size: 12px;
+}
+
+.next p strong {
+  color: #fff;
+  font-weight: 500;
+}
+
+.next h3 {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 26px;
+}
+
+.nextActions {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.nextCancel,
+.nextPlay {
+  flex: 1;
+  height: 40px;
+  border: 1.5px solid #fff;
+  border-radius: 9999px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.nextCancel {
+  color: #fff;
+}
+
+.nextPlay {
+  background: #fff;
+  color: #000;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 18px 18px 14px;
+}
+
+.details h3 {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.details p {
+  color: var(--pv-dim);
+  font-size: 13px;
+}
+
+.note {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.episodes {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 4px 18px 22px;
+}
+
+.episodes h4 {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.episodes ul {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.episode {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 6px;
+  border-radius: 12px;
+  text-align: left;
+  transition: background-color 0.15s ease-out;
+}
+
+.episode:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.episode:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.art {
+  flex: none;
+  width: 104px;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 50% 55%, rgba(255, 255, 255, 0.14), transparent 55%),
+    linear-gradient(135deg, #3a3633, #23201e);
+}
+
+.episode[aria-current='true'] .art {
+  box-shadow: inset 0 0 0 2px var(--pv-brand);
+}
+
+.episodeText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 12px;
+  color: var(--pv-dim);
+}
+
+.episodeText strong {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* The settings sheet rises from the bottom of the screen over a scrim. */
+.sheet {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: flex;
+  align-items: flex-end;
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.sheet > section {
+  position: relative;
+  width: 100%;
+  max-height: 80%;
+  border-radius: 24px 24px 0 0;
+  animation: sheet-in 0.3s var(--pv-ease) both;
+}
+
+@keyframes sheet-in {
+  from {
+    transform: translateY(24%);
+    opacity: 0;
+  }
+
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .controls {
+    transition: none;
+  }
+
+  .sheet > section {
+    animation: none;
+  }
+}

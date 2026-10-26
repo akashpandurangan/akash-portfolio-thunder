@@ -1,0 +1,92 @@
+.section {
+  width: 100%;
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 0 var(--gutter) 144px;
+  /* Clears the floating header and, below 768px, the chapter pill that follows the reader. */
+  scroll-margin-top: 148px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 720px;
+  margin-bottom: 56px;
+}
+
+.lede {
+  color: var(--color-text-60);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 28px;
+  text-wrap: pretty;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.block + .block {
+  margin-top: 96px;
+}
+
+.blockHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 680px;
+}
+
+.blockTitle {
+  color: var(--color-heading);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+  letter-spacing: -0.02em;
+}
+
+.blockText {
+  color: var(--color-text-60);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 26px;
+  text-wrap: pretty;
+}
+
+@media (max-width: 899px) {
+  .section {
+    padding-bottom: 112px;
+  }
+
+  .block + .block {
+    margin-top: 72px;
+  }
+}
+
+@media (max-width: 599px) {
+  .section {
+    padding-bottom: 88px;
+  }
+
+  .header {
+    margin-bottom: 36px;
+  }
+
+  .lede {
+    font-size: 16px;
+    line-height: 26px;
+  }
+
+  .blockTitle {
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  .blockText {
+    font-size: 15px;
+    line-height: 24px;
+  }
+}

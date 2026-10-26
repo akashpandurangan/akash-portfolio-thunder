@@ -1,0 +1,177 @@
+/*
+ * Below 768px: a pill under the floating header that scrolls sideways. It is hidden until the headline has gone, and it
+ * takes no room in the layout (height 0), so it floats over the article like the header does.
+ * From 768px: a vertical rail in the first column of the page layout (see CaseStudyPage.module.css).
+ */
+.nav {
+  position: sticky;
+  top: 84px;
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+  height: 0;
+  padding-inline: 12px;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition:
+    opacity 0.25s ease-out,
+    transform 0.3s var(--ease-out),
+    visibility 0s linear 0.3s;
+}
+
+.nav[data-shown='true'] {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  transition-delay: 0s;
+}
+
+.list {
+  position: relative;
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+  height: 40px;
+  padding: 0 6px;
+  overflow-x: auto;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--color-surface-raised) 94%, transparent);
+  box-shadow: var(--ring-pill), var(--pill-shadow-scrolled);
+  backdrop-filter: blur(18px);
+  pointer-events: auto;
+  scrollbar-width: none;
+}
+
+.list::-webkit-scrollbar {
+  display: none;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  margin: 0 1px;
+  padding: 0 12px;
+  border-radius: 9999px;
+  color: var(--color-text-60);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition:
+    background-color 0.15s ease-out,
+    color 0.15s ease-out;
+}
+
+.link:hover {
+  color: var(--color-text);
+}
+
+.link:focus-visible {
+  outline-offset: -2px;
+}
+
+.link[aria-current] {
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+
+/*
+ * The rail. It sticks under the header while the article beside it scrolls, and ends with the article, so it never
+ * reaches the hero above or the footer below. `--rail-top` clears the header; from 768 to 1099px the fixed "Hire me"
+ * button drops under the header on the left, so the rail starts below that too.
+ */
+@media (min-width: 768px) {
+  .nav {
+    --rail-top: 156px;
+
+    top: var(--rail-top);
+    z-index: 10;
+    display: block;
+    align-self: start;
+    height: auto;
+    padding-inline: 0;
+    pointer-events: auto;
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    max-width: none;
+    height: auto;
+    max-height: calc(100svh - var(--rail-top) - 24px);
+    padding: 0;
+    overflow: hidden auto;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    backdrop-filter: none;
+    scrollbar-width: none;
+  }
+
+  /* The track: a hairline down the left edge that the lit link's bar sits on. */
+  .link {
+    position: relative;
+    height: auto;
+    min-height: 32px;
+    margin: 0;
+    padding: 6px 8px 6px 14px;
+    border-radius: 0;
+    box-shadow: inset 1px 0 0 var(--color-divider);
+    font-size: 13px;
+    line-height: 18px;
+    white-space: normal;
+    text-wrap: balance;
+  }
+
+  .link::before {
+    content: '';
+    position: absolute;
+    inset: 4px auto 4px 0;
+    width: 2px;
+    border-radius: 2px;
+    background: var(--color-accent);
+    transform: scaleY(0);
+    transition: transform 0.25s var(--ease-out);
+  }
+
+  .link[aria-current] {
+    background: none;
+    color: var(--color-text);
+  }
+
+  .link[aria-current]::before {
+    transform: none;
+  }
+}
+
+@media (min-width: 1100px) {
+  .nav {
+    --rail-top: 100px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .link {
+    padding: 7px 12px 7px 18px;
+    font-size: 14px;
+    line-height: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav {
+    transform: none;
+  }
+
+  .link::before {
+    transition: none;
+  }
+}

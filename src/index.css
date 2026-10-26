@@ -188,9 +188,10 @@ button {
   border: 0;
 }
 
-/* Hold page scroll while the intro loader or the mobile menu is showing. */
+/* Hold page scroll while the intro loader, the mobile menu or a full-size image is showing. */
 html[data-loading='true'] body,
-html[data-menu='open'] body {
+html[data-menu='open'] body,
+html[data-lightbox='open'] body {
   overflow: hidden;
 }
 

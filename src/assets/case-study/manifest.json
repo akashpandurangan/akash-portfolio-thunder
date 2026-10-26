@@ -1,0 +1,598 @@
+{
+"ai-studio/screen-campaign.webp": [
+1138,
+560
+],
+"ai-studio/screen-library.webp": [
+1200,
+960
+],
+"ai-studio/screen-moments.webp": [
+1208,
+738
+],
+"ai-studio/screen-narrative.webp": [
+1208,
+608
+],
+"ai-studio/screen-trends-states.webp": [
+2435,
+468
+],
+"ai-studio/screen-trends.webp": [
+1208,
+975
+],
+"ai-studio/system-buttons.webp": [
+1334,
+1168
+],
+"ai-studio/system-icons.webp": [
+2008,
+818
+],
+"ai-studio/system-library-card.webp": [
+1260,
+2126
+],
+"ai-studio/system-list-items.webp": [
+1248,
+646
+],
+"ai-studio/system-nav-drawer.webp": [
+1801,
+856
+],
+"ai-studio/system-nav-items.webp": [
+1284,
+2316
+],
+"ai-studio/system-nav-source.webp": [
+1260,
+2412
+],
+"ai-studio/system-nav-submenu.webp": [
+1566,
+980
+],
+"ai-studio/system-popup-menu.webp": [
+1260,
+1554
+],
+"ai-studio/system-toggle.webp": [
+920,
+696
+],
+"ott/cards/card-L-compact.webp": [
+1406,
+788
+],
+"ott/cards/card-L-std.webp": [
+1406,
+948
+],
+"ott/cards/card-S-compact.webp": [
+818,
+458
+],
+"ott/cards/card-S-std.webp": [
+818,
+552
+],
+"ott/cards/card-badge.webp": [
+1800,
+712
+],
+"ott/cards/card-brand.webp": [
+1800,
+535
+],
+"ott/cards/card-progress.webp": [
+1800,
+808
+],
+"ott/cards/card-spec.webp": [
+862,
+1509
+],
+"ott/cards/card-video-poster.webp": [
+1356,
+720
+],
+"ott/components/drawer-portrait.webp": [
+920,
+1456
+],
+"ott/components/episode.webp": [
+1092,
+1480
+],
+"ott/components/fwd-rew.webp": [
+952,
+274
+],
+"ott/components/multicam-angle.webp": [
+1528,
+1296
+],
+"ott/components/multicam-opt1.webp": [
+1080,
+680
+],
+"ott/components/multicam-opt2.webp": [
+1080,
+416
+],
+"ott/components/multicam-opt3.webp": [
+1040,
+456
+],
+"ott/components/opt-final.webp": [
+2000,
+354
+],
+"ott/components/opt-icon-button.webp": [
+1000,
+700
+],
+"ott/components/opt-icon-set.webp": [
+2040,
+480
+],
+"ott/components/opt-list.webp": [
+958,
+1728
+],
+"ott/components/opt-style.webp": [
+1736,
+350
+],
+"ott/components/panel-audsub-landscape.webp": [
+1728,
+489
+],
+"ott/components/panel-lang-landscape.webp": [
+1728,
+508
+],
+"ott/components/panel-lang-portrait.webp": [
+1942,
+1944
+],
+"ott/components/panel-lists.webp": [
+1040,
+1284
+],
+"ott/components/panel-quality-portrait.webp": [
+920,
+1944
+],
+"ott/components/panel-subtitle-portrait.webp": [
+2082,
+1944
+],
+"ott/components/play-icon-pos.webp": [
+1417,
+595
+],
+"ott/components/play-next.webp": [
+1808,
+1132
+],
+"ott/components/seek-ad.webp": [
+1920,
+1198
+],
+"ott/components/seek-content.webp": [
+1920,
+1198
+],
+"ott/components/seek-final.webp": [
+1920,
+230
+],
+"ott/components/seek-live.webp": [
+1920,
+1198
+],
+"ott/components/seek-parts.webp": [
+2240,
+1330
+],
+"ott/components/seek-speed.webp": [
+930,
+1200
+],
+"ott/components/skip-button.webp": [
+2112,
+560
+],
+"ott/components/subtitle-custom.webp": [
+1800,
+1478
+],
+"ott/components/thumb-sneek.webp": [
+1960,
+790
+],
+"ott/components/titles-ratings.webp": [
+994,
+600
+],
+"ott/components/titles-title.webp": [
+924,
+556
+],
+"ott/foundations/appearance-icons.webp": [
+787,
+672
+],
+"ott/foundations/icons-row.webp": [
+3093,
+164
+],
+"ott/mobile/base-components.webp": [
+3000,
+2208
+],
+"ott/mobile/player/v1-01.webp": [
+780,
+438
+],
+"ott/mobile/player/v1-02.webp": [
+780,
+438
+],
+"ott/mobile/player/v1-03.webp": [
+780,
+438
+],
+"ott/mobile/player/v1-04.webp": [
+780,
+438
+],
+"ott/mobile/player/v1-05.webp": [
+780,
+438
+],
+"ott/mobile/player/v1-06.webp": [
+780,
+438
+],
+"ott/mobile/player/v1-07.webp": [
+780,
+438
+],
+"ott/mobile/player/v1-08.webp": [
+780,
+438
+],
+"ott/mobile/player/v1-09.webp": [
+780,
+438
+],
+"ott/mobile/player/v1-10.webp": [
+780,
+438
+],
+"ott/mobile/player/v2-02.webp": [
+780,
+438
+],
+"ott/mobile/player/v2-05.webp": [
+780,
+438
+],
+"ott/mobile/player/v3-02.webp": [
+780,
+438
+],
+"ott/mobile/player/v3-05.webp": [
+780,
+438
+],
+"ott/mobile/player/v4-02.webp": [
+780,
+438
+],
+"ott/mobile/player/v4-05.webp": [
+780,
+438
+],
+"ott/mobile/settings/landscape-classic-appearance.webp": [
+780,
+800
+],
+"ott/mobile/settings/landscape-classic-audio.webp": [
+780,
+800
+],
+"ott/mobile/settings/landscape-classic-off.webp": [
+780,
+800
+],
+"ott/mobile/settings/landscape-classic-report.webp": [
+780,
+800
+],
+"ott/mobile/settings/landscape-classic-settings.webp": [
+780,
+800
+],
+"ott/mobile/settings/landscape-classic-speed.webp": [
+780,
+800
+],
+"ott/mobile/settings/landscape-classic-subtitles.webp": [
+780,
+800
+],
+"ott/mobile/settings/landscape-classic-video.webp": [
+780,
+800
+],
+"ott/mobile/settings/landscape-full-appearance.webp": [
+780,
+800
+],
+"ott/mobile/settings/landscape-full-audio.webp": [
+780,
+800
+],
+"ott/mobile/settings/landscape-full-off.webp": [
+780,
+800
+],
+"ott/mobile/settings/landscape-full-report.webp": [
+780,
+800
+],
+"ott/mobile/settings/landscape-full-settings.webp": [
+780,
+800
+],
+"ott/mobile/settings/landscape-full-speed.webp": [
+780,
+800
+],
+"ott/mobile/settings/landscape-full-subtitles.webp": [
+780,
+800
+],
+"ott/mobile/settings/landscape-full-video.webp": [
+780,
+800
+],
+"ott/mobile/settings/landscape-tabs-appearance.webp": [
+780,
+800
+],
+"ott/mobile/settings/landscape-tabs-audio.webp": [
+780,
+800
+],
+"ott/mobile/settings/landscape-tabs-off.webp": [
+780,
+800
+],
+"ott/mobile/settings/landscape-tabs-report.webp": [
+780,
+800
+],
+"ott/mobile/settings/landscape-tabs-speed.webp": [
+780,
+800
+],
+"ott/mobile/settings/landscape-tabs-subtitles.webp": [
+780,
+800
+],
+"ott/mobile/settings/landscape-tabs-video.webp": [
+780,
+800
+],
+"ott/mobile/settings/portrait-classic-appearance.webp": [
+780,
+878
+],
+"ott/mobile/settings/portrait-classic-audio.webp": [
+780,
+560
+],
+"ott/mobile/settings/portrait-classic-off.webp": [
+780,
+656
+],
+"ott/mobile/settings/portrait-classic-report.webp": [
+780,
+860
+],
+"ott/mobile/settings/portrait-classic-settings.webp": [
+780,
+748
+],
+"ott/mobile/settings/portrait-classic-speed.webp": [
+780,
+736
+],
+"ott/mobile/settings/portrait-classic-subtitles.webp": [
+780,
+656
+],
+"ott/mobile/settings/portrait-classic-video.webp": [
+780,
+736
+],
+"ott/mobile/settings/portrait-full-appearance.webp": [
+780,
+774
+],
+"ott/mobile/settings/portrait-full-audio.webp": [
+780,
+448
+],
+"ott/mobile/settings/portrait-full-off.webp": [
+780,
+544
+],
+"ott/mobile/settings/portrait-full-report.webp": [
+780,
+716
+],
+"ott/mobile/settings/portrait-full-settings.webp": [
+780,
+636
+],
+"ott/mobile/settings/portrait-full-speed.webp": [
+780,
+624
+],
+"ott/mobile/settings/portrait-full-subtitles.webp": [
+780,
+544
+],
+"ott/mobile/settings/portrait-full-video.webp": [
+780,
+624
+],
+"ott/mobile/settings/portrait-tabs-appearance.webp": [
+780,
+800
+],
+"ott/mobile/settings/portrait-tabs-audio.webp": [
+780,
+800
+],
+"ott/mobile/settings/portrait-tabs-off.webp": [
+780,
+800
+],
+"ott/mobile/settings/portrait-tabs-report.webp": [
+780,
+800
+],
+"ott/mobile/settings/portrait-tabs-speed.webp": [
+780,
+800
+],
+"ott/mobile/settings/portrait-tabs-subtitles.webp": [
+780,
+800
+],
+"ott/mobile/settings/portrait-tabs-video.webp": [
+780,
+800
+],
+"ott/prototype-poster.webp": [
+1280,
+853
+],
+"ott/tv/ad.webp": [
+1280,
+720
+],
+"ott/tv/audio-language.webp": [
+1280,
+720
+],
+"ott/tv/audio-popup.webp": [
+1280,
+720
+],
+"ott/tv/audio-subtitle.webp": [
+1280,
+720
+],
+"ott/tv/episodes-horizontal.webp": [
+1280,
+720
+],
+"ott/tv/episodes-vertical.webp": [
+1280,
+720
+],
+"ott/tv/error-dialog.webp": [
+1280,
+720
+],
+"ott/tv/error-doc.webp": [
+2400,
+593
+],
+"ott/tv/error-full.webp": [
+1280,
+720
+],
+"ott/tv/layout-v1.webp": [
+1280,
+720
+],
+"ott/tv/layout-v2.webp": [
+1280,
+720
+],
+"ott/tv/layout-v3.webp": [
+1280,
+720
+],
+"ott/tv/layout-v4.webp": [
+1280,
+720
+],
+"ott/tv/live.webp": [
+1280,
+720
+],
+"ott/tv/more-like-this.webp": [
+1280,
+720
+],
+"ott/tv/multicam-a.webp": [
+1280,
+720
+],
+"ott/tv/multicam-b.webp": [
+1280,
+720
+],
+"ott/tv/next-up-credits.webp": [
+1280,
+720
+],
+"ott/tv/paused.webp": [
+1280,
+720
+],
+"ott/tv/playing.webp": [
+1280,
+720
+],
+"ott/tv/quality-bar.webp": [
+1280,
+720
+],
+"ott/tv/quality-panel.webp": [
+1280,
+720
+],
+"ott/tv/seek-preview.webp": [
+1280,
+720
+],
+"ott/tv/skip-intro.webp": [
+1280,
+720
+],
+"ott/tv/subtitle-bar.webp": [
+1280,
+720
+],
+"ott/tv/subtitle-panel.webp": [
+1280,
+720
+],
+"ott/web-player.webp": [
+1600,
+900
+]
+}

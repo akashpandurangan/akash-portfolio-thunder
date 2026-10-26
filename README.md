@@ -29,14 +29,15 @@ src/
     HireMe/        fixed "Hire me" CTA with cursor-attracted lightning
     Contact/       "Contact" link bar
     Projects/      filter tabs, stacked case-study cards (+ OTT video), project cards, graphic-design gallery
+    CaseStudy/     the OTT Design System case-study page (lazy-loaded; own route, see "Design system case study")
     About/         About AP
     Experience/    role cards with photo strips
     Footer/        link columns + oversized wordmark
     ui/            Reveal, SmartLink, SectionHeading, Tag
-  data/            all copy and links (caseStudies.js, projects.js, experience.js, links.js)
+  data/            all copy and links (caseStudies.js, projects.js, experience.js, links.js, designSystemCaseStudy.js, caseStudyAssets.js)
   lib/             lightning.js (bolt drawing shared by the hero trail and the Hire me CTA)
-  hooks/           useReveal, useActiveSection, useScrolled, useHoverIntent, useInView, useTheme, useStackedCards
-  assets/          images/icons exported from Figma (photos converted to WebP)
+  hooks/           useReveal, useActiveSection, useScrolled, useHoverIntent, useInView, useTheme, useStackedCards, useHashRoute
+  assets/          images/icons exported from Figma (photos converted to WebP); case-study/ holds the design-system crops
 public/            favicon and the resume PDF (served from the site root)
 ```
 
@@ -48,7 +49,7 @@ The Figma file has labels but no URLs, so these were supplied separately and liv
 
 - **Profile links** — LinkedIn, Behance, GitHub, Instagram, X, and the **Resume** → `src/data/links.js`. They appear in both the Contact bar and the footer, open in a new tab (`rel="noopener noreferrer"`, announced to screen readers), and a link left empty renders as an inert anchor instead of a dead `#`.
 - **Resume PDF** → `public/Akash_Pandurangan_Senior_Product_Designer.pdf` (served at `/Akash_Pandurangan_Senior_Product_Designer.pdf`, opens in a new window). To update it, replace that file and keep the name, or change the `resume` entry in `links.js`.
-- **Case-study cards** → `src/data/caseStudies.js`: the six cards of the Case Study tab (copy, platform / focus-area tags, the mockup images with their Figma coordinates, and the OTT video). The "View case study" button of each is its `href` (Figma prototype, new tab). **Unifi TV 2.0 has no `href` yet** — none was supplied — so its button is inert until you add one. The Frontend, UI Screens and Graphic Design cards (`src/data/projects.js`) have no links because none were provided.
+- **Case-study cards** → `src/data/caseStudies.js`: the six cards of the Case Study tab (copy, platform / focus-area tags, the mockup images with their Figma coordinates, and the OTT video). The "View case study" button of each is its `href` (Figma prototype, new tab), except **OTT Design System**, whose `to` (an address on this site) wins over `href` and opens the case-study page below; delete `to` to send that button back to the Figma prototype. **Unifi TV 2.0 has no `href` yet** — none was supplied — so its button is inert until you add one. The Frontend, UI Screens and Graphic Design cards (`src/data/projects.js`) have no links because none were provided.
 - **Experience copy** → `src/data/experience.js`. Quickplay still carries the paragraph from the Figma file; KPOST and Think Digital Wordings have their own descriptions.
 
 Mail (`mailto:`), phone (`tel:`) and WhatsApp (`wa.me/919566951943`) are derived from the email and phone number shown in the design.
@@ -63,6 +64,19 @@ The Case Study tab is a stack: each card pins just under the header (CSS `positi
 - **Not pinned:** below 768px wide, in windows shorter than 560px, and under `prefers-reduced-motion` the cards are an ordinary list (phones show the mockups at a minimum of 40% of their design size, cropped by the card edges, without the captions below 600px).
 - **Scrolling is never intercepted:** the hook only listens passively (one animation frame per scroll tick, only while the list is on screen) and writes a `--depth` number per card; nothing re-renders. Tabbing into a buried card scrolls it back to its own pinned position.
 - **OTT Design System video:** `src/assets/projects/video/ott-design-system.mp4` (the Figma video layer "Card Design System (1)"). It sits over the device mockup exactly where Figma has it, is only downloaded when the card is within 400px of the screen, plays muted and looping while ≥40% visible, and pauses otherwise. The mockup's own still frame is the fallback and stays if the file is missing, autoplay is refused, the visitor prefers reduced motion or has Save-Data on.
+
+## Design system case study
+
+The OTT Design System card opens a page of its own: **`#/case-studies/ott-design-system`** (add `/<chapter>` to deep-link, e.g. `…/components`). There is no router: `hooks/useHashRoute.js` reads the hash and `App.jsx` swaps the home sections for the page, which is a `React.lazy` chunk, so the home page does not pay for it. `#projects`, `#contact` and the other home anchors in the header and in the closing section lead back.
+
+- **Content:** every word, list and link is in `src/data/designSystemCaseStudy.js` (chapters, hero, overview, foundations, component groups and their figures, the twelve error types, playground presets, mobile and TV frame lists, platform facts, AI Studio, takeaways, closing). Components only render it. Copy was kept to what the Figma frames show. Lines flagged `NOTE` in that file are the places that need your own wording.
+- **Chapter navigation:** `components/CaseStudy/ChapterNav.jsx` renders the nine chapter links from `VISIBLE_CHAPTERS`, in one of two forms by CSS alone. From 768px it is a vertical rail in the first column of the page layout (`CaseStudyPage.module.css`: 144px wide, 200px from 1200px; the rail and the 1152px article are centred as one piece). The rail is `position: sticky`, so it stays on screen under the header while the article scrolls and ends with the article, which is why it can never cover the hero or the footer; `--rail-top` in `ChapterNav.module.css` is its offset (100px from 1100px, 156px from 768 to 1099px, where the fixed "Hire me" button sits under the header on the left). Below 768px the layout is plain blocks and the links are the horizontal pill under the header, hidden until the headline has scrolled away. The lit link follows the scroll position (`useActiveSection`, the home page's reading line); when the address names a chapter (a click, a shared link, back / forward) that chapter is lit at once and stays lit for ~1.4s or until the reader scrolls, so the links in between don't flash. The lit link carries `aria-current="location"`, using the link again re-scrolls to its chapter, and scrolling is instant under `prefers-reduced-motion`.
+- **Images:** `src/assets/case-study/**` are WebP crops exported from the Figma files (Design System: Video Player `TgMNcIeG7rWiYgZtyy0w8X` and the AI Studio file). `manifest.json` next to them holds each image's intrinsic size so every `<img>` has `width` / `height` (no layout shift); `src/data/caseStudyAssets.js` looks files up with `asset('ott/components/seek-content.webp')` and throws if one is missing. **If you add, replace or rename an image, regenerate the manifest entry for it.**
+- **Live prototypes** (chapter "Playground", plus the mobile and TV players under "Demos") are React recreations in `components/CaseStudy/prototypes/`, built from the Figma component names and states: seek bar (content / live / ad, pointer and keyboard), player options (default / focused / pressed / disabled), settings panel (menu or tabs, full or classic, portrait or landscape), media card (sizes, types, ratios, layers) and the twelve error states. Each sits in a "Workbench" with a "Live prototype" badge and a "Built from" line naming the Figma components, so it can't be mistaken for the Figma frames, which are shown as images elsewhere and open in a full-size dialog (native `<dialog>`: focus trap, Esc, actual-size toggle).
+- **Video:** there is no recording of the player in the project, so none was invented. The only video is the existing `src/assets/projects/video/ott-design-system.mp4`, shown in the cards group with its poster; it loads when within 400px, plays muted and looping while ≥40% visible, pauses when hidden or when the tab is hidden, and stays still for reduced-motion or Save-Data visitors. A play / pause button is always available and a pause you make is respected.
+- **SaaS navigation module:** `SAAS_NAVIGATION` in the data file is `status: 'pending'` and renders a short "reserved" placeholder. Set `status: 'ready'` and fill `title`, `lede`, `figures` (and `figmaUrl`) to show the full chapter, or `visible: false` to remove it (and its chapter-nav entry) entirely.
+- **Dependency:** `@fontsource/roboto` (400 / 500 / 700, latin) — the video-player Figma files use Roboto. It is imported only inside the lazy case-study chunk. Nothing else was added.
+- **Accessibility and motion:** tabs, radio groups, toolbars and the seek bar follow the roving-tabindex patterns (arrow keys, Home / End), the seek bar is a `role="slider"` with `aria-valuetext`, status changes are announced through live regions, and every reveal, auto-hiding control and video respects `prefers-reduced-motion`. The prototypes keep their dark player look in the light theme on purpose (a player is dark); the page around them follows the theme.
 
 ## Refinements from the RareUI reference
 

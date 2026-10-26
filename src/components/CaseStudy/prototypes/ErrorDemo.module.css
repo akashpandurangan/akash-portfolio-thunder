@@ -1,0 +1,158 @@
+.stage {
+  min-height: 0;
+}
+
+.scene {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 420px;
+  padding: 32px 20px;
+  overflow: hidden;
+}
+
+/* Background variants of the dialog box: a blurred picture, or the picture left as it is. */
+.scene[data-background='blur'] > :first-child {
+  filter: blur(18px) saturate(0.9);
+  transform: scale(1.12);
+}
+
+.scene[data-background='blur'] > :first-child::after {
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.dialog {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: min(100%, 520px);
+  padding: 8px;
+  text-align: center;
+}
+
+.dialog[data-background='solid'] {
+  padding: 32px 36px 28px;
+  border-radius: 22px;
+  background: var(--pv-screen);
+  box-shadow:
+    0 30px 80px -20px rgba(0, 0, 0, 0.8),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 30px;
+}
+
+.message {
+  max-width: 420px;
+  color: #d4d4d4;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 23px;
+  text-wrap: pretty;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.action {
+  height: 44px;
+  padding: 0 22px;
+  border: 2px solid transparent;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  transition:
+    background-color 0.15s ease-out,
+    color 0.15s ease-out;
+}
+
+.action[data-primary='true'] {
+  background: #fff;
+  color: #111;
+}
+
+.action:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.action[data-primary='true']:hover {
+  background: #e8e8e8;
+}
+
+.action:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+.status {
+  min-height: 18px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.groups {
+  display: grid;
+  flex: 1 1 100%;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 20px;
+  padding-top: 4px;
+}
+
+.group h4 {
+  margin-bottom: 8px;
+  color: var(--color-heading);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 16px;
+}
+
+/* The radio rows live on a dark prototype surface; on the page they are page text. */
+.group button {
+  color: var(--color-text-60);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.group button[aria-checked='true'] {
+  color: var(--color-text);
+}
+
+.group button:hover {
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+}
+
+@media (max-width: 1023px) {
+  .groups {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 599px) {
+  .groups {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .scene {
+    min-height: 380px;
+    padding: 24px 12px;
+  }
+
+  .dialog[data-background='solid'] {
+    padding: 24px 20px 20px;
+  }
+}

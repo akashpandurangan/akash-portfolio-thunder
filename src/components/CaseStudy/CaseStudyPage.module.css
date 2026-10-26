@@ -1,0 +1,40 @@
+.page {
+  position: relative;
+  padding-bottom: 32px;
+}
+
+/*
+ * Below 768px the chapter nav is a pill that floats over the article, so the layout is plain blocks. From 768px it is a
+ * rail in the first column and the article is the second. The pair is centred as one piece (the article keeps its
+ * 1152px column), so on a wide screen the rail stays next to the text instead of at the edge of the window.
+ */
+.layout {
+  --rail: 144px;
+  --rail-gap: 8px;
+
+  position: relative;
+  min-width: 0;
+}
+
+.article {
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  .layout {
+    display: grid;
+    grid-template-columns: var(--rail) minmax(0, 1fr);
+    column-gap: var(--rail-gap);
+    width: 100%;
+    max-width: calc(var(--content-width) + var(--rail) + var(--rail-gap) + var(--gutter));
+    margin: 0 auto;
+    padding-left: var(--gutter);
+  }
+}
+
+@media (min-width: 1200px) {
+  .layout {
+    --rail: 200px;
+    --rail-gap: 16px;
+  }
+}

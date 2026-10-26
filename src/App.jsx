@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react'
 import Loader from './components/Loader/Loader'
 import Navbar from './components/Navbar/Navbar'
 import HireMeCTA from './components/HireMe/HireMeCTA'
@@ -9,8 +9,12 @@ import AboutSection from './components/About/AboutSection'
 import ExperienceSection from './components/Experience/ExperienceSection'
 import Footer from './components/Footer/Footer'
 import { useActiveSection } from './hooks/useActiveSection'
+import { useHashRoute } from './hooks/useHashRoute'
 import { useSmoothScroll } from './hooks/useSmoothScroll'
 import { useTheme } from './hooks/useTheme'
+
+// The case study is a separate chunk: visitors who stay on the portfolio never download it.
+const CaseStudyPage = lazy(() => import('./components/CaseStudy/CaseStudyPage'))
 
 const SECTION_IDS = ['home', 'contact', 'projects', 'about', 'experience']
 const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -19,7 +23,11 @@ export default function App() {
   // loading → leaving (hero starts its entrance) → done (loader removed)
   const [phase, setPhase] = useState(() => (prefersReducedMotion() ? 'done' : 'loading'))
   const [theme, toggleTheme] = useTheme()
-  const activeId = useActiveSection(SECTION_IDS)
+  const route = useHashRoute()
+  const onCaseStudy = route.name === 'case-study' && route.slug === 'ott-design-system'
+  const homeActiveId = useActiveSection(SECTION_IDS, !onCaseStudy)
+  // A case study belongs to the Projects section, so that is the nav item that stays lit.
+  const activeId = onCaseStudy ? 'projects' : homeActiveId
   useSmoothScroll()
 
   useEffect(() => {
@@ -27,6 +35,22 @@ export default function App() {
     root.dataset.loading = String(phase === 'loading')
     root.dataset.ready = String(phase !== 'loading')
   }, [phase])
+
+  // Switching pages: the browser only scrolls to an anchor that already exists, so do it once the new page is mounted.
+  const firstRender = useRef(true)
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false
+      return
+    }
+    if (onCaseStudy) {
+      if (!route.section) window.scrollTo({ top: 0, behavior: 'instant' })
+      return
+    }
+    const target = document.getElementById(window.location.hash.slice(1))
+    if (target) target.scrollIntoView({ behavior: 'instant' })
+    else window.scrollTo({ top: 0, behavior: 'instant' })
+  }, [onCaseStudy, route.section])
 
   const handleLeave = useCallback(() => setPhase((current) => (current === 'loading' ? 'leaving' : current)), [])
   const handleDone = useCallback(() => setPhase('done'), [])
@@ -37,11 +61,19 @@ export default function App() {
       <Navbar activeId={activeId} theme={theme} onToggleTheme={toggleTheme} />
       <HireMeCTA />
       <main>
-        <Hero />
-        <ContactSection />
-        <ProjectsSection />
-        <AboutSection />
-        <ExperienceSection />
+        {onCaseStudy ? (
+          <Suspense fallback={null}>
+            <CaseStudyPage section={route.section} />
+          </Suspense>
+        ) : (
+          <>
+            <Hero />
+            <ContactSection />
+            <ProjectsSection />
+            <AboutSection />
+            <ExperienceSection />
+          </>
+        )}
       </main>
       <Footer />
     </>

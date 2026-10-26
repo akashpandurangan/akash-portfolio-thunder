@@ -1,0 +1,37 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 96px;
+}
+
+.intro {
+  max-width: 680px;
+  color: var(--color-text-60);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 28px;
+  text-wrap: pretty;
+}
+
+.parts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.parts > li {
+  display: flex;
+}
+
+@media (max-width: 899px) {
+  .panel {
+    gap: 72px;
+  }
+}
+
+@media (max-width: 599px) {
+  .intro {
+    font-size: 16px;
+    line-height: 26px;
+  }
+}

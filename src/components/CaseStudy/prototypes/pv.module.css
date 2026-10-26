@@ -1,0 +1,46 @@
+/*
+ * Tokens of the video-player design system, read from the Figma files. The prototypes use these (not the portfolio's
+ * tokens) so they look like the product they document, and they stay dark in the light theme, as a player does.
+ */
+.tokens {
+  --pv-bg: #0f0f10;
+  --pv-surface: #1b1b1b;
+  --pv-panel: #17181a;
+  --pv-screen: #1e1f20;
+  --pv-raised: #2a2b2c;
+  --pv-text: #fff;
+  --pv-dim: #a7a7a7;
+  --pv-faint: rgba(255, 255, 255, 0.1);
+  --pv-outline: #79747e;
+  --pv-brand: #ff2600;
+  --pv-accent: #ff5e00;
+  --pv-live: #ec2027;
+  --pv-ad: #e3db30;
+  --pv-amber: #ffb800;
+  --pv-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  color: var(--pv-text);
+  font-family: Roboto, var(--font-sans);
+  color-scheme: dark;
+}
+
+/* The picture behind a prototype: the photo from the web player frame, darkened so overlays stay legible. */
+.picture {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #101820 var(--poster) center / cover no-repeat;
+}
+
+.picture::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.78), rgba(0, 0, 0, 0.12) 55%, rgba(0, 0, 0, 0.45));
+}
+
+/* Roving-focus controls share one visible focus ring on the dark stage. */
+.focusable:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}

@@ -1,0 +1,52 @@
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 32px;
+  margin-bottom: 40px;
+  color: var(--color-text-60);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend strong {
+  color: var(--color-heading);
+  font-weight: 600;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 25%, transparent);
+}
+
+/* On a phone the label and its sentence don't fit side by side: the sentence goes under the label. */
+@media (max-width: 599px) {
+  .legend {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .legend li {
+    display: grid;
+    grid-template-columns: 14px minmax(0, 1fr);
+    gap: 2px 8px;
+    justify-items: start;
+  }
+
+  .legend li > :first-child {
+    justify-self: center;
+  }
+
+  .legend li > :last-child {
+    grid-column: 2;
+  }
+}

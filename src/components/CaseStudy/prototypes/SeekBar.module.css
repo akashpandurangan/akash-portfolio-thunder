@@ -1,0 +1,242 @@
+/*
+ * Every length is a multiple of --sb ("scale base", 1px by default), so the same seek bar renders at phone size in the
+ * playground and at TV proportions inside the TV prototype, which sets --sb from the width of the screen.
+ */
+.root {
+  --fill: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: calc(6 * var(--sb, 1px));
+  width: 100%;
+  font-size: calc(15 * var(--sb, 1px));
+  font-weight: 500;
+  line-height: calc(20 * var(--sb, 1px));
+}
+
+.root[data-mode='live'] {
+  --fill: var(--pv-accent);
+}
+
+.root[data-mode='ad'] {
+  --fill: var(--pv-ad);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: calc(16 * var(--sb, 1px));
+}
+
+.above {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(12 * var(--sb, 1px));
+}
+
+.time {
+  flex: none;
+  color: var(--pv-dim);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.time strong {
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ---- track ---- */
+
+.track {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  min-width: 0;
+  height: calc(32 * var(--sb, 1px));
+  cursor: pointer;
+  touch-action: none;
+}
+
+.rail,
+.fill {
+  position: absolute;
+  left: 0;
+  height: calc(6 * var(--sb, 1px));
+  border-radius: 9999px;
+}
+
+.rail {
+  right: 0;
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.fill {
+  background: var(--fill);
+}
+
+.marker {
+  position: absolute;
+  top: 50%;
+  width: calc(4 * var(--sb, 1px));
+  height: calc(6 * var(--sb, 1px));
+  border-radius: 1px;
+  background: var(--pv-ad);
+  transform: translate(-50%, -50%);
+}
+
+.handle {
+  position: absolute;
+  top: 50%;
+  width: calc(20 * var(--sb, 1px));
+  height: calc(20 * var(--sb, 1px));
+  border-radius: 50%;
+  background: var(--fill);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  transform: translate(-50%, -50%);
+  transition: transform 0.15s var(--pv-ease);
+}
+
+.track:hover .handle,
+.root[data-dragging='true'] .handle {
+  transform: translate(-50%, -50%) scale(1.2);
+}
+
+.handle:focus-visible {
+  outline: max(2px, calc(2 * var(--sb, 1px))) solid #fff;
+  outline-offset: calc(4 * var(--sb, 1px));
+  transform: translate(-50%, -50%) scale(1.2);
+}
+
+/* ---- scrub preview and step chip ---- */
+
+.preview {
+  position: absolute;
+  bottom: calc(30 * var(--sb, 1px));
+  left: clamp(calc(64 * var(--sb, 1px)), calc(var(--at) * 100%), calc(100% - 64 * var(--sb, 1px)));
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(6 * var(--sb, 1px));
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.thumb {
+  display: block;
+  width: calc(128 * var(--sb, 1px));
+  height: calc(72 * var(--sb, 1px));
+  border: max(2px, calc(2 * var(--sb, 1px))) solid var(--pv-accent);
+  border-radius: calc(8 * var(--sb, 1px));
+  background-color: #000;
+  background-repeat: no-repeat;
+  background-size: 320% auto;
+}
+
+.previewTime {
+  padding: calc(2 * var(--sb, 1px)) calc(8 * var(--sb, 1px));
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.7);
+  font-size: calc(13 * var(--sb, 1px));
+  font-variant-numeric: tabular-nums;
+}
+
+.chip {
+  position: absolute;
+  top: calc(-22 * var(--sb, 1px));
+  z-index: 3;
+  padding: calc(2 * var(--sb, 1px)) calc(10 * var(--sb, 1px));
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  font-size: calc(13 * var(--sb, 1px));
+  font-weight: 600;
+  white-space: nowrap;
+  transform: translateX(-50%);
+  backdrop-filter: blur(6px);
+  animation: chip-in 0.2s var(--pv-ease) both;
+  pointer-events: none;
+}
+
+@keyframes chip-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(-50%);
+  }
+}
+
+/* ---- tags ---- */
+
+.liveTag,
+.adTag {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: calc(6 * var(--sb, 1px));
+  height: calc(24 * var(--sb, 1px));
+  padding: 0 calc(10 * var(--sb, 1px));
+  border-radius: 9999px;
+  font-size: calc(13 * var(--sb, 1px));
+  font-weight: 600;
+}
+
+.liveTag {
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--pv-dim);
+  transition: background-color 0.15s ease-out;
+}
+
+.liveTag[data-live='true'] {
+  color: #fff;
+  cursor: default;
+}
+
+.liveTag:not([data-live='true']):hover {
+  background: rgba(255, 255, 255, 0.24);
+  color: #fff;
+}
+
+.liveTag:focus-visible {
+  outline: max(2px, calc(2 * var(--sb, 1px))) solid #fff;
+  outline-offset: calc(3 * var(--sb, 1px));
+}
+
+.liveDot {
+  width: calc(8 * var(--sb, 1px));
+  height: calc(8 * var(--sb, 1px));
+  border-radius: 50%;
+  background: #6b6b6b;
+}
+
+.liveTag[data-live='true'] .liveDot {
+  background: #f00;
+}
+
+.adTag {
+  background: var(--pv-ad);
+  color: #1b1b1b;
+}
+
+.adCount {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(10 * var(--sb, 1px));
+  color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chip {
+    animation: none;
+  }
+
+  .handle {
+    transition: none;
+  }
+}

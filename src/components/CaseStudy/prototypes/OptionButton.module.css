@@ -1,0 +1,110 @@
+/* Lengths are multiples of --sb (1px by default); the TV prototype sets it from the screen width. */
+.option {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: calc(10 * var(--sb, 1px));
+  height: calc(44 * var(--sb, 1px));
+  padding: 0 calc(18 * var(--sb, 1px)) 0 calc(14 * var(--sb, 1px));
+  border: max(1.5px, calc(2 * var(--sb, 1px))) solid transparent;
+  border-radius: 9999px;
+  color: #fff;
+  font-family: inherit;
+  font-size: calc(15 * var(--sb, 1px));
+  font-weight: 500;
+  line-height: calc(20 * var(--sb, 1px));
+  white-space: nowrap;
+  transition:
+    background-color 0.15s ease-out,
+    color 0.15s ease-out,
+    border-color 0.15s ease-out,
+    transform 0.15s var(--pv-ease);
+}
+
+.option svg {
+  width: calc(18 * var(--sb, 1px));
+  height: calc(18 * var(--sb, 1px));
+}
+
+.option[data-shape='icon'] {
+  width: calc(44 * var(--sb, 1px));
+  padding: 0;
+}
+
+.option[data-shape='icon'] svg {
+  width: calc(20 * var(--sb, 1px));
+  height: calc(20 * var(--sb, 1px));
+}
+
+/* ---- styles (resting) ---- */
+
+.option[data-variant='fill'] {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.option[data-variant='standard'] {
+  background: transparent;
+}
+
+.option[data-variant='outline'] {
+  border-color: rgba(255, 255, 255, 0.4);
+  background: transparent;
+}
+
+/* ---- hover (a pointer only; pinned states ignore it) ---- */
+
+.option:hover:not(:disabled, [data-pinned]) {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* ---- focused: a white fill, so it can be seen from a sofa ---- */
+
+.option:focus-visible,
+.option[data-state='focused'] {
+  background: #fff;
+  color: #111;
+  outline: none;
+}
+
+.option[data-variant='outline']:focus-visible,
+.option[data-variant='outline'][data-state='focused'] {
+  border-color: #fff;
+}
+
+/* ---- pressed ---- */
+
+.option:active:not(:disabled, [data-pinned]),
+.option[data-state='pressed'] {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  transform: scale(0.97);
+}
+
+/* ---- disabled ---- */
+
+.option:disabled,
+.option[data-state='disabled'] {
+  border-color: transparent;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.4);
+  cursor: not-allowed;
+}
+
+.option[data-variant='outline']:disabled,
+.option[data-variant='outline'][data-state='disabled'] {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: transparent;
+}
+
+.option[data-pinned] {
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .option:active:not(:disabled, [data-pinned]),
+  .option[data-state='pressed'] {
+    transform: none;
+  }
+}

@@ -26,7 +26,7 @@ function TagRow({ label, items }) {
  * optional video are all placed in percentages of the stage's design size, taken straight from the Figma frame.
  */
 export default function CaseStudyCard({ study }) {
-  const { id, title, subtitle, description, platforms, focusAreas, href, stage, shots, video } = study
+  const { id, title, subtitle, description, platforms, focusAreas, href, to, stage, shots, video } = study
   const titleId = `case-study-${id}`
 
   return (
@@ -41,7 +41,8 @@ export default function CaseStudyCard({ study }) {
         <p className={styles.description}>{description}</p>
         <TagRow label="Platforms:" items={platforms} />
         <TagRow label="Focus Areas" items={focusAreas} />
-        <SmartLink className={styles.cta} href={href}>
+        {/* A case study with a page of its own (`to`) opens that page; the others open their Figma prototype. */}
+        <SmartLink className={styles.cta} href={to ?? href}>
           View case study<span className="visually-hidden"> — {title}</span>
         </SmartLink>
       </div>

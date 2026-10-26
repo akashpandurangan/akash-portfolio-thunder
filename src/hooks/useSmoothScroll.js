@@ -6,10 +6,10 @@ const NOTCH_MIN = 40 // px; a mouse-wheel notch is ~100px, smaller steps come fr
 const LINE_PX = 100 / 6 // wheels that report lines (Firefox) → pixels
 const SETTLE_PX = 0.5 // closer than this to the destination counts as arrived
 
-/** Scrolling is locked while the intro loader or the full-screen menu is up. */
+/** Scrolling is locked while the intro loader, the full-screen menu or a full-size image is up. */
 const scrollLocked = () => {
-  const { loading, menu } = document.documentElement.dataset
-  return loading === 'true' || menu === 'open'
+  const { loading, menu, lightbox } = document.documentElement.dataset
+  return loading === 'true' || menu === 'open' || lightbox === 'open'
 }
 
 /** True when something under the pointer can scroll by itself in this direction (then the wheel belongs to it). */

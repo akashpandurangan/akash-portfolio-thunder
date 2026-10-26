@@ -11,6 +11,7 @@ import kpostMobile from '../assets/projects/case-studies/kpost-mobile.webp'
 import kampusDesktop from '../assets/projects/case-studies/kampus-desktop.webp'
 import ottDevice from '../assets/projects/case-studies/ott-device.webp'
 import ottVideo from '../assets/projects/video/ott-design-system.mp4'
+import { CASE_STUDY_PATH } from '../hooks/useHashRoute'
 
 /*
  * The six case-study cards of the Projects tab, as laid out in the Figma "Section" frame (node 1054:36319).
@@ -29,7 +30,8 @@ import ottVideo from '../assets/projects/video/ott-design-system.mp4'
  *
  * Copy is the Figma text verbatim, with one exception: the OTT card's last focus tag reads "ross-Platform UX" in the
  * file (a dropped "C"), which is corrected here. `href` is the prototype link of the card; none was supplied for
- * Unifi TV 2.0, so its button stays inert (SmartLink's convention for a missing URL).
+ * Unifi TV 2.0, so its button stays inert (SmartLink's convention for a missing URL). `to` (OTT Design System only) is an
+ * address inside this site and takes precedence over `href`.
  */
 
 const SONYLIV_STAGE = { width: 1038.695, height: 504 }
@@ -200,6 +202,9 @@ export const CASE_STUDIES = [
     platforms: ['Mobile', 'Web', 'Tablet', 'TV'],
     focusAreas: ['Design System', 'UI Enhancements', 'Component Libraries', 'Design Tokens', 'Cross-Platform UX'],
     category: 'Case Study',
+    // The case study has a page of its own (src/components/CaseStudy). `to` wins over `href`; delete `to` to send this
+    // button back to the Figma prototype below.
+    to: CASE_STUDY_PATH,
     href:
       'https://www.figma.com/proto/ej9eb56rFBPbmGsyIsqh08/Akash-Pandurangan?node-id=742-20700&viewport=383%2C402%2C0.03&t=0t520il8u4c1uiKL-1&scaling=scale-down-width&content-scaling=fixed&page-id=589%3A8577',
     stage: { width: 709, height: 504 },

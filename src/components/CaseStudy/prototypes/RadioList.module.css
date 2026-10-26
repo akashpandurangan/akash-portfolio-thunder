@@ -1,0 +1,93 @@
+/* Lengths are multiples of --sb (1px by default); the TV prototype sets it from the screen width. */
+.list {
+  --check: var(--pv-brand);
+  display: flex;
+  flex-direction: column;
+  gap: calc(2 * var(--sb, 1px));
+}
+
+.list[data-tone='accent'] {
+  --check: var(--pv-accent);
+}
+
+/* Appearance choices lay the same rows out side by side. */
+.list[data-layout='chips'] {
+  flex-flow: row wrap;
+  gap: calc(8 * var(--sb, 1px));
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(12 * var(--sb, 1px));
+  min-height: calc(40 * var(--sb, 1px));
+  padding: 0 calc(12 * var(--sb, 1px));
+  border-radius: calc(10 * var(--sb, 1px));
+  color: #8e918f;
+  font-size: calc(14 * var(--sb, 1px));
+  font-weight: 400;
+  line-height: calc(20 * var(--sb, 1px));
+  text-align: left;
+  transition:
+    background-color 0.15s ease-out,
+    color 0.15s ease-out;
+}
+
+.row:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+.row[aria-checked='true'] {
+  color: #fff;
+  font-weight: 500;
+}
+
+/* A white fill is the TV's focus; on a phone it reads as a clear keyboard focus too. */
+.row:focus-visible {
+  outline: max(2px, calc(2 * var(--sb, 1px))) solid #fff;
+  outline-offset: calc(-2 * var(--sb, 1px));
+}
+
+.label {
+  display: flex;
+  align-items: baseline;
+  gap: calc(10 * var(--sb, 1px));
+  min-width: 0;
+}
+
+.detail {
+  color: #8e918f;
+  font-size: calc(13 * var(--sb, 1px));
+  font-weight: 400;
+}
+
+.badge {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: calc(18 * var(--sb, 1px));
+  height: calc(18 * var(--sb, 1px));
+  border-radius: 50%;
+  background: var(--check);
+  color: #fff;
+}
+
+.badge svg {
+  width: 66%;
+  height: 66%;
+}
+
+.list[data-layout='chips'] .row {
+  min-height: calc(40 * var(--sb, 1px));
+  padding: 0 calc(14 * var(--sb, 1px));
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.list[data-layout='chips'] .row[aria-checked='true'] {
+  border-color: color-mix(in srgb, var(--check) 70%, transparent);
+  background: color-mix(in srgb, var(--check) 12%, transparent);
+  color: var(--check);
+}

@@ -1,0 +1,158 @@
+.device {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: 48px;
+  align-items: start;
+}
+
+.visual {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.frame {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 24px;
+  background: var(--color-surface-media);
+  box-shadow: var(--ring-surface), 0 0 0 1px rgba(128, 128, 128, 0.22);
+  cursor: zoom-in;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  animation: device-in 0.3s var(--ease-out) both;
+}
+
+@keyframes device-in {
+  from {
+    opacity: 0.4;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.caption {
+  padding-inline: 4px;
+  color: var(--color-text-60);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.facts {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+.facts > div {
+  padding: 18px 0;
+  border-top: 1px solid var(--color-divider);
+}
+
+.facts > div:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.facts dt {
+  margin-bottom: 6px;
+  color: var(--color-heading);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 22px;
+}
+
+.facts dd {
+  margin: 0;
+  color: var(--color-text-60);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 24px;
+  text-wrap: pretty;
+}
+
+.compare {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 96px;
+}
+
+.compareTitle {
+  color: var(--color-heading);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+  letter-spacing: -0.02em;
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+.tableWrap table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  font-size: 15px;
+  line-height: 22px;
+}
+
+.tableWrap th,
+.tableWrap td {
+  padding: 16px 24px 16px 0;
+  border-top: 1px solid var(--color-divider);
+  color: var(--color-text-60);
+  font-weight: 500;
+  text-align: left;
+  vertical-align: top;
+}
+
+.tableWrap thead th {
+  padding-top: 0;
+  border-top: 0;
+  color: var(--color-heading);
+  font-weight: 600;
+}
+
+.tableWrap tbody th {
+  width: 22%;
+  color: var(--color-heading);
+  font-weight: 600;
+}
+
+.note {
+  max-width: 640px;
+  color: var(--color-text-60);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 22px;
+}
+
+@media (max-width: 1023px) {
+  .device {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+  }
+}
+
+@media (max-width: 599px) {
+  .compare {
+    margin-top: 72px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .image {
+    animation: none;
+  }
+}

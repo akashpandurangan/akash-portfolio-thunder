@@ -1,0 +1,84 @@
+/* The same pill-with-dividers look as the Projects filter, so the page reads as part of the portfolio. */
+.tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  min-width: 0;
+}
+
+.list {
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
+  max-width: 100%;
+  height: 48px;
+  padding: 0 8px;
+  overflow-x: auto;
+  border-radius: 9999px;
+  background: var(--color-surface-raised);
+  box-shadow: var(--ring-pill);
+  scrollbar-width: none;
+}
+
+.list::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  position: relative;
+  flex: none;
+  padding: 0 14px;
+  color: var(--color-text-60);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.tab + .tab::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  left: 0;
+  width: 1px;
+  background: var(--color-divider);
+}
+
+.tab:hover {
+  color: var(--color-text);
+}
+
+.tab[aria-selected='true'] {
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.tabs[data-size='sm'] .list {
+  height: 36px;
+}
+
+.tabs[data-size='sm'] .tab {
+  padding: 0 12px;
+  font-size: 13px;
+}
+
+.panel {
+  min-width: 0;
+}
+
+.panel:focus {
+  outline: none;
+}
+
+@media (max-width: 479px) {
+  .list {
+    padding: 0 6px;
+  }
+
+  .tab {
+    padding: 0 10px;
+    font-size: 13px;
+  }
+}

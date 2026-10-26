@@ -1,0 +1,288 @@
+.hero {
+  padding: 6px 6px 0;
+  margin-bottom: 128px;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+  overflow: hidden;
+  isolation: isolate;
+  padding: 148px clamp(24px, 6vw, 88px) 0;
+  border-radius: 45px;
+  background: var(--color-surface);
+}
+
+/* The ring is drawn above the content, like the home hero. */
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  box-shadow: var(--ring-card);
+  pointer-events: none;
+}
+
+.glow {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(110% 60% at 20% -8%, var(--hero-glow) 0%, transparent 62%);
+  pointer-events: none;
+}
+
+.text {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  max-width: 880px;
+}
+
+.crumb {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-text-60);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.crumb a {
+  transition: color 0.15s ease-out;
+}
+
+.crumb a:hover {
+  color: var(--color-text);
+}
+
+.crumb [aria-current] {
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.title {
+  color: var(--color-text);
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+}
+
+.title span {
+  display: block;
+}
+
+.summary {
+  max-width: 600px;
+  color: var(--color-text-60);
+  font-size: 16px;
+  font-weight: 550;
+  line-height: 24px;
+  text-wrap: pretty;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.metaRow dt {
+  flex: none;
+  width: 76px;
+  color: var(--color-text-60);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+.metaRow dd {
+  margin: 0;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tags > li {
+  display: flex;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+.primary,
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  padding: 0 24px;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  white-space: nowrap;
+  transition:
+    background-color 0.15s ease-out,
+    transform 0.2s var(--ease-out);
+}
+
+.primary {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.primary:hover {
+  background: var(--color-accent-hover);
+}
+
+.primary::selection {
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+}
+
+.secondary {
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  box-shadow: var(--ring-pill);
+}
+
+.secondary:hover {
+  background: var(--color-surface-hover);
+}
+
+.primary:active,
+.secondary:active {
+  transform: scale(0.98);
+}
+
+/* ---- Collage: wide stage under the text by default ---- */
+
+.stageWrap {
+  position: relative;
+  z-index: 1;
+  margin-bottom: -2%;
+}
+
+.stage {
+  position: relative;
+  width: 100%;
+  max-width: 1104px;
+  margin: 0 auto;
+  aspect-ratio: 1104 / 500;
+}
+
+.layer {
+  position: absolute;
+  left: var(--wl);
+  top: var(--wt);
+  width: var(--ww);
+  height: auto;
+  max-width: none;
+  border-radius: 14px;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 30px 60px -24px rgba(0, 0, 0, 0.75);
+  user-select: none;
+}
+
+@media (min-width: 640px) {
+  .title {
+    font-size: 48px;
+  }
+
+  .summary {
+    font-size: 18px;
+    line-height: 28px;
+  }
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 60px;
+  }
+}
+
+/* ---- Two columns: the tall stage sits beside the text and bleeds off the card's right and bottom edges ---- */
+
+@media (min-width: 1200px) {
+  .card {
+    display: grid;
+    grid-template-columns: minmax(0, 11fr) minmax(0, 10fr);
+    column-gap: 40px;
+    align-items: end;
+    min-height: min(calc(100svh - 12px), 880px);
+    padding-bottom: 0;
+  }
+
+  .text {
+    align-self: center;
+    padding-bottom: 96px;
+  }
+
+  /* "Consistent experiences." is the longest line; it has to fit the text column. */
+  .title {
+    font-size: clamp(44px, 3.75vw, 56px);
+  }
+
+  .stageWrap {
+    align-self: end;
+    margin-bottom: -3%;
+    margin-right: calc(-1 * clamp(24px, 6vw, 88px));
+  }
+
+  .stage {
+    max-width: none;
+    margin: 0;
+    aspect-ratio: 640 / 560;
+  }
+
+  .layer {
+    left: var(--tl);
+    top: var(--tt);
+    width: var(--tw);
+  }
+}
+
+@media (max-width: 767px) {
+  .hero {
+    margin-bottom: 88px;
+  }
+
+  .card {
+    gap: 48px;
+    padding-top: 124px;
+    border-radius: 32px;
+  }
+
+  .metaRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .layer {
+    border-radius: 8px;
+  }
+}
