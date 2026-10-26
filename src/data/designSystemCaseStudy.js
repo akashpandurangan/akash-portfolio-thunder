@@ -4,8 +4,9 @@ import { CASE_STUDY_PATH } from '../hooks/useHashRoute'
 /*
  * Copy and structure of the OTT video-player design-system case study (route: CASE_STUDY_PATH).
  *
- * Everything here comes from the Figma files "Design System: Video Player" and "Ai studio: Initial Draft" — names,
- * counts, values and behaviour were read from the files, and the portfolio's own text (Projects tab, Experience).
+ * Everything here comes from the Figma files "Design System: Video Player" and "Ai studio: Initial Draft" (the navigation
+ * chapter) — names, counts, values and behaviour were read from the files, and the portfolio's own text (Projects tab,
+ * Experience).
  * Nothing is a business metric: there are no team sizes, dates or outcome figures because none were provided.
  * Items that need your own words are flagged with NOTE.
  */
@@ -18,8 +19,7 @@ export const CHAPTERS = [
   { id: 'playground', label: 'Playground' },
   { id: 'demos', label: 'Mobile and TV' },
   { id: 'platforms', label: 'Platforms' },
-  { id: 'ai-studio', label: 'AI Studio' },
-  { id: 'saas-navigation', label: 'SaaS navigation' },
+  { id: 'navigation', label: 'Navigation' },
   { id: 'takeaways', label: 'Takeaways' },
 ]
 
@@ -83,20 +83,6 @@ export const OVERVIEW = {
       ],
     },
   ],
-  deliverables: {
-    title: 'Deliverables',
-    note: 'Counted from the Figma files.',
-    items: [
-      { value: '3', label: 'Seek bar modes', detail: 'Content, live and ad, each with timer, tag and marker variants.' },
-      { value: '12', label: 'Option states', detail: 'Three styles (fill, standard, outline) in four states.' },
-      { value: '46', label: 'Mobile settings popups', detail: 'Eight panels in full and classic, plus a tabbed layout, in portrait and landscape.' },
-      { value: '8', label: 'Card size variants', detail: 'XS, S, M and L, each as standard and compact.' },
-      { value: '9', label: 'Aspect ratios', detail: '16:9, 1:1, 4:3, 2:3, 3:2, 21:9, 3:1, 7:4 and 3:4.' },
-      { value: '36', label: 'Subtitle styles', detail: 'Three sizes, four styles and three scripts: English, Tamil and Hindi.' },
-      { value: '4', label: 'Portrait layouts', detail: 'Four seek bar and control arrangements for the mobile player.' },
-      { value: '12', label: 'Error types', detail: 'In five groups, each with its message and actions.' },
-    ],
-  },
 }
 
 /* ---------------------------------------------------------------------------------------------- Foundations */
@@ -166,14 +152,6 @@ export const FOUNDATIONS = {
       { size: 'L', width: 703 },
     ],
   },
-  icons: {
-    title: 'Iconography',
-    intro: 'Player icons are a single outline set used in controls, options and lists. The appearance icons sit beside them for subtitle size, style and Dolby audio.',
-    figures: [
-      { image: 'ott/foundations/icons-row.webp', title: 'Player icon set', caption: 'Subtitles, audio, video quality, speed, next, alert, key moments and the playback controls.', span: 'full' },
-      { image: 'ott/foundations/appearance-icons.webp', title: 'Appearance icons', caption: 'Dolby, three text sizes and four subtitle styles.', span: 'narrow' },
-    ],
-  },
   states: {
     title: 'Component states',
     intro: 'States are named once and reused. Option chips, list rows, cards and multi-camera options all draw from the same words.',
@@ -202,6 +180,63 @@ export const COMPONENTS = {
   lede: 'The video-player components, grouped by what they do for the viewer. Select any figure to open it at full size.',
   categories: [
     {
+      id: 'cards',
+      label: 'Content cards',
+      intro: 'Cards for episodes, recommendations, next-up and camera angles. They share sizes, ratios and focus.',
+      blocks: [
+        {
+          title: 'Card and supporting layers',
+          // One row, each card at its real size relative to the others (the Large cards are wider than the Small ones).
+          layout: 'row',
+          text: 'A card is a media tile with optional layers: a badge, a partner or brand mark, a play button and a progress bar. The specification shows four sizes, each as standard and compact; the component also offers classic and wide types.',
+          parts: ['XS', 'S', 'M', 'L', 'Standard', 'Compact', 'Badge', 'Brand layer', 'Play button', 'Progress bar'],
+          figures: [
+            fig('ott/cards/card-spec.webp', 'Card with supporting layers', 'A poster card with a Free badge, title, secondary text and description.', { span: 'poster' }),
+            fig('ott/cards/card-L-std.webp', 'Large, standard', 'Media with the title below.', { span: 'wide' }),
+            fig('ott/cards/card-L-compact.webp', 'Large, compact', 'Media with the title on the image.', { span: 'wide' }),
+            fig('ott/cards/card-S-std.webp', 'Small, standard', 'The same card at 409 wide.', { span: 'half-wide' }),
+            fig('ott/cards/card-S-compact.webp', 'Small, compact', 'Compact at the small size.', { span: 'half-wide' }),
+          ],
+        },
+        {
+          title: 'Supporting layers up close',
+          layout: 'row',
+          text: 'Badges, brand marks, play buttons and progress bars scale with the card size, so a layer never has to be redrawn per size.',
+          figures: [
+            fig('ott/cards/card-brand.webp', 'Brand layer, play button and progress', 'Five sizes of each layer.', { span: 'full' }),
+            fig('ott/cards/card-badge.webp', 'Badge layer', 'Badge placement in six positions across five sizes.', { span: 'full' }),
+            fig('ott/cards/card-progress.webp', 'Progress bar layer', 'Progress at five sizes in three treatments.', { span: 'full' }),
+          ],
+        },
+        {
+          title: 'Episodes, more like this, and next up',
+          layout: 'row',
+          text: 'Episode cards have landscape and portrait forms with a focused and a default state. The next-up card adds Playing Next and Watch Credits actions.',
+          figures: [
+            fig('ott/components/episode.webp', 'Episode card', 'Landscape and portrait, focused and default.', { span: 'narrow' }),
+            fig('ott/components/play-next.webp', 'Next up', 'Portrait and landscape forms with two actions.', { span: 'wide' }),
+            fig('ott/components/play-icon-pos.webp', 'Play icon positions', 'Centre and the four corners.', { span: 'full' }),
+          ],
+        },
+        {
+          title: 'Multi-camera options',
+          layout: 'row',
+          text: 'Camera angles are cards with a label and a Now Playing state. They can sit as list rows or as media cards, each with default, active, focused and focused-active states.',
+          figures: [
+            fig('ott/components/multicam-angle.webp', 'Camera angle cards', 'Three styles across the four states.', { span: 'wide' }),
+            fig('ott/components/multicam-opt1.webp', 'Option style 1', 'Default, default active, focused and focused active.', { span: 'narrow' }),
+            fig('ott/components/multicam-opt3.webp', 'Option style 3', 'Default and focused.', { span: 'half-wide' }),
+            fig('ott/components/multicam-opt2.webp', 'Option style 2', 'Text-only option.', { span: 'half-wide' }),
+          ],
+        },
+      ],
+      video: {
+        title: 'Card component properties',
+        text: 'A screen recording of the card component in Figma. Choosing the size, the type (standard, classic, wide standard, wide classic or compact), the ratio, a badge label and the supporting layers shows how one component covers every card.',
+        caption: 'Screen recording from Figma: setting the card component’s properties.',
+      },
+    },
+    {
       id: 'playback',
       label: 'Playback and progress',
       intro: 'Everything that tells you where you are and lets you move: the seek bar and its parts, titles and ratings, seek steps, thumbnails and the Skip Intro button.',
@@ -214,6 +249,7 @@ export const COMPONENTS = {
         },
         {
           title: 'Content, live and ad seek bars',
+          layout: 'row',
           text: 'The same anatomy runs in three modes. White is content, orange is live, yellow is an ad. Timers and tags can sit above, left or right, and the elapsed and remaining time can swap.',
           tabs: [
             { id: 'content', label: 'Content', figure: fig('ott/components/seek-content.webp', 'Content seek bar variations', 'Elapsed and total time, or remaining time, in different positions.') },
@@ -232,6 +268,7 @@ export const COMPONENTS = {
         },
         {
           title: 'Seek steps and thumbnails',
+          layout: 'row',
           text: 'While scrubbing, the player shows the time, a step chip (5s, 10s, or a 1x to 3x speed) and a thumbnail with an orange frame on the selected moment.',
           figures: [
             fig('ott/components/thumb-sneek.webp', 'Seek thumbnails', 'A strip of moments with the selected one outlined, above the seek bar.', { span: 'full' }),
@@ -282,58 +319,6 @@ export const COMPONENTS = {
           ],
         },
       ],
-    },
-    {
-      id: 'cards',
-      label: 'Content cards',
-      intro: 'Cards for episodes, recommendations, next-up and camera angles. They share sizes, ratios and focus.',
-      blocks: [
-        {
-          title: 'Card and supporting layers',
-          text: 'A card is a media tile with optional layers: a badge, a partner or brand mark, a play button and a progress bar. The specification shows four sizes, each as standard and compact; the component also offers classic and wide types.',
-          parts: ['XS', 'S', 'M', 'L', 'Standard', 'Compact', 'Badge', 'Brand layer', 'Play button', 'Progress bar'],
-          figures: [
-            fig('ott/cards/card-spec.webp', 'Card with supporting layers', 'A poster card with a Free badge, title, secondary text and description.', { span: 'poster' }),
-            fig('ott/cards/card-L-std.webp', 'Large, standard', 'Media with the title below.', { span: 'wide' }),
-            fig('ott/cards/card-L-compact.webp', 'Large, compact', 'Media with the title on the image.', { span: 'wide' }),
-            fig('ott/cards/card-S-std.webp', 'Small, standard', 'The same card at 409 wide.', { span: 'half-wide' }),
-            fig('ott/cards/card-S-compact.webp', 'Small, compact', 'Compact at the small size.', { span: 'half-wide' }),
-          ],
-        },
-        {
-          title: 'Supporting layers up close',
-          text: 'Badges, brand marks, play buttons and progress bars scale with the card size, so a layer never has to be redrawn per size.',
-          figures: [
-            fig('ott/cards/card-brand.webp', 'Brand layer, play button and progress', 'Five sizes of each layer.', { span: 'full' }),
-            fig('ott/cards/card-badge.webp', 'Badge layer', 'Badge placement in six positions across five sizes.', { span: 'full' }),
-            fig('ott/cards/card-progress.webp', 'Progress bar layer', 'Progress at five sizes in three treatments.', { span: 'full' }),
-          ],
-        },
-        {
-          title: 'Episodes, more like this, and next up',
-          text: 'Episode cards have landscape and portrait forms with a focused and a default state. The next-up card adds Playing Next and Watch Credits actions.',
-          figures: [
-            fig('ott/components/episode.webp', 'Episode card', 'Landscape and portrait, focused and default.', { span: 'narrow' }),
-            fig('ott/components/play-next.webp', 'Next up', 'Portrait and landscape forms with two actions.', { span: 'wide' }),
-            fig('ott/components/play-icon-pos.webp', 'Play icon positions', 'Centre and the four corners.', { span: 'full' }),
-          ],
-        },
-        {
-          title: 'Multi-camera options',
-          text: 'Camera angles are cards with a label and a Now Playing state. They can sit as list rows or as media cards, each with default, active, focused and focused-active states.',
-          figures: [
-            fig('ott/components/multicam-angle.webp', 'Camera angle cards', 'Three styles across the four states.', { span: 'wide' }),
-            fig('ott/components/multicam-opt1.webp', 'Option style 1', 'Default, default active, focused and focused active.', { span: 'narrow' }),
-            fig('ott/components/multicam-opt3.webp', 'Option style 3', 'Default and focused.', { span: 'half-wide' }),
-            fig('ott/components/multicam-opt2.webp', 'Option style 2', 'Text-only option.', { span: 'half-wide' }),
-          ],
-        },
-      ],
-      video: {
-        title: 'Card component properties',
-        text: 'A screen recording of the card component in Figma. Choosing the size, the type (standard, classic, wide standard, wide classic or compact), the ratio, a badge label and the supporting layers shows how one component covers every card.',
-        caption: 'Screen recording from Figma: setting the card component’s properties.',
-      },
     },
     {
       id: 'overlays',
@@ -583,72 +568,19 @@ export const PLATFORMS = {
   },
 }
 
-/* ---------------------------------------------------------------------------------------------- AI Studio */
+/* ---------------------------------------------------------------------------------------------- Navigation */
 
-export const AI_STUDIO = {
-  title: 'AI Studio',
-  lede: 'A related project rather than part of the player: a web app for creating content with AI. Its Figma file documents the product screens and the component system behind them, which is why it appears here as a second design system.',
-  // The portfolio’s own description of the project (Projects tab).
-  about: 'Designing intuitive AI-powered workflows that help users transform ideas into engaging content through streamlined tools, smart automation, and seamless creative experiences.',
-  meta: [
-    { label: 'Platforms', values: ['Web App', 'Dashboard', 'SaaS'] },
-    { label: 'Focus', values: ['UX Optimization', 'AI-Powered Workflows', 'Design System', 'UI Enhancements'] },
+/** The navigation system of the AI Studio web app. Its file documents it as atoms, a molecule and a drawer. */
+export const NAVIGATION = {
+  title: 'Navigation',
+  lede: 'From the AI Studio web app rather than the video player. It is documented as atoms, a molecule and a drawer: a nav label is the smallest unit; navigation items add default, hover and active states and a dropdown; a source drawer is the master the others copy from.',
+  quote: 'All copy and icon changes must be done in the Source Navigation Drawer, not inside instances.',
+  figures: [
+    { image: 'ai-studio/system-nav-drawer.webp', title: 'Navigation drawer', text: 'Six drawer states, one per main menu: Dashboard, Library, Projects, AI Editor, Brand Kit and Social Trends.', span: 'full' },
+    { image: 'ai-studio/system-nav-submenu.webp', title: 'Contextual submenu variants', text: 'The selected main menu decides which submenu items are visible, such as only Library items under Library.', span: 'wide' },
+    { image: 'ai-studio/system-nav-items.webp', title: 'Navigation items', text: 'Default, hover and active, with and without a dropdown.', span: 'narrow' },
+    { image: 'ai-studio/system-nav-source.webp', title: 'Source navigation drawer', text: 'The master component and the rule for editing it.', span: 'narrow' },
   ],
-  screens: [
-    { image: 'ai-studio/screen-library.webp', title: 'Library', text: 'A table of titles with preview, clip count, genre, status, created date and actions, plus a page selector.' },
-    { image: 'ai-studio/screen-trends.webp', title: 'Social trends', text: 'Category tabs, region and time filters, search and pagination, with trends in a three-column grid.' },
-    { image: 'ai-studio/screen-narrative.webp', title: 'Narrative', text: 'Narrative ideas as a row of cards with Create New Narrative and View all, and a carousel when there are more.' },
-    { image: 'ai-studio/screen-moments.webp', title: 'AI Moments Search', text: 'A prompt field with suggested searches, and its focus and filled states.' },
-    { image: 'ai-studio/screen-campaign.webp', title: 'Create campaign', text: 'A three-step progress indicator: Campaign Details, Topic and Terms, Target Audience.', span: 'full' },
-  ],
-  system: [
-    {
-      title: 'Navigation',
-      text: 'Documented as atoms, a molecule and a drawer. A nav label is the smallest unit; navigation items add default, hover and active states and a dropdown; a source drawer is the master the others copy from.',
-      quote: 'All copy and icon changes must be done in the Source Navigation Drawer, not inside instances.',
-      figures: [
-        { image: 'ai-studio/system-nav-drawer.webp', title: 'Navigation drawer', text: 'Six drawer states, one per main menu: Dashboard, Library, Projects, AI Editor, Brand Kit and Social Trends.', span: 'full' },
-        { image: 'ai-studio/system-nav-submenu.webp', title: 'Contextual submenu variants', text: 'The selected main menu decides which submenu items are visible, such as only Library items under Library.', span: 'wide' },
-        { image: 'ai-studio/system-nav-items.webp', title: 'Navigation items', text: 'Default, hover and active, with and without a dropdown.', span: 'narrow' },
-        { image: 'ai-studio/system-nav-source.webp', title: 'Source navigation drawer', text: 'The master component and the rule for editing it.', span: 'narrow' },
-      ],
-    },
-    {
-      title: 'Buttons and controls',
-      text: 'Four button types in four states, with a visible focus indicator, plus toggles, checkboxes and radio buttons.',
-      figures: [
-        { image: 'ai-studio/system-buttons.webp', title: 'Buttons', text: 'Primary, secondary, tertiary and text, each default, hover, focused and disabled.', span: 'wide' },
-        { image: 'ai-studio/system-toggle.webp', title: 'Toggle, checkbox and radio', text: 'Inactive and active.', span: 'narrow' },
-      ],
-    },
-    {
-      title: 'Library cards, lists and menus',
-      text: 'A library item is a thumbnail with content details, shown as a card, a list row, or a menu. Hover variants show actions on the thumbnail.',
-      figures: [
-        { image: 'ai-studio/system-library-card.webp', title: 'Library card hover variants', text: 'Default, hover and dimmed.', span: 'narrow' },
-        { image: 'ai-studio/system-list-items.webp', title: 'List item', text: 'The same item as a table row.', span: 'wide' },
-        { image: 'ai-studio/system-popup-menu.webp', title: 'Popup menu', text: 'A heading and menu items with a chevron, one highlighted.', span: 'narrow' },
-        { image: 'ai-studio/system-icons.webp', title: 'Icons', text: 'The icon set used across the app.', span: 'wide' },
-      ],
-    },
-  ],
-}
-
-/* ---------------------------------------------------------------------------------------------- SaaS navigation */
-
-/*
- * Placeholder for the separate SaaS navigation design system. The module renders from this object, so adding the
- * Figma link and images later is a data change only: set `status` to 'ready', fill `summary`, `figmaUrl`, `figures`.
- * Set `visible: false` to remove the section from the page until then.
- */
-export const SAAS_NAVIGATION = {
-  visible: true,
-  status: 'pending',
-  title: 'SaaS navigation system',
-  summary: '',
-  figmaUrl: '',
-  principles: [],
-  figures: [],
 }
 
 /* ---------------------------------------------------------------------------------------------- Takeaways */
@@ -685,18 +617,6 @@ export const TAKEAWAYS = {
     },
   ],
 }
-
-export const CLOSING = {
-  title: 'One player, three ways in',
-  text: 'The files give one player a shared set of components, states and rules across phone, web and TV, so the next platform or feature starts from what already exists instead of from a blank screen.',
-  links: [
-    { label: 'Back to projects', href: '#projects' },
-    { label: 'Contact', href: '#contact' },
-  ],
-}
-
-/** The chapters that are on the page: the SaaS navigation one is left out while its module is switched off. */
-export const VISIBLE_CHAPTERS = CHAPTERS.filter((chapter) => chapter.id !== 'saas-navigation' || SAAS_NAVIGATION.visible)
 
 /** Convenience for images referenced by path in the data above. */
 export const resolveImage = asset

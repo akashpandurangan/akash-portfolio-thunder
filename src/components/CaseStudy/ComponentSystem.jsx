@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Section, { Block } from './ui/Section'
-import Figure, { FigureGrid } from './ui/Figure'
+import Figure, { FigureGrid, FigureRow } from './ui/Figure'
 import Tabs from './ui/Tabs'
 import Tag from '../ui/Tag'
 import Reveal from '../ui/Reveal'
@@ -45,8 +45,11 @@ function CategoryPanel({ category }) {
         <Reveal key={block.title}>
           <Block title={block.title} text={block.text}>
             {block.parts && <Parts items={block.parts} />}
-            {block.tabs && <FigureTabs tabs={block.tabs} label={`${block.title} modes`} />}
-            {block.figures && (
+            {/* A block with tabs and a row shows every tab's figure side by side instead of one at a time. */}
+            {block.tabs && block.layout === 'row' && <FigureRow figures={block.tabs.map((tab) => tab.figure)} label={`${block.title} modes`} />}
+            {block.tabs && block.layout !== 'row' && <FigureTabs tabs={block.tabs} label={`${block.title} modes`} />}
+            {block.figures && block.layout === 'row' && !block.tabs && <FigureRow figures={block.figures} label={block.title} />}
+            {block.figures && (block.layout !== 'row' || block.tabs) && (
               <FigureGrid>
                 {block.figures.map((figure) => (
                   <Figure key={figure.image} {...figure} />

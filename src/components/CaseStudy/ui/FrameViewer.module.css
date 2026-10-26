@@ -1,8 +1,19 @@
+/*
+ * The whole viewer (frame, caption and thumbnails) is sized to fit the window: `--chrome` is what sits around the frame
+ * (the floating header above it, the caption and the thumbnail strip below, a little air), so the frame gets the height
+ * that is left. The frames are 16:9, so that height sets the width; it never goes below 240px tall, and on a tall window
+ * the content column is the limit as before. The width is the same for every frame, so nothing shifts as you flip through.
+ */
 .viewer {
+  --chrome: 260px;
+  --frame-h: max(240px, calc(100svh - var(--chrome)));
+
   display: flex;
   flex-direction: column;
   gap: 14px;
+  width: min(100%, calc(var(--frame-h) * 16 / 9));
   min-width: 0;
+  margin-inline: auto;
 }
 
 .frame {

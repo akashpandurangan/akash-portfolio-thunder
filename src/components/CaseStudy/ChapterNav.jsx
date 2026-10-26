@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { VISIBLE_CHAPTERS as CHAPTERS, chapterPath } from '../../data/designSystemCaseStudy'
+import { CHAPTERS, chapterPath } from '../../data/designSystemCaseStudy'
 import { useActiveSection } from '../../hooks/useActiveSection'
 import styles from './ChapterNav.module.css'
 

@@ -37,7 +37,8 @@
     color 0.15s ease-out;
 }
 
-.option:hover:not(:disabled) {
+/* Not on the selected option: its text is the page background colour, and the hover colour would match its fill. */
+.option:hover:not(:disabled, [aria-checked='true']) {
   color: var(--color-text);
 }
 

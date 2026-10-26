@@ -48,3 +48,21 @@ export default function Figure({ image, title, caption, span = 'default', priori
 export function FigureGrid({ children, className = '' }) {
   return <div className={`${styles.grid} ${className}`.trim()}>{children}</div>
 }
+
+/**
+ * Figures in a single row. Each column is as wide as its export, so differently sized items (the Large and Small
+ * cards) keep their real size relative to one another; the images share a baseline and the captions a row of their
+ * own. A row that does not fit the screen scrolls sideways instead of wrapping.
+ */
+export function FigureRow({ figures, label }) {
+  const columns = figures.map((figure) => `minmax(0, ${asset(figure.image).width}fr)`).join(' ')
+  return (
+    <div className={styles.rowScroll} role="group" aria-label={label}>
+      <div className={styles.row} style={{ gridTemplateColumns: columns }}>
+        {figures.map((figure) => (
+          <Figure key={figure.image} {...figure} span="row" />
+        ))}
+      </div>
+    </div>
+  )
+}

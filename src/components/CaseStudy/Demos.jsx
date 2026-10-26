@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Section, { Block } from './ui/Section'
-import Figure, { FigureGrid } from './ui/Figure'
+import Figure, { FigureRow } from './ui/Figure'
 import FrameViewer from './ui/FrameViewer'
 import Tabs from './ui/Tabs'
 import Reveal from '../ui/Reveal'
@@ -61,17 +61,10 @@ export default function Demos() {
         <div className={styles.layouts}>
           <h4 className={styles.subtitle}>Four seek bar layouts</h4>
           <p className={styles.layoutsText}>The portrait player was drawn with four arrangements of the bar and its time, shown here in the controls state.</p>
-          <FigureGrid>
-            {MOBILE_LAYOUTS.map((layout) => (
-              <Figure
-                key={layout.file}
-                image={`ott/mobile/player/${layout.file}-02.webp`}
-                title={layout.label}
-                caption={layout.text}
-                span="half-wide"
-              />
-            ))}
-          </FigureGrid>
+          <FigureRow
+            label="Four seek bar layouts"
+            figures={MOBILE_LAYOUTS.map((layout) => ({ image: `ott/mobile/player/${layout.file}-02.webp`, title: layout.label, caption: layout.text }))}
+          />
         </div>
 
         <Figure

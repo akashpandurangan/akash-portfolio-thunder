@@ -3,18 +3,17 @@ import { useEffect } from 'react'
 import '@fontsource/roboto/latin-400.css'
 import '@fontsource/roboto/latin-500.css'
 import '@fontsource/roboto/latin-700.css'
-import AiStudio from './AiStudio'
 import ChapterNav from './ChapterNav'
-import Closing from './Closing'
 import ComponentSystem from './ComponentSystem'
 import Demos from './Demos'
 import Foundations from './Foundations'
 import Hero from './Hero'
+import Navigation from './Navigation'
 import Overview from './Overview'
 import Platforms from './Platforms'
 import Playground from './Playground'
-import SaasNavigation from './SaasNavigation'
 import Takeaways from './Takeaways'
+import ProjectsSection from '../Projects/ProjectsSection'
 import { LightboxProvider } from './ui/Lightbox'
 import styles from './CaseStudyPage.module.css'
 
@@ -55,12 +54,12 @@ export default function CaseStudyPage({ section }) {
             <Playground />
             <Demos />
             <Platforms />
-            <AiStudio />
-            <SaasNavigation />
+            <Navigation />
             <Takeaways />
-            <Closing />
           </div>
         </div>
+        {/* The end of the page is the home page's Projects section, without this case study. */}
+        <ProjectsSection id="more-projects" title="More projects" excludeCaseStudy="ott-design-system" />
       </div>
     </LightboxProvider>
   )

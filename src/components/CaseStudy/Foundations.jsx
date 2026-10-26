@@ -1,6 +1,6 @@
 import Reveal from '../ui/Reveal'
 import Section, { Block } from './ui/Section'
-import Figure, { FigureGrid } from './ui/Figure'
+import { FigureRow } from './ui/Figure'
 import Tag from '../ui/Tag'
 import { FOUNDATIONS } from '../../data/designSystemCaseStudy'
 import styles from './Foundations.module.css'
@@ -21,7 +21,7 @@ function Swatch({ name, hex, use }) {
 }
 
 export default function Foundations() {
-  const { lede, colors, type, spacing, icons, states, conventions } = FOUNDATIONS
+  const { lede, colors, type, spacing, states, conventions } = FOUNDATIONS
   const maxWidth = Math.max(...spacing.cardWidths.map((card) => card.width))
 
   return (
@@ -141,14 +141,6 @@ export default function Foundations() {
         </Reveal>
       </Block>
 
-      <Block title={icons.title} text={icons.intro}>
-        <FigureGrid>
-          {icons.figures.map((figure) => (
-            <Figure key={figure.image} {...figure} />
-          ))}
-        </FigureGrid>
-      </Block>
-
       <Block title={states.title} text={states.intro}>
         <ul className={styles.stateNames} aria-label="State names">
           {states.names.map((name) => (
@@ -157,11 +149,7 @@ export default function Foundations() {
             </li>
           ))}
         </ul>
-        <FigureGrid>
-          {states.figures.map((figure) => (
-            <Figure key={figure.image} {...figure} />
-          ))}
-        </FigureGrid>
+        <FigureRow figures={states.figures} label={states.title} />
       </Block>
 
       <Block title={conventions.title}>

@@ -1,0 +1,26 @@
+.rule {
+  max-width: 680px;
+  margin: 0 0 56px;
+  padding: 4px 0 4px 20px;
+  border-left: 2px solid var(--color-accent);
+}
+
+.rule p {
+  color: var(--color-heading);
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 26px;
+}
+
+.rule footer {
+  margin-top: 6px;
+  color: var(--color-text-60);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+@media (max-width: 599px) {
+  .rule {
+    margin-bottom: 40px;
+  }
+}

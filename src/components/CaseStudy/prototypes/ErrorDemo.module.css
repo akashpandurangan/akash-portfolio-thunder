@@ -2,90 +2,166 @@
   min-height: 0;
 }
 
+/*
+ * The scene is the 1920 × 1080 canvas of the "error screens" frames. `--u` is one design pixel at the size the scene is
+ * drawn (a container-query unit, so no script), and every length below is a multiple of it. Below ~450px of width it
+ * stops shrinking, so the text stays readable and the dialog gives up width instead (see `max-width` and the wrapping).
+ */
+.canvas {
+  container-type: inline-size;
+}
+
 .scene {
+  --u: max(calc(100cqw / 1920), 0.42px);
+
   position: relative;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   place-items: center;
-  min-height: 420px;
-  padding: 32px 20px;
+  /* 16:9 when it fits; taller when the dialog needs it (aspect-ratio would not grow past clipped content). */
+  min-height: max(calc(100cqw * 9 / 16), calc(600 * var(--u)));
   overflow: hidden;
+  font-family: Roboto, var(--font-sans);
 }
 
-/* Background variants of the dialog box: a blurred picture, or the picture left as it is. */
-.scene[data-background='blur'] > :first-child {
-  filter: blur(18px) saturate(0.9);
-  transform: scale(1.12);
-}
-
-.scene[data-background='blur'] > :first-child::after {
-  background: rgba(0, 0, 0, 0.55);
-}
-
+/* The dialog box: a background layer (solid, blurred or empty) behind the icon, text and buttons. */
 .dialog {
   position: relative;
   z-index: 1;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 12px;
-  width: min(100%, 520px);
-  padding: 8px;
-  text-align: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: min(calc(1046 * var(--u)), calc(100% - 16px));
+  padding: calc(48 * var(--u));
+  border-radius: calc(20 * var(--u));
+  isolation: isolate;
+  color: #fff;
 }
 
-.dialog[data-background='solid'] {
-  padding: 32px 36px 28px;
-  border-radius: 22px;
+.dialog::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+}
+
+.dialog[data-background='solid']::before {
   background: var(--pv-screen);
-  box-shadow:
-    0 30px 80px -20px rgba(0, 0, 0, 0.8),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+}
+
+.dialog[data-background='blur']::before {
+  background: rgba(30, 31, 32, 0.4);
+  backdrop-filter: blur(calc(30 * var(--u)));
+}
+
+/* Standard stays a box over the picture; full screen is the whole canvas; two column is a wider, shorter box. */
+.dialog[data-type='columns'] {
+  width: min(calc(1400.6 * var(--u)), calc(100% - 16px));
+}
+
+.dialog[data-type='full'] {
+  align-self: stretch;
+  justify-self: stretch;
+  width: auto;
+  border-radius: 0;
+}
+
+.set {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(48 * var(--u));
+  min-width: 0;
+}
+
+.lead {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(24 * var(--u));
+  min-width: 0;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(32 * var(--u));
+  min-width: 0;
+}
+
+.iconFrame {
+  display: grid;
+  place-items: center;
+  padding: calc(22 * var(--u));
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.iconFrame img {
+  width: calc(52 * var(--u));
+  height: calc(52 * var(--u));
 }
 
 .title {
-  font-size: 24px;
-  font-weight: 500;
-  line-height: 30px;
+  margin: 0;
+  font-size: calc(54 * var(--u));
+  font-weight: 600;
+  line-height: calc(58 * var(--u));
+  text-align: center;
+  text-wrap: balance;
 }
 
 .message {
-  max-width: 420px;
-  color: #d4d4d4;
-  font-size: 15px;
+  max-width: calc(950 * var(--u));
+  font-size: calc(30 * var(--u));
   font-weight: 400;
-  line-height: 23px;
+  line-height: calc(42 * var(--u));
+  text-align: center;
   text-wrap: pretty;
 }
 
 .actions {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
-  gap: 10px;
-  margin-top: 8px;
+  gap: calc(24 * var(--u));
 }
 
 .action {
-  height: 44px;
-  padding: 0 22px;
-  border: 2px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(16 * var(--u));
+  height: calc(90 * var(--u));
+  padding: 0 calc(32 * var(--u));
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.3);
   color: #fff;
-  font-size: 15px;
+  font-size: calc(30 * var(--u));
   font-weight: 500;
-  transition:
-    background-color 0.15s ease-out,
-    color 0.15s ease-out;
+  letter-spacing: calc(0.3 * var(--u));
+  line-height: calc(52 * var(--u));
+  white-space: nowrap;
+  transition: background-color 0.15s ease-out;
+}
+
+.action img {
+  flex: none;
+  width: calc(51.6 * var(--u));
+  height: calc(51.6 * var(--u));
 }
 
 .action[data-primary='true'] {
   background: #fff;
-  color: #111;
+  color: #303030;
 }
 
 .action:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.5);
 }
 
 .action[data-primary='true']:hover {
@@ -97,11 +173,69 @@
   outline-offset: 3px;
 }
 
+/* Two column: icon and text at the left, the buttons stacked at the right (top aligned, as drawn). */
+.dialog[data-type='columns'] .set {
+  flex-flow: row wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: calc(48 * var(--u)) calc(96 * var(--u));
+}
+
+.dialog[data-type='columns'] .lead,
+.dialog[data-type='columns'] .content {
+  align-items: flex-start;
+}
+
+.dialog[data-type='columns'] .lead {
+  flex: 1 1 calc(520 * var(--u));
+  gap: calc(54 * var(--u));
+  max-width: calc(950 * var(--u));
+}
+
+.dialog[data-type='columns'] .actions {
+  flex: none;
+}
+
+.dialog[data-type='columns'] .content {
+  gap: calc(36 * var(--u));
+}
+
+.dialog[data-type='columns'] .title,
+.dialog[data-type='columns'] .message {
+  text-align: left;
+}
+
+.dialog[data-type='columns'] .actions {
+  flex-direction: column;
+  align-items: stretch;
+  flex-wrap: nowrap;
+}
+
+/* Full screen is more open: the spacing between the three groups grows. */
+.dialog[data-type='full'] .set {
+  gap: calc(96 * var(--u));
+}
+
+.dialog[data-type='full'] .lead {
+  gap: calc(44 * var(--u));
+}
+
+.dialog[data-type='full'] .content {
+  gap: calc(36 * var(--u));
+}
+
+/* Without a background layer the text sits straight on the picture, so it gets a soft shadow to stay legible. */
+.dialog[data-background='none'] {
+  text-shadow: 0 calc(2 * var(--u)) calc(24 * var(--u)) rgba(0, 0, 0, 0.6);
+}
+
 .status {
   min-height: 18px;
+  margin: 10px 0 12px;
   color: rgba(255, 255, 255, 0.7);
   font-size: 13px;
   font-weight: 500;
+  text-align: center;
 }
 
 .groups {
@@ -145,14 +279,5 @@
 @media (max-width: 599px) {
   .groups {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .scene {
-    min-height: 380px;
-    padding: 24px 12px;
-  }
-
-  .dialog[data-background='solid'] {
-    padding: 24px 20px 20px;
   }
 }

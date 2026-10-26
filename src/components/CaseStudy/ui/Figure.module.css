@@ -109,6 +109,42 @@
   font-weight: 500;
 }
 
+/*
+ * A single row (FigureRow): one column per figure, sized from its export (inline), images bottom-aligned in the first
+ * row and captions top-aligned in the second. The scroller's padding leaves room for the hover lift and the focus
+ * ring, which overflow would otherwise clip.
+ */
+.rowScroll {
+  margin: -6px;
+  padding: 6px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.row {
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: 14px 16px;
+  min-width: 900px;
+}
+
+.row > .figure {
+  display: grid;
+  grid-column: auto;
+  grid-row: span 2;
+  grid-template-rows: subgrid;
+}
+
+.row > .figure > .frame {
+  align-self: end;
+}
+
+.row > .figure > .caption {
+  align-self: start;
+  font-size: 13px;
+  line-height: 18px;
+}
+
 @media (max-width: 899px) {
   .figure[data-span='wide'],
   .figure[data-span='full'],
