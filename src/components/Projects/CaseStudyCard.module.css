@@ -1,0 +1,353 @@
+/*
+ * Case-study card (Figma "Section" 1054:36319). Concentric with the other project cards: 32px radius, the shared ring.
+ *
+ * Two layout modes:
+ *  - fit (≥768px wide and ≥560px tall): the card is at most as tall as the visible window (below the header, above a
+ *    small bottom margin), so a pinned card is always seen whole. Text keeps its natural height; the stage takes
+ *    whatever is left and scales the mockups down to fit it.
+ *  - natural (phones, short landscape windows): the card is as tall as its content and scrolls like any other block.
+ * The stage is a size container, so the mockups are laid out in container units and never depend on the viewport.
+ */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 32px;
+  background: var(--color-surface);
+  transition: background-color 0.2s ease-out;
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  box-shadow: var(--ring-surface);
+  pointer-events: none;
+}
+
+/* Same one-step lift as the other cards (#121212 → #171717); the stage's bottom fade ends on the lifted colour. */
+.card:hover {
+  background: var(--color-surface-raised);
+}
+
+/* ---- Text -------------------------------------------------------------------------------------------------- */
+
+.text {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 44px 48px 60px;
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.title {
+  color: var(--color-heading);
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 40px;
+  letter-spacing: -0.025em;
+}
+
+.subtitle {
+  color: var(--color-text-60);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.description {
+  max-width: 764px;
+  color: var(--color-text-60);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 28px;
+}
+
+.tagRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.tagLabel {
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 10px;
+  white-space: nowrap;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 0;
+}
+
+.tags > li {
+  display: flex;
+}
+
+.cta {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  height: 56px;
+  padding: 0 24px;
+  border-radius: 16px;
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  white-space: nowrap;
+  transition:
+    background-color 0.15s ease-out,
+    transform 0.2s var(--ease-out);
+}
+
+.cta:hover {
+  background: var(--color-accent-hover);
+}
+
+.cta:active {
+  transform: scale(0.98);
+}
+
+/* No link supplied yet: it keeps its look but is not a control. */
+.cta[data-missing-href],
+.cta[data-missing-href]:hover {
+  background: var(--color-accent);
+  cursor: default;
+  transform: none;
+}
+
+/* The page selection style is orange-on-dark, which would vanish on the orange button. */
+.cta::selection {
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+}
+
+/* ---- Stage ------------------------------------------------------------------------------------------------- */
+
+/* --w / --h (the stage's design size) are set inline. The canvas is that stage scaled to fit, bottom-anchored so the
+   mockups' cropped lower edge always lands on the card's bottom edge, as in the design. */
+.stage {
+  position: relative;
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  container-type: size;
+}
+
+/* Fade into the card at the bottom (Figma: 115px, #171717 → transparent). */
+.stage::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 1;
+  height: min(115px, 9.58cqw);
+  background: linear-gradient(to top, var(--color-surface-raised), transparent);
+  pointer-events: none;
+}
+
+.canvas {
+  /* One design pixel, in real pixels. Only meaningful to children (the canvas is their container). */
+  --u: calc(100cqw / var(--w));
+  position: relative;
+  flex: none;
+  margin: auto auto 0;
+  width: min(calc(100cqw * var(--w) / 1200), calc(100cqh * var(--w) / var(--h)));
+  aspect-ratio: var(--w) / var(--h);
+  container-type: inline-size;
+}
+
+.shot {
+  position: absolute;
+  height: auto;
+  max-width: none;
+  user-select: none;
+}
+
+/* Geist Mono Bold 12px pill from Figma, scaled with the stage but never below a legible 8px. */
+.caption {
+  --fs: max(8px, calc(12 * var(--ls, 1) * var(--u)));
+  position: absolute;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  height: calc(var(--fs) * 2.4608);
+  padding-inline: var(--fs);
+  border: 1px solid var(--color-tag-border);
+  border-radius: 999px;
+  background: var(--color-tag-bg);
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: var(--fs);
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* ---- Fit mode: never taller than the window ------------------------------------------------------------------ */
+
+@media (min-width: 768px) and (min-height: 560px) {
+  /* Shared by every card (--text-h is the tallest text block, measured by useStackedCards) so pinned cards cover each
+     other exactly; capped to the space between the header and the bottom of the window. */
+  .card {
+    height: min(
+      calc(100svh - var(--stack-top, 92px) - var(--stack-bottom, 16px)),
+      calc(var(--text-h, 440px) + 100cqw * 504 / 1200)
+    );
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .text {
+    padding-inline: 32px;
+  }
+}
+
+/*
+ * Shorter windows get the room back for the mockups instead of clipping or a postage-stamp preview: first the spacing
+ * tightens (type untouched), then the type steps down. Taller than 960px nothing changes from the design.
+ */
+@media (min-width: 768px) and (min-height: 560px) and (max-height: 960px) {
+  .text {
+    gap: 12px;
+    padding-block: 32px 24px;
+  }
+
+  .heading {
+    gap: 10px;
+  }
+
+  .cta {
+    height: 48px;
+  }
+}
+
+@media (min-width: 768px) and (min-height: 560px) and (max-height: 840px) {
+  .heading {
+    gap: 8px;
+  }
+
+  .title {
+    font-size: 32px;
+    line-height: 36px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+  .description {
+    font-size: 15px;
+    line-height: 24px;
+  }
+}
+
+@media (min-width: 768px) and (min-height: 560px) and (max-height: 740px) {
+  .text {
+    gap: 10px;
+    padding-block: 24px 16px;
+  }
+
+  .title {
+    font-size: 28px;
+    line-height: 32px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+    line-height: 20px;
+  }
+
+  .description {
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  .cta {
+    height: 44px;
+    border-radius: 14px;
+  }
+}
+
+/* ---- Natural mode: phones and short landscape windows ----------------------------------------------------------- */
+
+@media (max-width: 767px), (max-height: 559px) {
+  .text {
+    gap: 14px;
+    padding: 28px 24px;
+  }
+
+  .heading {
+    gap: 8px;
+  }
+
+  .title {
+    font-size: 28px;
+    line-height: 32px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+  .description {
+    max-width: none;
+    font-size: 15px;
+    line-height: 24px;
+  }
+
+  .cta {
+    height: 48px;
+  }
+
+  /* As tall as the scaled stage: the same composition, but never smaller than 40% of its design size, so the mockups
+     stay readable and the outer devices are cropped by the card edges instead. */
+  .stage {
+    flex: none;
+    height: calc(max(100cqw * var(--w) / 1200, var(--w) * 0.4px) * var(--h) / var(--w));
+  }
+
+  .canvas {
+    width: max(calc(100cqw * var(--w) / 1200), calc(var(--w) * 0.4px));
+  }
+}
+
+/* Phones show the composition cropped by the card edges, which would cut the outer captions mid-word. */
+@media (max-width: 599px) {
+  .caption {
+    display: none;
+  }
+}
+
+@media (max-width: 479px) {
+  .text {
+    padding: 24px 20px;
+  }
+
+  .title {
+    font-size: 26px;
+    line-height: 30px;
+  }
+}

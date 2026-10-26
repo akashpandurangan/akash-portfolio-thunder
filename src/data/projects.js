@@ -1,9 +1,3 @@
-import card1 from '../assets/projects/card-1.webp'
-import card2 from '../assets/projects/card-2.webp'
-import card3 from '../assets/projects/card-3.webp'
-import card4 from '../assets/projects/card-4.webp'
-import card5 from '../assets/projects/card-5.webp'
-import card6 from '../assets/projects/card-6.webp'
 
 /* The Frontend, UI Screens and Graphic Design tabs use one image per card, exported from Figma at 2x. */
 const imageModules = import.meta.glob('../assets/projects/{frontend,ui,graphic}/*.webp', {
@@ -25,79 +19,13 @@ const screen = (id, title, alt, name) => ({
 export const PROJECT_FILTERS = ['Case Study', 'Frontend', 'UI Screens', 'Graphic Design']
 
 /*
+ * The grid cards of the Frontend and UI Screens tabs (the Case Study tab is the stacked list in caseStudies.js).
  * Copy is reproduced exactly as it appears in the Figma file, including repeated tags and
  * descriptions that don't match their titles — see the notes in the project hand-off.
  * `href` is optional: when set, the whole card links there (a Figma prototype, opened in a new tab).
  * Cards without a description or tags (the UI Screens tab) render as just an image and a caption.
  */
 export const PROJECTS = [
-  {
-    id: 'sonyliv',
-    title: 'SonyLIV',
-    description:
-      'A next-generation SonyLIV experience concept focused on making OTT discovery more personalized, intelligent, and interactive.',
-    tags: ['Product Strategy', 'Product Strategy', 'Product Strategy'],
-    category: 'Case Study',
-    image: card1,
-    href:
-      'https://www.figma.com/proto/ej9eb56rFBPbmGsyIsqh08/Akash-Pandurangan?node-id=739-20464&viewport=476%2C308%2C0.07&t=5Vb8N4FxspSqklsF-1&scaling=scale-down-width&content-scaling=fixed&page-id=589%3A8577',
-  },
-  {
-    id: 'xcourt-sports',
-    title: 'Xcourt Sports',
-    description:
-      'Quickplay CMS is a content and operations management platform designed to help media teams manage, organize, schedule, and monitor large volumes of video and live-streaming content from a single interface.',
-    tags: ['SaaS', 'Sports', 'Product Strategy', 'Product Strategy', 'Product Strategy'],
-    category: 'Case Study',
-    image: card2,
-    href:
-      'https://www.figma.com/proto/ej9eb56rFBPbmGsyIsqh08/Akash-Pandurangan?node-id=735-20234&viewport=476%2C308%2C0.07&t=5Vb8N4FxspSqklsF-1&scaling=scale-down-width&content-scaling=fixed&page-id=589%3A8577',
-  },
-  {
-    id: 'ai-studio',
-    title: 'Ai studio',
-    description:
-      'The OTT Design System was created to standardize and scale user experiences across TV, STB, Web, Mobile, Smart TV, and gaming consoles. The goal was to establish a unified design foundation covering navigation, movie cards, content rails, video player components, interaction patterns, and theming systems.',
-    tags: ['AI', 'SaaS'],
-    category: 'Case Study',
-    image: card3,
-    href:
-      'https://www.figma.com/proto/ej9eb56rFBPbmGsyIsqh08/Akash-Pandurangan?node-id=739-20696&viewport=476%2C308%2C0.07&t=5Vb8N4FxspSqklsF-1&scaling=scale-down-width&content-scaling=fixed&page-id=589%3A8577',
-  },
-  {
-    id: 'ott-design-system',
-    title: 'OTT Design System',
-    description:
-      'The OTT Design System was created to standardize and scale user experiences across TV, STB, Web, Mobile, Smart TV, and gaming consoles. The goal was to establish a unified design foundation covering navigation, movie cards, content rails, video player components, interaction patterns, and theming systems.',
-    tags: ['Design systems'],
-    category: 'Case Study',
-    image: card4,
-    href:
-      'https://www.figma.com/proto/ej9eb56rFBPbmGsyIsqh08/Akash-Pandurangan?node-id=742-20700&viewport=383%2C402%2C0.03&t=0t520il8u4c1uiKL-1&scaling=scale-down-width&content-scaling=fixed&page-id=589%3A8577',
-  },
-  {
-    id: 'kampus-ueducate',
-    title: 'KAMPUS UEducate',
-    description:
-      'KAMPUS UEducate is a live, production-grade e-learning platform implemented for schools to digitize academic operations and enhance remote learning experiences. The platform supports students, teachers, and administrators through role-based dashboards integrating live classes, attendance tracking, assignments, examinations, performance analytics, and announcements.',
-    tags: ['Saas', 'E-learning'],
-    category: 'Case Study',
-    image: card5,
-    href:
-      'https://www.figma.com/proto/ej9eb56rFBPbmGsyIsqh08/Akash-Pandurangan?node-id=742-20704&viewport=383%2C402%2C0.03&t=L9nlnW9JT62IOQnH-1&scaling=scale-down-width&content-scaling=fixed&page-id=589%3A8577',
-  },
-  {
-    id: 'kpost-communication',
-    title: 'KPOST Communication',
-    description:
-      'KPOST is a large-scale enterprise communication platform designed to unify collaboration, productivity, and commerce tools into a single ecosystem. The platform integrates chat, mail, voice communication, scheduling, directory management, cloud storage, and e-commerce capabilities to streamline organizational workflows.',
-    tags: ['Enterprise', 'Saas'],
-    category: 'Case Study',
-    image: card6,
-    href:
-      'https://www.figma.com/proto/ej9eb56rFBPbmGsyIsqh08/Akash-Pandurangan?node-id=735-14114&viewport=476%2C308%2C0.07&t=5Vb8N4FxspSqklsF-1&scaling=scale-down-width&content-scaling=fixed&page-id=589%3A8577',
-  },
-
   /* ---- Frontend ---- */
   {
     id: 'knb-innovations',

@@ -13,3 +13,7 @@
   line-height: 10px;
   white-space: nowrap;
 }
+
+.roomy {
+  padding-inline: 10px;
+}

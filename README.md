@@ -28,14 +28,14 @@ src/
     Hero/          hero card, badge, heading, CTA
     HireMe/        fixed "Hire me" CTA with cursor-attracted lightning
     Contact/       "Contact" link bar
-    Projects/      filter tabs, project cards, graphic-design gallery
+    Projects/      filter tabs, stacked case-study cards (+ OTT video), project cards, graphic-design gallery
     About/         About AP
     Experience/    role cards with photo strips
     Footer/        link columns + oversized wordmark
     ui/            Reveal, SmartLink, SectionHeading, Tag
-  data/            all copy and links (projects.js, experience.js, links.js)
+  data/            all copy and links (caseStudies.js, projects.js, experience.js, links.js)
   lib/             lightning.js (bolt drawing shared by the hero trail and the Hire me CTA)
-  hooks/           useReveal, useActiveSection, useScrolled, useHoverIntent, useInView, useTheme
+  hooks/           useReveal, useActiveSection, useScrolled, useHoverIntent, useInView, useTheme, useStackedCards
   assets/          images/icons exported from Figma (photos converted to WebP)
 public/            favicon and the resume PDF (served from the site root)
 ```
@@ -48,10 +48,21 @@ The Figma file has labels but no URLs, so these were supplied separately and liv
 
 - **Profile links** — LinkedIn, Behance, GitHub, Instagram, X, and the **Resume** → `src/data/links.js`. They appear in both the Contact bar and the footer, open in a new tab (`rel="noopener noreferrer"`, announced to screen readers), and a link left empty renders as an inert anchor instead of a dead `#`.
 - **Resume PDF** → `public/Akash_Pandurangan_Senior_Product_Designer.pdf` (served at `/Akash_Pandurangan_Senior_Product_Designer.pdf`, opens in a new window). To update it, replace that file and keep the name, or change the `resume` entry in `links.js`.
-- **Case-study links** → `href` on each case study in `src/data/projects.js`. When set, the whole card is the link (Figma prototypes, new tab) and keyboard focus draws one ring around the card. The Frontend, UI Screens and Graphic Design cards have no links because none were provided.
+- **Case-study cards** → `src/data/caseStudies.js`: the six cards of the Case Study tab (copy, platform / focus-area tags, the mockup images with their Figma coordinates, and the OTT video). The "View case study" button of each is its `href` (Figma prototype, new tab). **Unifi TV 2.0 has no `href` yet** — none was supplied — so its button is inert until you add one. The Frontend, UI Screens and Graphic Design cards (`src/data/projects.js`) have no links because none were provided.
 - **Experience copy** → `src/data/experience.js`. Quickplay still carries the paragraph from the Figma file; KPOST and Think Digital Wordings have their own descriptions.
 
 Mail (`mailto:`), phone (`tel:`) and WhatsApp (`wa.me/919566951943`) are derived from the email and phone number shown in the design.
+
+## Stacked case-study cards
+
+The Case Study tab is a stack: each card pins just under the header (CSS `position: sticky`), the next one slides up over it, and the cards underneath recede a little (a few px of scale and lift, plus a dim, capped so the pile stays thin).
+
+- **Where:** `ProjectStack` (list + CSS), `CaseStudyCard` (one card), `useStackedCards` (scroll hook), `StageVideo` (OTT video).
+- **Fits the window:** a pinned card is never taller than the space between the header and the bottom of the window (`100svh − 92px − 16px`), and the mockups scale down to the room left after the text (container query units, so no JavaScript sizing). Spacing, then type, tighten at ≤960 / 840 / 740px of height. All six cards share one height (the tallest text block is measured once and re-measured on resize).
+- **Distance per card:** `--stack-gap` (24px, the gap you see) plus `--stack-dwell` (`clamp(48px, 16svh, 180px)` of extra scroll) in `ProjectStack.module.css`. The list ends with the last card, which leaves the page normally.
+- **Not pinned:** below 768px wide, in windows shorter than 560px, and under `prefers-reduced-motion` the cards are an ordinary list (phones show the mockups at a minimum of 40% of their design size, cropped by the card edges, without the captions below 600px).
+- **Scrolling is never intercepted:** the hook only listens passively (one animation frame per scroll tick, only while the list is on screen) and writes a `--depth` number per card; nothing re-renders. Tabbing into a buried card scrolls it back to its own pinned position.
+- **OTT Design System video:** `src/assets/projects/video/ott-design-system.mp4` (the Figma video layer "Card Design System (1)"). It sits over the device mockup exactly where Figma has it, is only downloaded when the card is within 400px of the screen, plays muted and looping while ≥40% visible, and pauses otherwise. The mockup's own still frame is the fallback and stays if the file is missing, autoplay is refused, the visitor prefers reduced motion or has Save-Data on.
 
 ## Refinements from the RareUI reference
 

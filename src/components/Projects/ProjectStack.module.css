@@ -1,0 +1,88 @@
+/*
+ * Stacked project cards.
+ *
+ * Pinned mode (≥768px wide, ≥560px tall, motion allowed): every item is `position: sticky` at the same offset, so the
+ * next card — later in the DOM, hence on top — slides up over the pinned one. An item's margin is the scroll distance
+ * that card is given before the next one starts to cover it (the small gap you see between unpinned cards plus a
+ * "dwell"). The last item has no margin, so the list ends with it and the page carries on normally.
+ *
+ * Otherwise the items are static blocks with a plain gap, which is the whole mobile / reduced-motion behaviour.
+ *
+ * The items are the sticky elements and never transformed themselves (the scroll hook measures them); the receding
+ * look is applied one level down, on .depth, from the --depth value the hook writes on each item.
+ */
+.stack {
+  /* Header bottom is 68px; this leaves a 24px breath under it. */
+  --stack-top: 92px;
+  --stack-bottom: 16px;
+  --stack-gap: 24px;
+  /* Extra scroll a card stays alone on screen before the next one reaches it. */
+  --stack-dwell: clamp(48px, 16svh, 180px);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Below 1100px the fixed "Hire me" button drops out of the header row to just under it (bottom edge at 138px). */
+@media (min-width: 768px) and (max-width: 1099px) {
+  .stack {
+    --stack-top: 148px;
+  }
+}
+
+.item {
+  /* The card's width is this item's width; CSS in the card measures it in cqw. */
+  container-type: inline-size;
+  margin-bottom: var(--stack-gap);
+}
+
+.item:last-child {
+  margin-bottom: 0;
+}
+
+.depth {
+  position: relative;
+  border-radius: 32px;
+}
+
+@media (min-width: 768px) and (min-height: 560px) and (prefers-reduced-motion: no-preference) {
+  /*
+   * A sticky item is held inside its container by its whole margin box. If only the last item had no margin, the others
+   * would be shoved up by the dwell distance near the end of the list and their tops would show above the last card.
+   * So the last item keeps the margin too, and the list takes the same amount back with a negative margin: the sticky
+   * range is right, and the page below starts exactly where the last card ends.
+   */
+  .stack {
+    margin-bottom: calc(-1 * (var(--stack-gap) + var(--stack-dwell)));
+  }
+
+  .item,
+  .item:last-child {
+    position: sticky;
+    top: var(--stack-top);
+    margin-bottom: calc(var(--stack-gap) + var(--stack-dwell));
+  }
+
+  /* --depth: 0 in front, 1 with one card fully on top, … Capped so the pile stays a few pixels thick, not a staircase. */
+  .depth {
+    --d: min(var(--depth, 0), 2.5);
+    transform: translate3d(0, calc(var(--d) * -7px), 0) scale(calc(1 - var(--d) * 0.028));
+    transform-origin: 50% 0;
+    box-shadow: 0 -22px 44px -24px var(--stack-shadow);
+  }
+
+  .stack[data-active='true'] .depth {
+    will-change: transform;
+  }
+
+  /* Dimming layer: pointer-events none, so buried cards never block clicks on the one in front. */
+  .depth::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    border-radius: inherit;
+    background: #000;
+    opacity: calc(var(--d) * var(--stack-dim-step));
+    pointer-events: none;
+  }
+}

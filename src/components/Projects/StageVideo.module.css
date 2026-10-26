@@ -1,0 +1,23 @@
+/* The rounded clip the recording lives in (Figma's "Blue" frame). --u is one design pixel, set by the stage canvas. */
+.frame {
+  position: absolute;
+  overflow: hidden;
+  border-radius: calc(var(--radius) * var(--u));
+  pointer-events: none;
+}
+
+/*
+ * The recording is 1356×720 and its box is 693×457, so `cover` crops the sides; Figma crops only the left, hence the
+ * right-aligned position. Transparent until it plays: the mockup's still frame underneath is the fallback.
+ */
+.video {
+  position: absolute;
+  object-fit: cover;
+  object-position: 100% 0;
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+
+.video[data-playing='true'] {
+  opacity: 1;
+}
