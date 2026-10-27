@@ -36,7 +36,7 @@ function ThemeToggle({ theme, onToggle, className = '', buttonRef }) {
   )
 }
 
-export default function Navbar({ activeId, theme, onToggleTheme }) {
+export default function Navbar({ activeId, theme, onToggleTheme, onHireMe }) {
   const scrolled = useScrolled(24)
   const [menuOpen, setMenuOpen] = useState(false)
   const menuButtonRef = useRef(null)
@@ -99,7 +99,13 @@ export default function Navbar({ activeId, theme, onToggleTheme }) {
       <nav className={styles.nav} aria-label="Primary">
         {/* Left group. On mobile it holds the "Hire me" CTA and the brand pill; from 768px it dissolves (display: contents) and the CTA floats. */}
         <div className={styles.start}>
-          <HireMeCTA variant="header" onClick={closeMenu} />
+          <HireMeCTA
+            variant="header"
+            onClick={() => {
+              closeMenu()
+              onHireMe?.()
+            }}
+          />
           <a ref={brandRef} className={`${styles.pill} ${styles.brand}`} href="#home" onClick={closeMenu}>
             {/* Lightning that arcs through the pill on hover / keyboard focus. Drawn behind the logo and text. */}
             <svg className={styles.zap} viewBox="0 0 105 48" preserveAspectRatio="none" aria-hidden="true" focusable="false">

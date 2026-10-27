@@ -1,0 +1,72 @@
+.clip {
+  display: grid;
+  grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+  align-items: center;
+  gap: 48px;
+}
+
+/* A phone recording is tall: the player is held to a phone's width, with the corners of a phone. */
+.phone {
+  width: 100%;
+  max-width: 300px;
+}
+
+.phone > figure > div {
+  border-radius: 28px;
+}
+
+.about {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 480px;
+}
+
+.meta {
+  margin: 0;
+  color: var(--color-text-50);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.about h3 {
+  margin: 0;
+  color: var(--color-heading);
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 36px;
+  letter-spacing: -0.02em;
+}
+
+.about p:last-child {
+  margin: 0;
+  color: var(--color-text-60);
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 28px;
+  text-wrap: pretty;
+}
+
+@media (max-width: 767px) {
+  .clip {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    gap: 28px;
+  }
+
+  .about {
+    max-width: none;
+    justify-self: stretch;
+  }
+
+  .about h3 {
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  .about p:last-child {
+    font-size: 16px;
+    line-height: 26px;
+  }
+}

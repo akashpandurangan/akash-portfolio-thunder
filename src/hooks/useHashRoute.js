@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react'
 
-/** Where the OTT design-system case study lives. Sections are addressed as `<this>/<section-id>`. */
-export const CASE_STUDY_PATH = '#/case-studies/ott-design-system'
+/** Where a case study lives. Its sections are addressed as `<this>/<section-id>`. */
+export const caseStudyPath = (slug) => `#/case-studies/${slug}`
+
+/** The OTT design-system case study. */
+export const CASE_STUDY_PATH = caseStudyPath('ott-design-system')
 
 const CASE_STUDY = /^#\/case-studies\/([a-z0-9-]+)(?:\/([a-z0-9-]+))?\/?$/
 

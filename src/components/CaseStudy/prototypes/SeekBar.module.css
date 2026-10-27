@@ -103,7 +103,8 @@
   transform: translate(-50%, -50%) scale(1.2);
 }
 
-.handle:focus-visible {
+.handle:focus-visible,
+.handle[data-tv-focus] {
   outline: max(2px, calc(2 * var(--sb, 1px))) solid #fff;
   outline-offset: calc(4 * var(--sb, 1px));
   transform: translate(-50%, -50%) scale(1.2);

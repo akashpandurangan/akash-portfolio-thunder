@@ -16,7 +16,7 @@
   display: block;
   width: 100%;
   overflow: hidden;
-  border-radius: 24px;
+  border-radius: 12px;
   background: var(--color-surface-media);
   box-shadow: var(--ring-surface), 0 0 0 1px rgba(128, 128, 128, 0.22);
   cursor: zoom-in;

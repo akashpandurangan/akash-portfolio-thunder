@@ -14,10 +14,30 @@
 
   position: relative;
   min-width: 0;
+  /* The gap between the last chapter and "More projects", the same as the gap between two chapters. It sits outside the
+     layout so the sticky rail ends with the last chapter instead of landing on the heading below. */
+  margin-bottom: 144px;
 }
 
 .article {
   min-width: 0;
+}
+
+/* The last chapter's own bottom padding is replaced by the gap above. */
+.article > :last-child {
+  padding-bottom: 0;
+}
+
+@media (max-width: 899px) {
+  .layout {
+    margin-bottom: 112px;
+  }
+}
+
+@media (max-width: 599px) {
+  .layout {
+    margin-bottom: 88px;
+  }
 }
 
 @media (min-width: 768px) {
@@ -27,7 +47,7 @@
     column-gap: var(--rail-gap);
     width: 100%;
     max-width: calc(var(--content-width) + var(--rail) + var(--rail-gap) + var(--gutter));
-    margin: 0 auto;
+    margin-inline: auto;
     padding-left: var(--gutter);
   }
 }

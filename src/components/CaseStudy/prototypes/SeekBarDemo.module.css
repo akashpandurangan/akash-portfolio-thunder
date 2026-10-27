@@ -11,7 +11,10 @@
   padding: 32px 36px 28px;
 }
 
+/* Centred in the whole picture, not in the space above the seek bar (which would sit it a third of the way down). */
 .play {
+  position: absolute;
+  inset: 0;
   display: grid;
   place-items: center;
   width: 72px;
@@ -36,6 +39,7 @@
 
 .bar {
   width: 100%;
+  margin-top: auto;
   padding-top: 56px;
 }
 

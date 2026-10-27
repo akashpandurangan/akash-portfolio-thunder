@@ -1,9 +1,8 @@
-import { useEffect } from 'react'
 // The design system is set in Roboto, so the prototypes and specimens load it. It only downloads on this page.
 import '@fontsource/roboto/latin-400.css'
 import '@fontsource/roboto/latin-500.css'
 import '@fontsource/roboto/latin-700.css'
-import ChapterNav from './ChapterNav'
+import CaseStudyShell from './CaseStudyShell'
 import ComponentSystem from './ComponentSystem'
 import Demos from './Demos'
 import Foundations from './Foundations'
@@ -13,54 +12,30 @@ import Overview from './Overview'
 import Platforms from './Platforms'
 import Playground from './Playground'
 import Takeaways from './Takeaways'
-import ProjectsSection from '../Projects/ProjectsSection'
-import { LightboxProvider } from './ui/Lightbox'
-import styles from './CaseStudyPage.module.css'
+import { CHAPTERS } from '../../data/designSystemCaseStudy'
+import { CASE_STUDY_PATH } from '../../hooks/useHashRoute'
 
 const TITLE = 'OTT Video Player Design System | Akash Pandurangan'
 
-/**
- * The OTT video-player design-system case study, at #/case-studies/ott-design-system. `section` is the chapter the
- * address asks for (…/components); the page scrolls there once it is mounted.
- */
+/** The OTT video-player design-system case study, at #/case-studies/ott-design-system. */
 export default function CaseStudyPage({ section }) {
-  useEffect(() => {
-    const previous = document.title
-    document.title = TITLE
-    return () => {
-      document.title = previous
-    }
-  }, [])
-
-  useEffect(() => {
-    if (!section) return
-    const target = document.getElementById(section)
-    if (!target) return
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    target.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' })
-  }, [section])
-
   return (
-    <LightboxProvider>
-      <div className={styles.page}>
-        <Hero />
-        {/* The chapter nav and the article share one layout: a rail beside the article from 768px, a pill above it below. */}
-        <div className={styles.layout}>
-          <ChapterNav section={section} />
-          <div className={styles.article}>
-            <Overview />
-            <Foundations />
-            <ComponentSystem />
-            <Playground />
-            <Demos />
-            <Platforms />
-            <Navigation />
-            <Takeaways />
-          </div>
-        </div>
-        {/* The end of the page is the home page's Projects section, without this case study. */}
-        <ProjectsSection id="more-projects" title="More projects" excludeCaseStudy="ott-design-system" />
-      </div>
-    </LightboxProvider>
+    <CaseStudyShell
+      title={TITLE}
+      slug="ott-design-system"
+      chapters={CHAPTERS}
+      basePath={CASE_STUDY_PATH}
+      section={section}
+      hero={<Hero />}
+    >
+      <Overview />
+      <Foundations />
+      <ComponentSystem />
+      <Playground />
+      <Demos />
+      <Platforms />
+      <Navigation />
+      <Takeaways />
+    </CaseStudyShell>
   )
 }

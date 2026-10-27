@@ -154,7 +154,8 @@
   transition: border-color 0.15s ease-out;
 }
 
-.card:focus-visible {
+.card:focus-visible,
+.card[data-tv-focus] {
   border-color: #fff;
   outline: none;
 }

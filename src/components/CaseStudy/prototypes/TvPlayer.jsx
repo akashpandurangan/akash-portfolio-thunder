@@ -65,6 +65,13 @@ export default function TvPlayer() {
   const update = (patch) => setSettings((current) => ({ ...current, ...patch }))
   const find = (r, c) => frameRef.current?.querySelector(`[data-tv="${r}-${c}"]`)
 
+  // A TV always shows its focused item, however focus got there. :focus-visible is not enough: browsers drop it for focus
+  // that a script moves after a mouse click, which is exactly how the on-screen remote works, so the screen marks it itself.
+  const markFocus = (target) => {
+    frameRef.current?.querySelectorAll('[data-tv-focus]').forEach((element) => element.removeAttribute('data-tv-focus'))
+    target?.setAttribute('data-tv-focus', '')
+  }
+
   const openPanel = (option, event) => {
     openerRef.current = event.currentTarget
     setPanel(option.panel)
@@ -132,11 +139,15 @@ export default function TvPlayer() {
     }
   }
 
-  // The remote presses keys on whatever has focus inside the screen, so it behaves exactly like the keyboard.
+  // The remote presses keys on whatever has focus inside the screen, so it behaves exactly like the keyboard. The first
+  // press of a remote that has not been used yet only shows where the focus starts (the play button), as a TV does.
   const remote = (key) => {
-    const target = lastFocus.current && frameRef.current?.contains(lastFocus.current) ? lastFocus.current : find(1, 0)
+    const last = lastFocus.current && frameRef.current?.contains(lastFocus.current) ? lastFocus.current : null
+    const target = last ?? find(0, 1)
     if (!target) return
     target.focus({ preventScroll: true })
+    markFocus(target)
+    if (!last) return
     if (key === 'Enter') target.click()
     else target.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }))
   }
@@ -153,7 +164,13 @@ export default function TvPlayer() {
             role="group"
             aria-label="TV player prototype. Use the arrow keys, Enter and Escape, or the remote."
             onKeyDown={onKeyDown}
-            onFocusCapture={(event) => (lastFocus.current = event.target)}
+            onFocusCapture={(event) => {
+              lastFocus.current = event.target
+              markFocus(event.target)
+            }}
+            onBlurCapture={(event) => {
+              if (!frameRef.current?.contains(event.relatedTarget)) markFocus(null)
+            }}
           >
             <div className={pv.picture} style={{ '--poster': `url(${poster.src})` }} aria-hidden="true" />
             <Subtitle settings={{ ...settings, size: 'Medium', style: 1, position: 'Bottom' }} scale={1.9} />

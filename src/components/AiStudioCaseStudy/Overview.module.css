@@ -1,0 +1,102 @@
+.rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 24px 48px;
+  padding: 32px 0;
+  border-top: 1px solid var(--color-divider);
+}
+
+.rowTitle {
+  color: var(--color-heading);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+  letter-spacing: -0.015em;
+}
+
+.rowBody {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 680px;
+  color: var(--color-text-60);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 26px;
+  text-wrap: pretty;
+}
+
+/* The areas of the page, each a link to its chapter. */
+.areas {
+  display: flex;
+  flex-direction: column;
+  max-width: 680px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.areas li + li {
+  border-top: 1px solid var(--color-divider);
+}
+
+.area {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 16px 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.areaText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  color: var(--color-text-60);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 26px;
+  text-wrap: pretty;
+}
+
+.areaText strong {
+  color: var(--color-heading);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 28px;
+  letter-spacing: -0.01em;
+}
+
+.arrow {
+  flex: none;
+  color: var(--color-text-60);
+  transition:
+    color 0.15s ease-out,
+    transform 0.2s var(--ease-out);
+}
+
+.area:hover .arrow {
+  color: var(--color-accent);
+  transform: translateX(4px);
+}
+
+@media (max-width: 767px) {
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    padding: 28px 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .area:hover .arrow {
+    transform: none;
+  }
+}

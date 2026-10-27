@@ -6,9 +6,11 @@ import styles from './FrameViewer.module.css'
 
 /**
  * A set of real Figma frames, one large with its caption and a strip of thumbnails to choose from. The thumbnails are a
- * radio group (arrow keys move through them), and the large frame opens at full size.
+ * radio group (arrow keys move through them), and the large frame opens at full size. `ratio` is the frames' width over
+ * their height (16:9 unless the screens are drawn differently); it sets how wide the viewer may be for the window's height.
+ * An item may name a small `thumb` image for the strip; without one the strip uses the image itself.
  */
-export default function FrameViewer({ items, label, tone = 'wide' }) {
+export default function FrameViewer({ items, label, tone = 'wide', ratio = 16 / 9 }) {
   const [index, setIndex] = useState(0)
   const stripRef = useRef(null)
   const openLightbox = useLightbox()
@@ -27,7 +29,7 @@ export default function FrameViewer({ items, label, tone = 'wide' }) {
   }
 
   return (
-    <div className={styles.viewer} data-tone={tone}>
+    <div className={styles.viewer} data-tone={tone} style={{ '--ratio': ratio }}>
       <button
         type="button"
         className={styles.frame}
@@ -55,7 +57,7 @@ export default function FrameViewer({ items, label, tone = 'wide' }) {
 
       <div ref={stripRef} className={styles.strip} role="radiogroup" aria-label={label} onKeyDown={onKeyDown}>
         {items.map((entry, position) => {
-          const thumb = asset(entry.image)
+          const thumb = asset(entry.thumb ?? entry.image)
           return (
             <button
               key={entry.image}

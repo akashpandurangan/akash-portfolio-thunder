@@ -8,6 +8,10 @@ export const PROFILE = {
   name: 'Akash Pandurangan',
   email: 'akashmailbox54@gmail.com',
   phone: '+91 95669 51943',
+  // The facts on the "Hire me" profile card.
+  role: 'Product Designer / UI/UX Designer',
+  experience: '5+ years',
+  lastCompany: 'QuickPlay Pvt Ltd, Chennai',
 }
 
 /*

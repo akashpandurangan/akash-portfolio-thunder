@@ -2,6 +2,7 @@ import { Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react'
 import Loader from './components/Loader/Loader'
 import Navbar from './components/Navbar/Navbar'
 import HireMeCTA from './components/HireMe/HireMeCTA'
+import HireMeCard from './components/HireMe/HireMeCard'
 import Hero from './components/Hero/Hero'
 import ContactSection from './components/Contact/ContactSection'
 import ProjectsSection from './components/Projects/ProjectsSection'
@@ -13,8 +14,14 @@ import { useHashRoute } from './hooks/useHashRoute'
 import { useSmoothScroll } from './hooks/useSmoothScroll'
 import { useTheme } from './hooks/useTheme'
 
-// The case study is a separate chunk: visitors who stay on the portfolio never download it.
-const CaseStudyPage = lazy(() => import('./components/CaseStudy/CaseStudyPage'))
+// Each case study is a separate chunk: visitors who stay on the portfolio never download it. The key is the slug of
+// #/case-studies/<slug>.
+const CASE_STUDY_PAGES = {
+  'ott-design-system': lazy(() => import('./components/CaseStudy/CaseStudyPage')),
+  'kpost-communication': lazy(() => import('./components/KpostCaseStudy/KpostCaseStudyPage')),
+  'ai-studio': lazy(() => import('./components/AiStudioCaseStudy/AiStudioCaseStudyPage')),
+  sonyliv: lazy(() => import('./components/SonyLivCaseStudy/SonyLivCaseStudyPage')),
+}
 
 const SECTION_IDS = ['home', 'contact', 'projects', 'about', 'experience']
 const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -24,7 +31,8 @@ export default function App() {
   const [phase, setPhase] = useState(() => (prefersReducedMotion() ? 'done' : 'loading'))
   const [theme, toggleTheme] = useTheme()
   const route = useHashRoute()
-  const onCaseStudy = route.name === 'case-study' && route.slug === 'ott-design-system'
+  const CaseStudyPage = route.name === 'case-study' ? CASE_STUDY_PAGES[route.slug] : undefined
+  const onCaseStudy = Boolean(CaseStudyPage)
   const homeActiveId = useActiveSection(SECTION_IDS, !onCaseStudy)
   // A case study belongs to the Projects section, so that is the nav item that stays lit.
   const activeId = onCaseStudy ? 'projects' : homeActiveId
@@ -55,11 +63,17 @@ export default function App() {
   const handleLeave = useCallback(() => setPhase((current) => (current === 'loading' ? 'leaving' : current)), [])
   const handleDone = useCallback(() => setPhase('done'), [])
 
+  // The "Hire me" profile card: opened by either copy of the Hire me button (floating, or in the header on phones).
+  const [hireMeOpen, setHireMeOpen] = useState(false)
+  const openHireMe = useCallback(() => setHireMeOpen(true), [])
+  const closeHireMe = useCallback(() => setHireMeOpen(false), [])
+
   return (
     <>
       {phase !== 'done' && <Loader onLeave={handleLeave} onDone={handleDone} />}
-      <Navbar activeId={activeId} theme={theme} onToggleTheme={toggleTheme} />
-      <HireMeCTA />
+      <Navbar activeId={activeId} theme={theme} onToggleTheme={toggleTheme} onHireMe={openHireMe} />
+      <HireMeCTA onClick={openHireMe} />
+      {hireMeOpen && <HireMeCard onClose={closeHireMe} />}
       <main>
         {onCaseStudy ? (
           <Suspense fallback={null}>

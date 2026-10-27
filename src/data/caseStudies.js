@@ -11,7 +11,7 @@ import kpostMobile from '../assets/projects/case-studies/kpost-mobile.webp'
 import kampusDesktop from '../assets/projects/case-studies/kampus-desktop.webp'
 import ottDevice from '../assets/projects/case-studies/ott-device.webp'
 import ottVideo from '../assets/projects/video/ott-design-system.mp4'
-import { CASE_STUDY_PATH } from '../hooks/useHashRoute'
+import { CASE_STUDY_PATH, caseStudyPath } from '../hooks/useHashRoute'
 
 /*
  * The six case-study cards of the Projects tab, as laid out in the Figma "Section" frame (node 1054:36319).
@@ -30,8 +30,8 @@ import { CASE_STUDY_PATH } from '../hooks/useHashRoute'
  *
  * Copy is the Figma text verbatim, with one exception: the OTT card's last focus tag reads "ross-Platform UX" in the
  * file (a dropped "C"), which is corrected here. `href` is the prototype link of the card; none was supplied for
- * Unifi TV 2.0, so its button stays inert (SmartLink's convention for a missing URL). `to` (OTT Design System only) is an
- * address inside this site and takes precedence over `href`.
+ * Unifi TV 2.0, so its button stays inert (SmartLink's convention for a missing URL). `to` (SonyLIV, OTT Design System,
+ * KPOST Communication and AI Studio) is an address inside this site, a case study page of its own, and takes precedence over `href`.
  */
 
 const SONYLIV_STAGE = { width: 1038.695, height: 504 }
@@ -79,6 +79,9 @@ export const CASE_STUDIES = [
     platforms: ['Mobile App', 'Tablet', 'Web', 'm-Web', 'TV', 'Smart TV'],
     focusAreas: ['Design System', 'UI Enhancements', 'UX Improvements', 'Seamless Cross-Platform Experience'],
     category: 'Case Study',
+    // The case study has a page of its own (src/components/SonyLivCaseStudy). `to` wins over `href`; delete `to` to send
+    // this button back to the Figma prototype below.
+    to: caseStudyPath('sonyliv'),
     href:
       'https://www.figma.com/proto/ej9eb56rFBPbmGsyIsqh08/Akash-Pandurangan?node-id=739-20464&viewport=476%2C308%2C0.07&t=5Vb8N4FxspSqklsF-1&scaling=scale-down-width&content-scaling=fixed&page-id=589%3A8577',
     stage: SONYLIV_STAGE,
@@ -93,6 +96,9 @@ export const CASE_STUDIES = [
     platforms: ['Web App', 'Dashboard', 'SaaS'],
     focusAreas: ['UX Optimization', 'AI-Powered Workflows', 'Design System', 'UI Enhancements'],
     category: 'Case Study',
+    // The case study has a page of its own (src/components/AiStudioCaseStudy). `to` wins over `href`; delete `to` to send
+    // this button back to the Figma prototype below.
+    to: caseStudyPath('ai-studio'),
     href:
       'https://www.figma.com/proto/ej9eb56rFBPbmGsyIsqh08/Akash-Pandurangan?node-id=739-20696&viewport=476%2C308%2C0.07&t=5Vb8N4FxspSqklsF-1&scaling=scale-down-width&content-scaling=fixed&page-id=589%3A8577',
     // This card's media frame starts 4px lower than the others, so its visible stage is 500px tall.
@@ -129,6 +135,9 @@ export const CASE_STUDIES = [
     platforms: ['Mobile App', 'Tablet', 'Web', 'm-Web', 'TV', 'Smart TV'],
     focusAreas: ['Design System', 'UI Enhancements', 'UX Improvements', 'Seamless Cross-Platform Experience'],
     category: 'Case Study',
+    // Left out of the Projects tab and of "More projects" for now. Its content and images are kept: delete this line (or
+    // set it to false) to show the card again.
+    hidden: true,
     href: '',
     stage: SONYLIV_STAGE,
     shots: tvShots(unifiPhone, unifiTv, unifiTablet),
@@ -142,6 +151,9 @@ export const CASE_STUDIES = [
     platforms: ['Web App', 'Mobile App', 'Dashboard'],
     focusAreas: ['Design System', 'UI Enhancements', 'UX Improvements', 'Seamless Communication Experience'],
     category: 'Case Study',
+    // The case study has a page of its own (src/components/KpostCaseStudy). `to` wins over `href`; delete `to` to send this
+    // button back to the Figma prototype below.
+    to: caseStudyPath('kpost-communication'),
     href:
       'https://www.figma.com/proto/ej9eb56rFBPbmGsyIsqh08/Akash-Pandurangan?node-id=735-14114&viewport=476%2C308%2C0.07&t=5Vb8N4FxspSqklsF-1&scaling=scale-down-width&content-scaling=fixed&page-id=589%3A8577',
     stage: { width: 992.024, height: 504 },

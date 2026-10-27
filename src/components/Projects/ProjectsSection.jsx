@@ -14,11 +14,12 @@ const GALLERY_FILTER = 'Graphic Design'
 
 /**
  * The Projects section of the home page. A case study page reuses it for "More projects": `id` and `title` rename it, and
- * `excludeCaseStudy` leaves the case study you are reading out of the stack.
+ * `excludeCaseStudy` leaves the case study you are reading out of the stack. A case study marked `hidden` in the data is
+ * never shown.
  */
 export default function ProjectsSection({ id = 'projects', title = 'Projects', excludeCaseStudy = null }) {
   const [filter, setFilter] = useState(PROJECT_FILTERS[0])
-  const caseStudies = CASE_STUDIES.filter((study) => study.id !== excludeCaseStudy)
+  const caseStudies = CASE_STUDIES.filter((study) => !study.hidden && study.id !== excludeCaseStudy)
   const visibleProjects = PROJECTS.filter((project) => project.category === filter)
   const isStack = filter === CASE_STUDY_FILTER
   const isGallery = filter === GALLERY_FILTER

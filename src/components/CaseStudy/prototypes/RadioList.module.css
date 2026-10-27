@@ -45,7 +45,8 @@
 }
 
 /* A white fill is the TV's focus; on a phone it reads as a clear keyboard focus too. */
-.row:focus-visible {
+.row:focus-visible,
+.row[data-tv-focus] {
   outline: max(2px, calc(2 * var(--sb, 1px))) solid #fff;
   outline-offset: calc(-2 * var(--sb, 1px));
 }

@@ -1,0 +1,27 @@
+/* One row of phones. Each is a fixed width (a phone is tall), so a long row scrolls sideways rather than shrinking. */
+.strip {
+  --phone: clamp(176px, 21vw, 250px);
+
+  display: flex;
+  gap: 20px;
+  margin: -6px;
+  padding: 6px 6px 14px;
+  overflow-x: auto;
+  list-style: none;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+}
+
+.phone {
+  flex: none;
+  width: var(--phone);
+  scroll-snap-align: start;
+}
+
+@media (max-width: 599px) {
+  .strip {
+    --phone: 62vw;
+
+    gap: 14px;
+  }
+}

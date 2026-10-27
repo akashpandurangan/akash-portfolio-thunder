@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { CHAPTERS, chapterPath } from '../../data/designSystemCaseStudy'
 import { useActiveSection } from '../../hooks/useActiveSection'
 import styles from './ChapterNav.module.css'
 
@@ -9,7 +8,7 @@ const PIN_MS = 1400
 const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 /*
- * The chapter links. From 768px they are a vertical rail beside the article (sticky, so it follows the reader and
+ * The chapter links of a case study (`chapters`: `{ id, label }`, addressed as `<basePath>/<id>`). From 768px they are a vertical rail beside the article (sticky, so it follows the reader and
  * leaves with the article instead of covering the hero or the footer); below that they are a pill under the header,
  * hidden until the headline has scrolled away, that scrolls sideways. The links are real addresses
  * (#/case-studies/…/<chapter>), so each chapter can be opened, copied and shared on its own.
@@ -18,13 +17,13 @@ const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: r
  * address names a chapter (a click, a shared link, back / forward) that chapter is lit at once and stays lit until the
  * scroll to it is over or the reader scrolls by hand.
  */
-export default function ChapterNav({ section = null, heroId = 'case-study-title' }) {
+export default function ChapterNav({ chapters, basePath, section = null, heroId = 'case-study-title' }) {
   const [shown, setShown] = useState(false)
   const [pin, setPin] = useState(section)
   const [pinnedFor, setPinnedFor] = useState(section)
   const listRef = useRef(null)
 
-  const ids = useMemo(() => CHAPTERS.map((chapter) => chapter.id), [])
+  const ids = useMemo(() => chapters.map((chapter) => chapter.id), [chapters])
   const spied = useActiveSection(ids)
   const activeId = pin ?? spied
 
@@ -79,8 +78,8 @@ export default function ChapterNav({ section = null, heroId = 'case-study-title'
   return (
     <nav className={styles.nav} aria-label="Case study chapters" data-shown={shown}>
       <ul ref={listRef} className={styles.list}>
-        {CHAPTERS.map((chapter) => {
-          const path = chapterPath(chapter.id)
+        {chapters.map((chapter) => {
+          const path = `${basePath}/${chapter.id}`
           return (
             <li key={chapter.id}>
               <a

@@ -1,0 +1,32 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/* What the module is, in the frame's own words. */
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 720px;
+}
+
+.intro p {
+  color: var(--color-text-60);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 28px;
+  text-wrap: pretty;
+}
+
+@media (max-width: 599px) {
+  .panel {
+    gap: 28px;
+  }
+
+  .intro p {
+    font-size: 16px;
+    line-height: 26px;
+  }
+}

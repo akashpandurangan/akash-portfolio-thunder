@@ -1,0 +1,177 @@
+/* ---- Colour ---- */
+
+.colorGroups {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.groupTitle {
+  margin-bottom: 14px;
+  color: var(--color-heading);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.swatch {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.chip {
+  display: block;
+  height: 72px;
+  margin-bottom: 8px;
+  border-radius: 16px;
+  background: var(--swatch);
+  box-shadow: inset 0 0 0 1px rgba(128, 128, 128, 0.28);
+}
+
+.swatchName {
+  color: var(--color-heading);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.swatchHex {
+  color: var(--color-text-60);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+/* ---- Typography ---- */
+
+.specimens {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.specimen {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  align-items: baseline;
+  gap: 8px 32px;
+  padding: 18px 0;
+  border-top: 1px solid var(--color-divider);
+}
+
+.specimen:last-child {
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.spec {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.spec strong {
+  color: var(--color-heading);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.spec span {
+  color: var(--color-text-60);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.sample {
+  min-width: 0;
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+.note {
+  margin: -8px 0 0;
+  color: var(--color-text-60);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+/* ---- Buttons ---- */
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px 40px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.buttonItem {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 168px;
+  height: 52px;
+  padding: 0 32px;
+  border-radius: 9999px;
+  background: var(--fill);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.button[data-state='inactive'] {
+  opacity: 0.4;
+}
+
+.stateName {
+  color: var(--color-text-60);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+@media (max-width: 899px) {
+  .swatches {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .specimen {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
+  }
+}
+
+@media (max-width: 479px) {
+  .swatches {
+    gap: 12px;
+  }
+
+  .chip {
+    height: 56px;
+  }
+}

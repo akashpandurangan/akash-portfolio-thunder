@@ -1,33 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { Check, Copy } from 'lucide-react'
+import { copyText } from '../../lib/copyText'
 import styles from './Footer.module.css'
 
 const COPIED_MS = 1600 // how long the button shows its "done" tick
-
-/** Writes to the clipboard; falls back to a hidden textarea where the async API is unavailable (e.g. plain http). */
-async function copyText(text) {
-  try {
-    await navigator.clipboard.writeText(text)
-    return true
-  } catch {
-    const previous = document.activeElement
-    const area = document.createElement('textarea')
-    area.value = text
-    area.setAttribute('readonly', '')
-    area.style.cssText = 'position:fixed;top:0;left:0;opacity:0;pointer-events:none'
-    document.body.appendChild(area)
-    area.select()
-    let ok = false
-    try {
-      ok = document.execCommand('copy')
-    } catch {
-      ok = false
-    }
-    area.remove()
-    previous?.focus?.()
-    return ok
-  }
-}
 
 /**
  * A footer contact line (mail / phone) with a copy button. The button fades in to the left of the text on hover or

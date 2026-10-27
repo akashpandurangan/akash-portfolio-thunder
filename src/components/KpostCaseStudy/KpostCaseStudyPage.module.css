@@ -1,0 +1,17 @@
+/*
+ * KPOST's own colour, from the case study frame (#196cd0, the "UI/UX" blue and the blue of its app). It is an accent on top
+ * of the portfolio's tokens: the page, the cards and the type stay the portfolio's. On the dark page the blue is lifted
+ * toward white so text in it keeps its contrast; on the light page it is used as drawn.
+ */
+.theme {
+  --kp-blue: #196cd0;
+  --kp-blue-text: color-mix(in srgb, #196cd0 58%, #fff);
+  --kp-blue-soft: color-mix(in srgb, #196cd0 18%, transparent);
+  --kp-blue-line: color-mix(in srgb, #196cd0 55%, transparent);
+}
+
+:root[data-theme='light'] .theme {
+  --kp-blue-text: #196cd0;
+  --kp-blue-soft: color-mix(in srgb, #196cd0 10%, transparent);
+  --kp-blue-line: color-mix(in srgb, #196cd0 45%, transparent);
+}

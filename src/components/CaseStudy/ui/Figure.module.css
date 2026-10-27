@@ -43,7 +43,7 @@
   display: block;
   width: 100%;
   overflow: hidden;
-  border-radius: 24px;
+  border-radius: 12px;
   background: var(--color-surface-media);
   box-shadow: var(--ring-surface);
   cursor: zoom-in;
@@ -170,7 +170,7 @@
   }
 
   .frame {
-    border-radius: 20px;
+    border-radius: 10px;
   }
 }
 

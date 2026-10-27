@@ -594,5 +594,901 @@
 "ott/web-player.webp": [
 1600,
 900
+],
+"kpost/style/icons.webp": [
+2582,
+1118
+],
+"kpost/redesign/old-ui.webp": [
+1244,
+804
+],
+"kpost/redesign/new-ui.webp": [
+2200,
+1422
+],
+"kpost/redesign/dashboard.webp": [
+2200,
+1422
+],
+"kpost/login/login-1.webp": [
+1239,
+801
+],
+"kpost/login/login-2.webp": [
+1239,
+801
+],
+"kpost/login/login-3.webp": [
+1239,
+801
+],
+"kpost/login/login-4.webp": [
+1239,
+801
+],
+"kpost/modules/katchup-hero.webp": [
+1855,
+1200
+],
+"kpost/modules/katchup-1.webp": [
+1237,
+801
+],
+"kpost/modules/katchup-2.webp": [
+1236,
+801
+],
+"kpost/modules/katchup-3.webp": [
+1237,
+801
+],
+"kpost/modules/katchup-4.webp": [
+1236,
+800
+],
+"kpost/modules/katchup-5.webp": [
+1236,
+800
+],
+"kpost/modules/katchup-6.webp": [
+1236,
+800
+],
+"kpost/modules/kmail-hero.webp": [
+1853,
+1199
+],
+"kpost/modules/kmail-1.webp": [
+1237,
+801
+],
+"kpost/modules/kmail-2.webp": [
+1237,
+801
+],
+"kpost/modules/kmail-3.webp": [
+1237,
+801
+],
+"kpost/modules/kmail-4.webp": [
+1237,
+801
+],
+"kpost/modules/kmail-5.webp": [
+1237,
+801
+],
+"kpost/modules/kmail-6.webp": [
+1242,
+806
+],
+"kpost/modules/kall-hero.webp": [
+1855,
+1200
+],
+"kpost/modules/kall-1.webp": [
+1238,
+801
+],
+"kpost/modules/kall-2.webp": [
+1242,
+807
+],
+"kpost/modules/kall-3.webp": [
+1242,
+807
+],
+"kpost/modules/kall-4.webp": [
+1242,
+807
+],
+"kpost/modules/kdiary-hero.webp": [
+1854,
+1199
+],
+"kpost/modules/kdiary-1.webp": [
+1242,
+805
+],
+"kpost/modules/kdiary-2.webp": [
+1242,
+805
+],
+"kpost/modules/other-1.webp": [
+1242,
+807
+],
+"kpost/modules/other-2.webp": [
+1242,
+807
+],
+"kpost/modules/other-3.webp": [
+1242,
+807
+],
+"kpost/modules/other-4.webp": [
+1238,
+801
+],
+"kpost/modules/other-5.webp": [
+1242,
+805
+],
+"kpost/modules/other-6.webp": [
+1243,
+807
+],
+"kpost/mobile/m-01.webp": [
+750,
+1624
+],
+"kpost/mobile/m-02.webp": [
+750,
+1624
+],
+"kpost/mobile/m-03.webp": [
+750,
+1624
+],
+"kpost/mobile/m-04.webp": [
+750,
+1624
+],
+"kpost/mobile/m-05.webp": [
+750,
+1624
+],
+"kpost/mobile/m-06.webp": [
+750,
+1624
+],
+"kpost/mobile/m-07.webp": [
+750,
+1624
+],
+"kpost/mobile/m-08.webp": [
+750,
+1624
+],
+"kpost/mobile/m-09.webp": [
+750,
+1624
+],
+"kpost/mobile/m-10.webp": [
+750,
+1624
+],
+"kpost/mobile/m-11.webp": [
+750,
+1624
+],
+"kpost/mobile/m-12.webp": [
+750,
+1624
+],
+"kpost/mobile/m-13.webp": [
+750,
+1624
+],
+"kpost/mobile/m-14.webp": [
+750,
+1624
+],
+"kpost/mobile/m-15.webp": [
+750,
+1624
+],
+"kpost/mobile/m-16.webp": [
+750,
+1624
+],
+"kpost/mobile/m-17.webp": [
+750,
+1624
+],
+"kpost/mobile/m-18.webp": [
+750,
+1624
+],
+"kpost/mobile/m-19.webp": [
+750,
+1624
+],
+"kpost/mobile/m-20.webp": [
+750,
+1624
+],
+"kpost/pain/pain-1.webp": [
+1368,
+218
+],
+"kpost/pain/pain-2.webp": [
+1379,
+218
+],
+"kpost/pain/pain-3.webp": [
+1372,
+183
+],
+"kpost/pain/pain-4.webp": [
+1390,
+183
+],
+"kpost/pain/pain-5.webp": [
+1366,
+220
+],
+"kpost/pain/pain-6.webp": [
+1370,
+214
+],
+"ai-studio/dashboard/overview-empty.webp": [
+1439,
+1626
+],
+"ai-studio/dashboard/overview-narratives.webp": [
+1439,
+1626
+],
+"ai-studio/dashboard/overview-workflows.webp": [
+1439,
+1626
+],
+"ai-studio/trends/region-menu.webp": [
+1439,
+1024
+],
+"ai-studio/trends/region-menu-t.webp": [
+240,
+171
+],
+"ai-studio/trends/region-result.webp": [
+1439,
+1024
+],
+"ai-studio/trends/region-result-t.webp": [
+240,
+171
+],
+"ai-studio/trends/time-menu.webp": [
+1439,
+1024
+],
+"ai-studio/trends/time-menu-t.webp": [
+240,
+171
+],
+"ai-studio/trends/time-result.webp": [
+1439,
+1024
+],
+"ai-studio/trends/time-result-t.webp": [
+240,
+171
+],
+"ai-studio/trends/search-start.webp": [
+1439,
+1024
+],
+"ai-studio/trends/search-start-t.webp": [
+240,
+171
+],
+"ai-studio/trends/search-typing.webp": [
+1439,
+1024
+],
+"ai-studio/trends/search-typing-t.webp": [
+240,
+171
+],
+"ai-studio/trends/search-result.webp": [
+1439,
+1024
+],
+"ai-studio/trends/search-result-t.webp": [
+240,
+171
+],
+"ai-studio/trends/search-none.webp": [
+1439,
+1024
+],
+"ai-studio/trends/search-none-t.webp": [
+240,
+171
+],
+"ai-studio/trends/custom-new.webp": [
+1439,
+1024
+],
+"ai-studio/trends/custom-new-t.webp": [
+240,
+171
+],
+"ai-studio/trends/custom-entered.webp": [
+1439,
+1024
+],
+"ai-studio/trends/custom-entered-t.webp": [
+240,
+171
+],
+"ai-studio/trends/custom-result.webp": [
+1439,
+1024
+],
+"ai-studio/trends/custom-result-t.webp": [
+240,
+171
+],
+"ai-studio/trends/custom-delete.webp": [
+1439,
+1024
+],
+"ai-studio/trends/custom-delete-t.webp": [
+240,
+171
+],
+"ai-studio/insights/page-top.webp": [
+1440,
+1024
+],
+"ai-studio/insights/filters-default.webp": [
+1199,
+982
+],
+"ai-studio/insights/filters-default-t.webp": [
+240,
+197
+],
+"ai-studio/insights/filters-menu.webp": [
+1199,
+982
+],
+"ai-studio/insights/filters-menu-t.webp": [
+240,
+197
+],
+"ai-studio/insights/filters-platforms.webp": [
+1199,
+982
+],
+"ai-studio/insights/filters-platforms-t.webp": [
+240,
+197
+],
+"ai-studio/insights/filters-audience.webp": [
+1199,
+982
+],
+"ai-studio/insights/filters-audience-t.webp": [
+240,
+197
+],
+"ai-studio/insights/filters-applied.webp": [
+1199,
+982
+],
+"ai-studio/insights/filters-applied-t.webp": [
+240,
+197
+],
+"ai-studio/insights/pop-platforms.webp": [
+303,
+254
+],
+"ai-studio/insights/pop-audience.webp": [
+303,
+290
+],
+"ai-studio/insights/pop-ratio.webp": [
+303,
+182
+],
+"ai-studio/narrative/start.webp": [
+1439,
+1024
+],
+"ai-studio/narrative/start-t.webp": [
+240,
+171
+],
+"ai-studio/narrative/topic-details.webp": [
+1439,
+1024
+],
+"ai-studio/narrative/topic-details-t.webp": [
+240,
+171
+],
+"ai-studio/narrative/topic-added.webp": [
+1439,
+1024
+],
+"ai-studio/narrative/topic-added-t.webp": [
+240,
+171
+],
+"ai-studio/narrative/custom-topic.webp": [
+1439,
+1024
+],
+"ai-studio/narrative/custom-topic-t.webp": [
+240,
+171
+],
+"ai-studio/narrative/similar.webp": [
+1439,
+1024
+],
+"ai-studio/narrative/similar-t.webp": [
+240,
+171
+],
+"ai-studio/narrative/second-topic.webp": [
+1439,
+1024
+],
+"ai-studio/narrative/second-topic-t.webp": [
+240,
+171
+],
+"ai-studio/narrative/audience.webp": [
+1439,
+1024
+],
+"ai-studio/narrative/audience-t.webp": [
+240,
+171
+],
+"ai-studio/narrative/custom-audience.webp": [
+1439,
+1024
+],
+"ai-studio/narrative/custom-audience-t.webp": [
+240,
+171
+],
+"ai-studio/narrative/name.webp": [
+1439,
+1024
+],
+"ai-studio/narrative/name-t.webp": [
+240,
+171
+],
+"ai-studio/narrative/summary.webp": [
+1439,
+1024
+],
+"ai-studio/narrative/summary-t.webp": [
+240,
+171
+],
+"ai-studio/narrative/created.webp": [
+1439,
+1024
+],
+"ai-studio/narrative/created-t.webp": [
+240,
+171
+],
+"ai-studio/performance/channel-overview.webp": [
+1439,
+1024
+],
+"ai-studio/performance/video-detail.webp": [
+1439,
+1024
+],
+"ai-studio/performance/narrative-performance.webp": [
+1439,
+1425
+],
+"ai-studio/performance/narrative-clips.webp": [
+1440,
+1503
+],
+"ai-studio/library/list.webp": [
+1439,
+1024
+],
+"ai-studio/library/list-t.webp": [
+240,
+171
+],
+"ai-studio/library/grid.webp": [
+1439,
+1024
+],
+"ai-studio/library/grid-t.webp": [
+240,
+171
+],
+"ai-studio/library/filter-menu.webp": [
+1439,
+1024
+],
+"ai-studio/library/filter-menu-t.webp": [
+240,
+171
+],
+"ai-studio/library/filter-value.webp": [
+1439,
+1024
+],
+"ai-studio/library/filter-value-t.webp": [
+240,
+171
+],
+"ai-studio/library/filter-applied.webp": [
+1439,
+1024
+],
+"ai-studio/library/filter-applied-t.webp": [
+240,
+171
+],
+"ai-studio/library/clips-list.webp": [
+1439,
+1024
+],
+"ai-studio/library/clips-list-t.webp": [
+240,
+171
+],
+"ai-studio/library/add-video.webp": [
+1439,
+1024
+],
+"ai-studio/library/add-video-t.webp": [
+240,
+171
+],
+"ai-studio/library/add-video-filled.webp": [
+1439,
+1024
+],
+"ai-studio/library/add-video-filled-t.webp": [
+240,
+171
+],
+"ai-studio/library/clips-added.webp": [
+1439,
+1024
+],
+"ai-studio/library/clips-added-t.webp": [
+240,
+171
+],
+"ai-studio/library/gen-start.webp": [
+1439,
+1024
+],
+"ai-studio/library/gen-start-t.webp": [
+240,
+171
+],
+"ai-studio/library/gen-prompt.webp": [
+1439,
+1024
+],
+"ai-studio/library/gen-prompt-t.webp": [
+240,
+171
+],
+"ai-studio/library/gen-long.webp": [
+1439,
+1024
+],
+"ai-studio/library/gen-long-t.webp": [
+240,
+171
+],
+"ai-studio/library/gen-creating.webp": [
+1439,
+1024
+],
+"ai-studio/library/gen-creating-t.webp": [
+240,
+171
+],
+"ai-studio/library/gen-done.webp": [
+1439,
+1024
+],
+"ai-studio/library/gen-done-t.webp": [
+240,
+171
+],
+"ai-studio/library/meta-flow.webp": [
+1439,
+1024
+],
+"ai-studio/library/meta-flow-t.webp": [
+240,
+171
+],
+"ai-studio/library/meta-detail.webp": [
+1439,
+1024
+],
+"ai-studio/library/meta-detail-t.webp": [
+240,
+171
+],
+"ai-studio/brand/assets.webp": [
+1440,
+1716
+],
+"ai-studio/brand/templates.webp": [
+1440,
+1024
+],
+"ai-studio/brand/templates-t.webp": [
+240,
+171
+],
+"ai-studio/brand/size.webp": [
+1440,
+1024
+],
+"ai-studio/brand/size-t.webp": [
+240,
+171
+],
+"ai-studio/brand/subtitles.webp": [
+1440,
+1024
+],
+"ai-studio/brand/subtitles-t.webp": [
+240,
+171
+],
+"ai-studio/brand/save.webp": [
+1440,
+1024
+],
+"ai-studio/brand/save-t.webp": [
+240,
+171
+],
+"sonyliv/poster/detail-screen.webp": [
+448,
+994
+],
+"sonyliv/poster/download-video.webp": [
+450,
+1000
+],
+"sonyliv/poster/hero-banner.webp": [
+452,
+1000
+],
+"sonyliv/poster/home-search-download.webp": [
+453,
+1000
+],
+"sonyliv/poster/search.webp": [
+444,
+1000
+],
+"sonyliv/tv/advanced-settings.webp": [
+858,
+483
+],
+"sonyliv/tv/advanced-settings-t.webp": [
+240,
+135
+],
+"sonyliv/tv/collection.webp": [
+858,
+483
+],
+"sonyliv/tv/collection-t.webp": [
+240,
+135
+],
+"sonyliv/tv/episodes.webp": [
+858,
+483
+],
+"sonyliv/tv/episodes-t.webp": [
+240,
+135
+],
+"sonyliv/tv/error.webp": [
+858,
+483
+],
+"sonyliv/tv/error-t.webp": [
+240,
+135
+],
+"sonyliv/tv/home-upcoming.webp": [
+858,
+483
+],
+"sonyliv/tv/home-upcoming-t.webp": [
+240,
+135
+],
+"sonyliv/tv/homepage.webp": [
+858,
+483
+],
+"sonyliv/tv/homepage-t.webp": [
+240,
+135
+],
+"sonyliv/tv/ios-search.webp": [
+858,
+483
+],
+"sonyliv/tv/ios-search-t.webp": [
+240,
+135
+],
+"sonyliv/tv/menu.webp": [
+858,
+483
+],
+"sonyliv/tv/menu-t.webp": [
+240,
+135
+],
+"sonyliv/tv/new-and-hot.webp": [
+858,
+483
+],
+"sonyliv/tv/new-and-hot-t.webp": [
+240,
+135
+],
+"sonyliv/tv/onboarding.webp": [
+858,
+483
+],
+"sonyliv/tv/onboarding-t.webp": [
+240,
+135
+],
+"sonyliv/tv/parental-pin.webp": [
+858,
+483
+],
+"sonyliv/tv/parental-pin-t.webp": [
+240,
+135
+],
+"sonyliv/tv/player-pause.webp": [
+858,
+483
+],
+"sonyliv/tv/player-pause-t.webp": [
+240,
+135
+],
+"sonyliv/tv/player-settings.webp": [
+858,
+483
+],
+"sonyliv/tv/player-settings-t.webp": [
+240,
+135
+],
+"sonyliv/tv/player.webp": [
+858,
+483
+],
+"sonyliv/tv/player-t.webp": [
+240,
+135
+],
+"sonyliv/tv/profile-avatar.webp": [
+858,
+483
+],
+"sonyliv/tv/profile-avatar-t.webp": [
+240,
+135
+],
+"sonyliv/tv/search-results.webp": [
+858,
+483
+],
+"sonyliv/tv/search-results-t.webp": [
+240,
+135
+],
+"sonyliv/tv/search.webp": [
+858,
+483
+],
+"sonyliv/tv/search-t.webp": [
+240,
+135
+],
+"sonyliv/tv/settings.webp": [
+858,
+483
+],
+"sonyliv/tv/settings-t.webp": [
+240,
+135
+],
+"sonyliv/tv/sign-in-mobile.webp": [
+858,
+483
+],
+"sonyliv/tv/sign-in-mobile-t.webp": [
+240,
+135
+],
+"sonyliv/tv/sign-in-qr.webp": [
+858,
+483
+],
+"sonyliv/tv/sign-in-qr-t.webp": [
+240,
+135
+],
+"sonyliv/tv/title-page.webp": [
+858,
+483
+],
+"sonyliv/tv/title-page-t.webp": [
+240,
+135
+],
+"sonyliv/tv/trailer.webp": [
+858,
+483
+],
+"sonyliv/tv/trailer-t.webp": [
+240,
+135
+],
+"sonyliv/tv/trending-searches.webp": [
+858,
+483
+],
+"sonyliv/tv/trending-searches-t.webp": [
+240,
+135
+],
+"sonyliv/ds/foundations.webp": [
+1440,
+900
+],
+"sonyliv/ds/components.webp": [
+1440,
+900
+],
+"sonyliv/ds/tokens.webp": [
+1440,
+900
 ]
 }

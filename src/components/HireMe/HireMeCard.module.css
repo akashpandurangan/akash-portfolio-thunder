@@ -1,0 +1,379 @@
+/*
+ * A compact profile card on the site's own tokens, so it follows the dark and the light theme: surface, ring, text
+ * and accent all come from index.css. The native <dialog> is the card itself; the backdrop is the image viewer's scrim.
+ */
+.dialog {
+  width: min(calc(100vw - 32px), 408px);
+  max-width: none;
+  max-height: calc(100dvh - 32px);
+  padding: 0;
+  overflow: auto;
+  border: 0;
+  border-radius: 28px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow:
+    var(--ring-surface),
+    0 40px 90px -30px rgba(0, 0, 0, 0.7);
+}
+
+.dialog::backdrop {
+  background: var(--color-scrim);
+  backdrop-filter: blur(6px);
+}
+
+.dialog[open] {
+  animation: card-in 0.26s var(--ease-out);
+}
+
+.dialog[open]::backdrop {
+  animation: fade-in 0.2s ease-out;
+}
+
+/* A faint brand glow in the top corner, like the glow of the page banners. */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 28px 24px 24px;
+  background: radial-gradient(90% 50% at 0% 0%, rgba(252, 76, 1, 0.1), transparent 70%);
+}
+
+.close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-surface-raised);
+  box-shadow: var(--ring-pill);
+  color: var(--color-text-80);
+  transition:
+    background-color 0.15s ease-out,
+    color 0.15s ease-out;
+}
+
+.close:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text);
+}
+
+/* ---- who ---- */
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-right: 48px; /* clear of the close button */
+}
+
+/* The portrait: a rounded box with a hairline brand ring, set off from the card by a small gap, and a soft glow. */
+.avatar {
+  display: block;
+  flex: none;
+  width: 64px;
+  height: 64px;
+  overflow: hidden;
+  border-radius: 18px;
+  background: var(--color-surface-raised);
+  box-shadow:
+    0 0 0 3px var(--color-surface),
+    0 0 0 4px rgba(252, 76, 1, 0.55),
+    0 0 28px -4px rgba(252, 76, 1, 0.4);
+}
+
+.avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 30%;
+}
+
+.identity {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.name {
+  margin: 0;
+  color: var(--color-heading);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 28px;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.role {
+  margin: 0;
+  color: var(--color-text-60);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  text-wrap: balance; /* when it wraps, "Product Designer /" then "UI/UX Designer", not "UI/UX" then "Designer" */
+}
+
+/* ---- the facts ---- */
+
+.facts {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fact {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 0;
+}
+
+.fact + .fact {
+  border-top: 1px solid var(--color-divider);
+}
+
+.factIcon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: var(--color-surface-raised);
+  box-shadow: var(--ring-pill);
+  color: var(--color-accent);
+}
+
+.factText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.label {
+  color: var(--color-text-50);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+/* After a copy the label says so for a moment. */
+.label[data-state='copied'] {
+  color: var(--color-accent);
+}
+
+/* The value, then (for the email and the mobile) the copy button right after it, on the same line. */
+.valueLine {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+/*
+ * The button that copies a value: the footer's copy button (32px, 8px radius, a plain muted icon that is tinted on hover
+ * and turns orange once copied). Its negative margin keeps the 32px button from making the line taller, and a larger
+ * invisible area around it keeps it easy to hit on a phone.
+ */
+.copy {
+  position: relative;
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  margin-block: -5px;
+  border-radius: 8px;
+  color: var(--color-text-50);
+  transition:
+    color 0.2s ease-out,
+    background-color 0.2s ease-out,
+    transform 0.3s var(--ease-out);
+}
+
+.copy::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+}
+
+.copy:hover {
+  background: var(--color-badge-bg);
+  color: var(--color-text);
+}
+
+.copy:active {
+  transform: scale(0.92);
+}
+
+.copy[data-state='copied'] {
+  color: var(--color-accent);
+}
+
+.value {
+  min-width: 0;
+  color: var(--color-heading);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 22px;
+  overflow-wrap: break-word;
+}
+
+/* A link (the footer's treatment: it turns orange and is underlined on hover); padding with an equal negative margin makes the target 40px tall without moving anything. */
+.valueLink {
+  padding-block: 9px;
+  margin-block: -9px;
+  text-decoration: none;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease-out;
+}
+
+.valueLink:hover {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+/* ---- actions: the resume (the main one) and LinkedIn, the same width ---- */
+
+.actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.resume {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 48px;
+  border-radius: 9999px;
+  background: var(--color-accent);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 0 rgba(0, 0, 0, 0.16);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 20px;
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease-out,
+    transform 0.2s var(--ease-out);
+}
+
+.resume:hover {
+  background: var(--color-accent-hover);
+}
+
+.resume:active {
+  transform: scale(0.98);
+}
+
+.linkedin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 48px;
+  border-radius: 9999px;
+  background: var(--color-surface-raised);
+  box-shadow: var(--ring-pill);
+  color: var(--color-text-80);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 20px;
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease-out,
+    color 0.2s ease-out,
+    transform 0.2s var(--ease-out);
+}
+
+.linkedin:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text);
+}
+
+.linkedin:active {
+  transform: scale(0.98);
+}
+
+.linkedin img {
+  flex: none;
+}
+
+/* On a narrow phone the two actions stack, so neither label is cut, and the portrait gives the name a little more room. */
+@media (max-width: 359px) {
+  .actions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .header {
+    gap: 14px;
+  }
+
+  .avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+  }
+}
+
+@media (max-width: 599px) {
+  .card {
+    gap: 20px;
+    padding: 24px 20px 20px;
+  }
+
+  .name {
+    font-size: 20px;
+    line-height: 26px;
+  }
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dialog[open],
+  .dialog[open]::backdrop {
+    animation: none;
+  }
+
+  .resume:active,
+  .linkedin:active,
+  .copy:active {
+    transform: none;
+  }
+}

@@ -52,23 +52,26 @@
   background: transparent;
 }
 
-/* ---- hover (a pointer only; pinned states ignore it) ---- */
+/* ---- hover (a pointer only; pinned states ignore it, and so does the item the TV screen has focused) ---- */
 
-.option:hover:not(:disabled, [data-pinned]) {
+.option:hover:not(:disabled, [data-pinned], [data-tv-focus]) {
   background: rgba(255, 255, 255, 0.16);
 }
 
-/* ---- focused: a white fill, so it can be seen from a sofa ---- */
+/* ---- focused: a white fill, so it can be seen from a sofa. [data-tv-focus] is set by the TV prototype on whatever its
+   remote or keyboard has focused, because :focus-visible is not matched for focus that follows a mouse click. ---- */
 
 .option:focus-visible,
-.option[data-state='focused'] {
+.option[data-state='focused'],
+.option[data-tv-focus] {
   background: #fff;
   color: #111;
   outline: none;
 }
 
 .option[data-variant='outline']:focus-visible,
-.option[data-variant='outline'][data-state='focused'] {
+.option[data-variant='outline'][data-state='focused'],
+.option[data-variant='outline'][data-tv-focus] {
   border-color: #fff;
 }
 

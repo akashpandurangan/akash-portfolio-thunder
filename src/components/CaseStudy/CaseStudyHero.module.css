@@ -200,7 +200,7 @@
   width: var(--ww);
   height: auto;
   max-width: none;
-  border-radius: 14px;
+  border-radius: 8px;
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.08),
     0 30px 60px -24px rgba(0, 0, 0, 0.75);
@@ -283,6 +283,6 @@
   }
 
   .layer {
-    border-radius: 8px;
+    border-radius: 5px;
   }
 }

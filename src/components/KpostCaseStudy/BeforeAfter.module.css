@@ -1,0 +1,119 @@
+.compare {
+  position: relative;
+  aspect-ratio: var(--ratio);
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 12px;
+  background: var(--color-surface-media);
+  box-shadow: var(--ring-surface);
+  user-select: none;
+}
+
+.before,
+.after {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left top;
+  pointer-events: none;
+}
+
+/* The old UI shows from the left edge up to the handle. */
+.before {
+  clip-path: inset(0 calc(100% - var(--position)) 0 0);
+}
+
+.chip {
+  position: absolute;
+  top: 16px;
+  z-index: 3;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  background: rgba(10, 10, 10, 0.78);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+}
+
+.chipOld {
+  left: 16px;
+}
+
+.chipNew {
+  right: 16px;
+}
+
+/* The control: an invisible range across the whole frame, so any drag or key moves the handle. */
+.range {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: ew-resize;
+  touch-action: pan-y;
+}
+
+.handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--position);
+  z-index: 3;
+  width: 2px;
+  margin-left: -1px;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+}
+
+.grip {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #fff;
+  color: #111;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.12),
+    0 8px 24px -6px rgba(0, 0, 0, 0.45);
+  transform: translate(-50%, -50%);
+}
+
+.range:focus-visible ~ .handle .grip {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+@media (max-width: 599px) {
+  .compare {
+    border-radius: 10px;
+  }
+
+  .chip {
+    top: 10px;
+    padding: 4px 10px;
+    font-size: 11px;
+  }
+
+  .chipOld {
+    left: 10px;
+  }
+
+  .chipNew {
+    right: 10px;
+  }
+}

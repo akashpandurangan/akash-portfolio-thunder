@@ -5,9 +5,10 @@ import styles from './Figure.module.css'
 
 /**
  * An exported Figma image with a caption. Selecting it opens the full-size view; the image reserves its box from the
- * export's real dimensions, so nothing shifts as it loads.
+ * export's real dimensions, so nothing shifts as it loads. `showCaption={false}` leaves the caption out (the title still
+ * names the button and the full-size view).
  */
-export default function Figure({ image, title, caption, span = 'default', priority = false, alt, className = '' }) {
+export default function Figure({ image, title, caption, span = 'default', priority = false, alt, showCaption = true, className = '' }) {
   const openLightbox = useLightbox()
   const picture = asset(image)
   const description = alt ?? [title, caption].filter(Boolean).join('. ')
@@ -34,7 +35,7 @@ export default function Figure({ image, title, caption, span = 'default', priori
           <Maximize2 size={16} />
         </span>
       </button>
-      {(title || caption) && (
+      {showCaption && (title || caption) && (
         <figcaption className={styles.caption}>
           {title && <strong>{title}</strong>}
           {caption && <span>{caption}</span>}
