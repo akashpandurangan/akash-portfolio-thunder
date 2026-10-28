@@ -23,7 +23,7 @@ const CASE_STUDY_PAGES = {
   sonyliv: lazy(() => import('./components/SonyLivCaseStudy/SonyLivCaseStudyPage')),
 }
 
-const SECTION_IDS = ['home', 'contact', 'projects', 'about', 'experience']
+const SECTION_IDS = ['home', 'projects', 'about', 'experience']
 const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 export default function App() {

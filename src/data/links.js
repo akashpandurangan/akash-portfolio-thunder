@@ -48,4 +48,5 @@ export const NAV_LINKS = [
   { id: 'experience', label: 'Experience', href: '#experience' },
 ]
 
-export const CONTACT_ANCHOR = { id: 'contact', label: 'Contact', href: '#contact' }
+/* The header's Contact pill (and the phone menu's last item) lead to the footer, where the email, phone and profile links are. */
+export const CONTACT_ANCHOR = { id: 'contact', label: 'Contact', href: '#footer' }

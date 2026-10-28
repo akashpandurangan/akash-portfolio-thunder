@@ -53,6 +53,7 @@ export default function Footer() {
   return (
     <div
       ref={revealRef}
+      id="footer"
       className={styles.reveal}
       data-fixed={fixed}
       style={fixed ? { '--footer-height': `${height}px` } : undefined}
