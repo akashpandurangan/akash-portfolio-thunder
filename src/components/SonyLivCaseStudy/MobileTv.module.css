@@ -1,0 +1,129 @@
+.parts {
+  display: flex;
+  flex-direction: column;
+  gap: 96px;
+}
+
+/* The two parts keep the anchors of the old chapters, so they clear the floating header the same way. */
+.part {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  scroll-margin-top: 148px;
+}
+
+.partHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 680px;
+}
+
+.partHeader h3 {
+  margin: 0;
+  color: var(--color-heading);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+  letter-spacing: -0.02em;
+}
+
+.partHeader p {
+  margin: 0;
+  color: var(--color-text-60);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 26px;
+  text-wrap: pretty;
+}
+
+/* ---- mobile recordings: four phones in one row ---- */
+
+.phones {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 32px 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.phones > li {
+  min-width: 0;
+}
+
+.clip {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* A phone recording is tall: the corners are a phone's. */
+.phone > figure > div {
+  border-radius: 24px;
+}
+
+.about {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-inline: 4px;
+}
+
+.meta {
+  margin: 0;
+  color: var(--color-text-50);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.about h4 {
+  margin: 0;
+  color: var(--color-heading);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 26px;
+  letter-spacing: -0.01em;
+}
+
+.about p:last-child {
+  margin: 0;
+  color: var(--color-text-60);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 22px;
+  text-wrap: pretty;
+}
+
+/* Four phones no longer fit side by side: the row stays a row and is swiped, running to the screen edges. */
+@media (max-width: 1199px) {
+  .phones {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: min(250px, 66vw);
+    margin-inline: calc(var(--gutter) * -1);
+    padding: 0 var(--gutter) 8px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+  }
+
+  .phones > li {
+    scroll-snap-align: start;
+  }
+}
+
+@media (max-width: 899px) {
+  .parts {
+    gap: 72px;
+  }
+}
+
+@media (max-width: 599px) {
+  .partHeader h3 {
+    font-size: 20px;
+    line-height: 28px;
+  }
+}

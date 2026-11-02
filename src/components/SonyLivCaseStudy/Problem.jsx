@@ -3,7 +3,7 @@ import Section, { Block } from '../CaseStudy/ui/Section'
 import { PROBLEM } from '../../data/sonylivCaseStudy'
 import styles from './Problem.module.css'
 
-/** What had to be balanced, the four areas the work looked at, and the question the project set. */
+/** What had to be balanced, the four areas the work looked at (one line each), and the question the project set. */
 export default function Problem() {
   const { title, heading, lede, areas, challengeTitle, challenge } = PROBLEM
 

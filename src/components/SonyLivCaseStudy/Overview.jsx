@@ -3,12 +3,12 @@ import Section from '../CaseStudy/ui/Section'
 import { OVERVIEW } from '../../data/sonylivCaseStudy'
 import styles from './Overview.module.css'
 
-/** The project and my role as rows, the problem, what I designed and the outcome as three cards, then the project details. */
+/** The project and my role as two rows (the focus areas as tags), then three facts that the banner does not show. */
 export default function Overview() {
-  const { lede, blocks, cards, detailsTitle, details } = OVERVIEW
+  const { title, lede, blocks, details } = OVERVIEW
 
   return (
-    <Section id="overview" title="Project overview" lede={lede}>
+    <Section id="overview" title={title} lede={lede}>
       <div className={styles.rows}>
         {blocks.map((block) => (
           <Reveal key={block.id} className={styles.row}>
@@ -17,31 +17,24 @@ export default function Overview() {
               {block.body.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}
+              {block.focus && (
+                <ul className={styles.tags} aria-label="Project focus">
+                  {block.focus.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              )}
             </div>
           </Reveal>
         ))}
 
-        <Reveal className={styles.cardsRow}>
-          <ul className={styles.cards}>
-            {cards.map((card) => (
-              <li key={card.id} className={styles.card} data-tone={card.id === 'outcome' ? 'outcome' : undefined}>
-                <h3>{card.title}</h3>
-                <p>{card.text}</p>
-              </li>
-            ))}
-          </ul>
-        </Reveal>
-
-        <Reveal className={styles.row}>
-          <h3 className={styles.rowTitle}>{detailsTitle}</h3>
-          <dl className={styles.details}>
-            {details.map((item) => (
-              <div key={item.label} className={styles.detail}>
-                <dt>{item.label}</dt>
-                <dd>{item.value}</dd>
-              </div>
-            ))}
-          </dl>
+        <Reveal as="dl" className={styles.details}>
+          {details.map((item) => (
+            <div key={item.label} className={styles.detail}>
+              <dt>{item.label}</dt>
+              <dd>{item.value}</dd>
+            </div>
+          ))}
         </Reveal>
       </div>
     </Section>

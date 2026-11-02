@@ -1,0 +1,135 @@
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+}
+
+/* The intended outcome, set large like the design challenge, in the accent. */
+.outcome {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 920px;
+  margin: 0;
+  padding-left: 28px;
+  border-left: 3px solid var(--color-accent);
+}
+
+.outcome figcaption {
+  color: var(--color-text-50);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.outcome blockquote {
+  margin: 0;
+  color: var(--color-heading);
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 36px;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+/* What I designed, as four tags. */
+.produced {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+}
+
+.produced h3 {
+  margin: 0;
+  color: var(--color-heading);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 26px;
+  letter-spacing: -0.01em;
+}
+
+.produced ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.produced li {
+  padding: 7px 14px;
+  border-radius: 9999px;
+  background: var(--color-surface);
+  box-shadow: var(--ring-surface);
+  color: var(--color-text-80);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+/* ---- design reflections ---- */
+
+.reflections {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.reflection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px 24px 26px;
+  border-radius: 20px;
+  background: var(--color-surface);
+  box-shadow: var(--ring-surface);
+}
+
+.reflection h4 {
+  margin: 0;
+  color: var(--color-heading);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 26px;
+  letter-spacing: -0.01em;
+}
+
+.reflection p {
+  margin: 0;
+  color: var(--color-text-60);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 24px;
+  text-wrap: pretty;
+}
+
+@media (max-width: 899px) {
+  .reflections {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .outcome blockquote {
+    font-size: 22px;
+    line-height: 32px;
+  }
+}
+
+@media (max-width: 599px) {
+  .stack {
+    gap: 44px;
+  }
+
+  .outcome {
+    padding-left: 20px;
+  }
+
+  .outcome blockquote {
+    font-size: 20px;
+    line-height: 30px;
+  }
+}

@@ -31,80 +31,52 @@
   text-wrap: pretty;
 }
 
-/* The problem, what I designed and the outcome: three cards side by side; the outcome is tinted. */
-.cardsRow {
-  padding: 32px 0;
-  border-top: 1px solid var(--color-divider);
+.rowBody p {
+  margin: 0;
 }
 
-.cards {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-  margin: 0;
+/* The project's focus areas, as small tags under the role. */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 4px 0 0;
   padding: 0;
   list-style: none;
 }
 
-.card {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 28px 24px;
-  border-radius: 24px;
+.tags li {
+  padding: 5px 12px;
+  border-radius: 9999px;
   background: var(--color-surface);
   box-shadow: var(--ring-surface);
-}
-
-.card[data-tone='outcome'] {
-  background: color-mix(in srgb, var(--color-accent) 10%, var(--color-surface));
-}
-
-.card h3 {
-  color: var(--color-heading);
-  font-size: 22px;
-  font-weight: 600;
-  line-height: 28px;
-  letter-spacing: -0.02em;
-}
-
-.card p {
-  margin: 0;
-  color: var(--color-text-60);
-  font-size: 15px;
+  color: var(--color-text-80);
+  font-size: 13px;
   font-weight: 500;
-  line-height: 24px;
-  text-wrap: pretty;
+  line-height: 20px;
 }
 
-/* Role, project, responsibilities and the rest as label and value pairs. */
+/* Platforms, collaboration and tools: three label and value pairs side by side. */
 .details {
-  display: flex;
-  flex-direction: column;
-  max-width: 680px;
-  margin: 0;
-}
-
-.detail {
   display: grid;
-  grid-template-columns: 148px minmax(0, 1fr);
-  gap: 4px 24px;
-  padding: 14px 0;
-}
-
-.detail + .detail {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px 32px;
+  margin: 0;
+  padding: 32px 0 0;
   border-top: 1px solid var(--color-divider);
 }
 
-.detail:first-child {
-  padding-top: 0;
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .detail dt {
   color: var(--color-text-50);
   font-size: 14px;
   font-weight: 500;
-  line-height: 24px;
+  line-height: 20px;
 }
 
 .detail dd {
@@ -117,8 +89,9 @@
 }
 
 @media (max-width: 899px) {
-  .cards {
+  .details {
     grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
   }
 }
 
@@ -129,11 +102,7 @@
     padding: 28px 0;
   }
 
-  .cardsRow {
-    padding: 28px 0;
-  }
-
-  .detail {
-    grid-template-columns: minmax(0, 1fr);
+  .details {
+    padding-top: 28px;
   }
 }

@@ -1,0 +1,82 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 56px 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-inline: 4px;
+}
+
+.number {
+  margin: 0;
+  color: var(--color-accent);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.text h3 {
+  margin: 0;
+  color: var(--color-heading);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 30px;
+  letter-spacing: -0.02em;
+}
+
+.aim {
+  margin: 0;
+  color: var(--color-text-80);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 26px;
+  text-wrap: pretty;
+}
+
+/* What the screen shows: the quiet line under the aim. */
+.shows {
+  margin: 4px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-divider);
+  color: var(--color-text-60);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 22px;
+  text-wrap: pretty;
+}
+
+.shows strong {
+  color: var(--color-heading);
+  font-weight: 600;
+}
+
+@media (max-width: 767px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 48px;
+  }
+
+  .card {
+    gap: 20px;
+  }
+
+  .text h3 {
+    font-size: 20px;
+    line-height: 28px;
+  }
+}
