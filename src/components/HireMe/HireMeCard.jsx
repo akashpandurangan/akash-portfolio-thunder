@@ -132,6 +132,17 @@ export default function HireMeCard({ onClose }) {
           </div>
         </header>
 
+        {PROFILE.availability.length > 0 && (
+          <ul className={styles.chips} aria-label="Availability">
+            {PROFILE.availability.map((chip) => (
+              <li key={chip} className={styles.chip}>
+                <span className={styles.chipDot} aria-hidden="true" />
+                {chip}
+              </li>
+            ))}
+          </ul>
+        )}
+
         <ul className={styles.facts}>
           {FACTS.map((fact) => (
             <Fact key={fact.id} {...fact} />

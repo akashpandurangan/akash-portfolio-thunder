@@ -12,6 +12,8 @@ export const PROFILE = {
   role: 'Product Designer / UI/UX Designer',
   experience: '5+ years',
   lastCompany: 'QuickPlay Pvt Ltd, Chennai',
+  // Chips under the name on the card (availability). Add a string for another chip; empty the list to hide the row.
+  availability: ['Immediate joiner'],
 }
 
 /*
