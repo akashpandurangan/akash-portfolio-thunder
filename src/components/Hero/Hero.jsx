@@ -1,9 +1,9 @@
-import boltBackground from '../../assets/hero/bolt-bg.svg'
 import brandSonyLiv from '../../assets/hero/brand-sonyliv.webp'
 import brandTwo from '../../assets/hero/brand-2.svg'
 import brandThree from '../../assets/hero/brand-3.svg'
 import BrandChip from './BrandChip'
 import LightningTrail from './LightningTrail'
+import LivingLandscape from './LivingLandscape'
 import styles from './Hero.module.css'
 
 /* Entrance delays (ms): the reference staggers badge → headline → summary → actions by roughly 100ms. */
@@ -13,9 +13,7 @@ export default function Hero() {
   return (
     <section id="home" className={styles.hero} aria-labelledby="hero-title">
       <div className={styles.card}>
-        <div className={styles.boltFrame} aria-hidden="true">
-          <img className={styles.bolt} src={boltBackground} alt="" width="738" height="1002" />
-        </div>
+        <LivingLandscape />
         <div className={styles.glow} aria-hidden="true" />
         <LightningTrail />
 
@@ -47,7 +45,8 @@ export default function Hero() {
             From product strategy to scalable design systems, I turn complex ideas into intuitive experiences.
           </p>
 
-          <div className={`${styles.item} ${styles.actions}`} style={delay(240)}>
+          {/* data-landscape-avoid: the landscape along the bottom of the hero stays below this row (see useLandscapeFit). */}
+          <div className={`${styles.item} ${styles.actions}`} style={delay(240)} data-landscape-avoid>
             <p className={styles.focus}>Product Strategy · Experience Architecture · Design Systems</p>
             <a className={styles.cta} href="#projects">
               View Selected Work

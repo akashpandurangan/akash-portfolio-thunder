@@ -1,0 +1,1746 @@
+/*
+ * "A Living Landscape": the sunset mountain hero (see LivingLandscape.jsx).
+ *
+ * The base styles are the approved reference itself: the dusk sky and the glow around a sun that has all but set, the
+ * traced ridges, fog, pines and clouds. That still scene is what visitors who prefer reduced motion see. All motion is
+ * added in the prefers-reduced-motion: no-preference block at the end; the cycle starts on the reference frame (a
+ * negative animation-delay, --ll-offset), so the first thing anyone sees is the reference, and at 37.5s of every cycle
+ * every extra layer (the other skies, wash, stars, weather) is at opacity 0.
+ *
+ * The component covers the whole hero. The STAGE (the traced land, its sun and fog) is fixed to the bottom edge at the
+ * size of the reference and never changes shape; the SKY and the WEATHER fill the hero from top to bottom behind the copy.
+ *
+ * One cycle is 80 seconds and every phase-driven layer runs the same animation from the same moment, so the layers stay
+ * in step. Keyframe percentages are seconds / 80 * 100, with the cycle's own clock starting at sunrise:
+ *    0 -  8s  sunrise        (0% - 10%)       40 - 54s  night, stars         (50% - 67.5%)
+ *    8 - 28s  day            (10% - 35%)      54 - 72s  rain, far lightning (67.5% - 90%)
+ *   28 - 40s  sunset         (35% - 50%)      72 - 80s  clearing back to sunrise (90% - 100%)
+ * The reference sunset is at 37.5s (46.875%). Every change of sky or weather is a long crossfade of ten seconds or more
+ * (a sky fades in over the one before it, which leaves once it is covered), so nothing ever cuts. Opacity and transform
+ * are the only properties animated.
+ *
+ * The sky behind the hero copy stays dark in the dark theme (and light in the light one) in every state, so the copy
+ * keeps its contrast: the bright colours of day, sunrise and sunset live low in the sky, near the horizon.
+ */
+
+.root {
+  --ll-cycle: 80s;
+  --ll-offset: -37.5s; /* start on the reference sunset */
+  /* Scale of the stage (set by the hero, see useLandscapeFit): the reference's 1710 x 380 box maps to sx x sy. */
+  --ll-sx: 1;
+  --ll-sy: 1;
+  --ll-s: calc(380px * var(--ll-sy)); /* the stage's height: the skies' gradients are laid out from the bottom edge in multiples of it */
+  --ll-sun: calc(80px * var(--ll-sx));
+  /* Where the copy is (set by useLandscapeFit): the sky above its first line, and how wide that line is. The far lightning and
+     the stars keep out of the way of it, so nothing bright sits behind the text. */
+  --ll-band: 260px;
+  --ll-copy-w: 240px;
+
+  /* Dark theme: the reference's own tones, measured on the image. */
+  --ll-far-top: #1e1b1b;
+  --ll-far-mid: #282525;
+  --ll-far-bottom: #212122;
+  --ll-mountain-top: #321d17;
+  --ll-mountain-mid: #212021;
+  --ll-mountain-bottom: #1f1f20;
+  --ll-dark-top: #161616;
+  --ll-dark-bottom: #111112;
+  --ll-black: #0b0a0a;
+  --ll-wisp: #fff0e8;
+  --ll-wisp-gain: 1;
+  --ll-fog: #767678;
+  --ll-haze: #a8b2c9;
+  --ll-slope-shade: #000;
+  --ll-slope-lit: #ffa35c;
+  --ll-rim-warm: #ffc27d;
+  --ll-mist-rgb: 150, 154, 164;
+  --ll-star: #fff;
+
+  /* The skies, from the bottom edge up (to top): the stops are in multiples of the stage's height, then shares of the hero's. */
+  --ll-sky-dusk: linear-gradient(to top, #483228 0, #483228 calc(var(--ll-s) * 0.37), #3e2e28 calc(var(--ll-s) * 0.46), #332622 calc(var(--ll-s) * 0.5), #2a211e calc(var(--ll-s) * 0.54), #231c1b calc(var(--ll-s) * 0.58), #1e1a19 calc(var(--ll-s) * 0.62), #1b1817 calc(var(--ll-s) * 0.68), #151313 calc(var(--ll-s) * 0.76), #151313 calc(var(--ll-s) * 0.88), rgba(21, 19, 19, 0) var(--ll-s));
+  --ll-sky-dawn: linear-gradient(to top, #5c4036 0, #5c4036 calc(var(--ll-s) * 0.37), #4d3633 calc(var(--ll-s) * 0.46), #34282a calc(var(--ll-s) * 0.58), #1f1b1c calc(var(--ll-s) * 0.66), #161517 calc(var(--ll-s) * 0.76), #141416 calc(var(--ll-s) * 0.88), rgba(20, 20, 22, 0) var(--ll-s));
+  --ll-sky-sunset: linear-gradient(to top, #e0703a 0, #d9583f calc(var(--ll-s) * 0.37), #b03e5a calc(var(--ll-s) * 0.5), #7a3469 calc(var(--ll-s) * 0.62), #43255a calc(var(--ll-s) * 0.78), #1f1236 calc(var(--ll-s) * 0.92), #140d24 var(--ll-s), #110c1c 60%, #100d17 100%);
+  --ll-sky-day: linear-gradient(to top, #86a6c6 0, #7c9dbf calc(var(--ll-s) * 0.37), #5f84ab calc(var(--ll-s) * 0.5), #46698f calc(var(--ll-s) * 0.62), #31527a calc(var(--ll-s) * 0.75), #1f3b5c calc(var(--ll-s) * 0.88), #152b45 var(--ll-s), #11212f 50%, #0f1a27 62%, #0e151e 75%, #101319 100%);
+  --ll-sky-night: linear-gradient(to top, #1f2d47 0, #1f2d47 calc(var(--ll-s) * 0.37), #19243a calc(var(--ll-s) * 0.55), #141b28 calc(var(--ll-s) * 0.7), #10151d calc(var(--ll-s) * 0.85), #0e131b var(--ll-s), #0c111a 50%, #0a0e18 100%);
+  --ll-sky-storm: linear-gradient(to top, #2f3742 0, #2f3742 calc(var(--ll-s) * 0.37), #262d36 calc(var(--ll-s) * 0.55), #1b2027 calc(var(--ll-s) * 0.75), #14171c var(--ll-s), #121418 50%, #101216 100%);
+  --ll-wash: radial-gradient(ellipse 150% 108% at 45% 100%, rgba(255, 150, 70, 0.34) 0%, rgba(240, 110, 100, 0.21) 30%, rgba(170, 85, 150, 0.12) 55%, rgba(120, 70, 150, 0.05) 78%, transparent 100%);
+  /* The rain's overcast: shading laid over the storm sky across the whole hero, darker toward the top and the corners. */
+  --ll-storm-shade:
+    linear-gradient(to bottom, rgba(4, 6, 10, 0.55) 0, rgba(4, 6, 10, 0.3) 24%, rgba(4, 6, 10, 0) 52%),
+    radial-gradient(ellipse 85% 75% at 50% 60%, transparent 50%, rgba(4, 6, 10, 0.42) 100%);
+  --ll-rain-near: var(--ll-rain-near-dark);
+  --ll-rain-far: var(--ll-rain-far-dark);
+  /* The glow around the sun, as a gradient across its own box (an ellipse 450 x 125 in view-box units): the colour at each
+     step is what the reference has that far from the sun, measured straight up from it. */
+  --ll-glow-gradient: radial-gradient(
+    ellipse 50% 50% at 50% 50%,
+    rgb(254, 175, 62) 0%,
+    rgb(252, 166, 69) 4%,
+    rgb(248, 117, 31) 12%,
+    rgb(225, 96, 26) 20%,
+    rgb(198, 80, 24) 28%,
+    rgb(166, 66, 23) 36%,
+    rgb(133, 54, 22) 44%,
+    rgb(100, 43, 21) 52%,
+    rgb(77, 36, 22) 60%,
+    rgb(60, 31, 21) 68%,
+    rgba(48, 27, 21, 0.85) 76%,
+    rgba(40, 25, 21, 0.4) 88%,
+    transparent 100%
+  );
+
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  contain: layout paint style;
+  pointer-events: none;
+}
+
+/* Light theme: the same scene in paler tones, so it sits on the light hero instead of darkening it. The sky behind the copy stays light. */
+:global(html[data-theme='light']) .root {
+  --ll-far-top: #b4bacb;
+  --ll-far-mid: #aab1c4;
+  --ll-far-bottom: #a4acc0;
+  --ll-mountain-top: #8d96ab;
+  --ll-mountain-mid: #8590a6;
+  --ll-mountain-bottom: #7e88a0;
+  --ll-dark-top: #5c6882;
+  --ll-dark-bottom: #4a5572;
+  --ll-black: #313a52;
+  --ll-wisp: #ffffff;
+  --ll-wisp-gain: 9;
+  --ll-fog: #ffffff;
+  --ll-haze: #ffffff;
+  --ll-slope-shade: #26304f;
+  --ll-slope-lit: #fff3e8;
+  --ll-rim-warm: #ffb27a;
+  --ll-mist-rgb: 255, 255, 255;
+  --ll-star: #5b69a8;
+  --ll-sky-dusk: linear-gradient(to top, #ee9a72 0, #ee9a72 calc(var(--ll-s) * 0.37), #f3bb98 calc(var(--ll-s) * 0.48), #f2dccd calc(var(--ll-s) * 0.62), #f0ebe8 calc(var(--ll-s) * 0.82), rgba(241, 241, 241, 0) var(--ll-s));
+  --ll-sky-dawn: linear-gradient(to top, #f8bf9a 0, #f8bf9a calc(var(--ll-s) * 0.37), #f6cdb8 calc(var(--ll-s) * 0.48), #f3e0dc calc(var(--ll-s) * 0.6), #efecee calc(var(--ll-s) * 0.82), rgba(241, 241, 241, 0) var(--ll-s));
+  --ll-sky-sunset: linear-gradient(to top, #ee8a5a 0, #f09a74 calc(var(--ll-s) * 0.37), #f2a098 calc(var(--ll-s) * 0.5), #c9a4d3 calc(var(--ll-s) * 0.62), #d9cbe6 calc(var(--ll-s) * 0.74), #ebe6f2 calc(var(--ll-s) * 0.86), #f0eff4 calc(var(--ll-s) * 0.94), #f0f0f4 100%);
+  --ll-sky-day: linear-gradient(to top, #9cc4ec 0, #9cc4ec calc(var(--ll-s) * 0.37), #b4d3f0 calc(var(--ll-s) * 0.5), #d6e6f5 calc(var(--ll-s) * 0.68), #edf2f7 calc(var(--ll-s) * 0.88), #f0f3f7 var(--ll-s), #f0f2f5 100%);
+  --ll-sky-night: linear-gradient(to top, #5f6ea8 0, #5f6ea8 calc(var(--ll-s) * 0.37), #7e8bbd calc(var(--ll-s) * 0.5), #b8c0dc calc(var(--ll-s) * 0.68), #e6e8f0 calc(var(--ll-s) * 0.88), #eceef4 var(--ll-s), #eff0f4 100%);
+  --ll-sky-storm: linear-gradient(to top, #6f7889 0, #6f7889 calc(var(--ll-s) * 0.37), #8e96a4 calc(var(--ll-s) * 0.52), #b6bcc6 calc(var(--ll-s) * 0.7), #e4e6ea calc(var(--ll-s) * 0.92), #eaecef var(--ll-s), #eff0f2 100%);
+  --ll-wash: radial-gradient(ellipse 125% 72% at 45% 100%, rgba(255, 150, 80, 0.4) 0%, rgba(245, 120, 110, 0.22) 30%, rgba(180, 110, 190, 0.08) 55%, transparent 80%);
+  /* On the light page the overcast shades only the sky above the copy and the top corners, so the text keeps its contrast. */
+  --ll-storm-shade:
+    linear-gradient(to bottom, rgba(58, 68, 90, 0.42) 0, rgba(58, 68, 90, 0.2) calc(var(--ll-band) * 0.55), rgba(58, 68, 90, 0) calc(var(--ll-band) - 8px)),
+    radial-gradient(ellipse 40% 34% at 0% 0%, rgba(58, 68, 90, 0.22), transparent 72%),
+    radial-gradient(ellipse 40% 34% at 100% 0%, rgba(58, 68, 90, 0.22), transparent 72%);
+  --ll-rain-near: var(--ll-rain-near-light);
+  --ll-rain-far: var(--ll-rain-far-light);
+  /* On the light page the glow fades to a soft peach, not the dark browns of the dark reference. */
+  --ll-glow-gradient: radial-gradient(
+    ellipse 50% 50% at 50% 50%,
+    rgb(255, 205, 130) 0%,
+    rgb(255, 178, 104) 12%,
+    rgba(255, 150, 88, 0.88) 28%,
+    rgba(255, 140, 90, 0.58) 48%,
+    rgba(255, 150, 110, 0.3) 68%,
+    rgba(255, 165, 135, 0.1) 86%,
+    transparent 100%
+  );
+}
+
+.defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* ---- the sky, from the top of the hero to the bottom: gradients that crossfade ---- */
+
+.sky,
+.weather {
+  position: absolute;
+  inset: 0;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+}
+
+/* The reference is the dusk sky alone: every other sky (dawn included) is invisible until the cycle brings it in. */
+.skyDawn {
+  background: var(--ll-sky-dawn);
+  opacity: 0;
+}
+
+.skyDay {
+  background: var(--ll-sky-day);
+  opacity: 0;
+}
+
+.skySunset {
+  background: var(--ll-sky-sunset);
+  opacity: 0;
+}
+
+.skyDusk {
+  background: var(--ll-sky-dusk);
+}
+
+.skyNight {
+  background: var(--ll-sky-night);
+  opacity: 0;
+}
+
+.skyStorm {
+  background: var(--ll-storm-shade), var(--ll-sky-storm);
+  opacity: 0;
+}
+
+.skyWash {
+  background: var(--ll-wash);
+  opacity: 0;
+}
+
+/* ---- weather across the whole hero: stars, shooting stars, lightning ---- */
+
+.starField {
+  position: absolute;
+  inset: 0;
+  visibility: hidden;
+  opacity: 0;
+  /* No stars right behind the first line of copy (its small, light text): a soft window the size of that line. */
+  -webkit-mask-image:
+    linear-gradient(to right, #000 calc(50% - var(--ll-copy-w) / 2 - 36px), transparent calc(50% - var(--ll-copy-w) / 2 - 12px), transparent calc(50% + var(--ll-copy-w) / 2 + 12px), #000 calc(50% + var(--ll-copy-w) / 2 + 36px)),
+    linear-gradient(to bottom, #000 calc(var(--ll-band) - 8px), transparent calc(var(--ll-band) + 2px), transparent calc(var(--ll-band) + 26px), #000 calc(var(--ll-band) + 38px));
+  mask-image:
+    linear-gradient(to right, #000 calc(50% - var(--ll-copy-w) / 2 - 36px), transparent calc(50% - var(--ll-copy-w) / 2 - 12px), transparent calc(50% + var(--ll-copy-w) / 2 + 12px), #000 calc(50% + var(--ll-copy-w) / 2 + 36px)),
+    linear-gradient(to bottom, #000 calc(var(--ll-band) - 8px), transparent calc(var(--ll-band) + 2px), transparent calc(var(--ll-band) + 26px), #000 calc(var(--ll-band) + 38px));
+}
+
+.stars {
+  position: absolute;
+  inset: 0;
+}
+
+:global(html[data-theme='light']) .stars circle {
+  fill: var(--ll-star);
+}
+
+/* The soft glow round the brightest stars only suits a dark sky. */
+:global(html[data-theme='light']) .starGlow {
+  display: none;
+}
+
+/* A faint wash of colour high in the night sky, in the band above the copy, for depth. */
+.nebula {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: var(--ll-band);
+  background:
+    radial-gradient(ellipse 30% 85% at 16% 40%, rgba(90, 110, 200, 0.1), transparent 72%),
+    radial-gradient(ellipse 32% 75% at 84% 48%, rgba(130, 90, 190, 0.08), transparent 72%);
+}
+
+:global(html[data-theme='light']) .nebula {
+  display: none;
+}
+
+/* A shooting star: a thin streak that crosses a patch of the upper sky in about a second, twice a night. */
+.shoot {
+  position: absolute;
+  width: calc(130px * var(--ll-sx));
+  min-width: 60px;
+  height: 1.5px;
+  border-radius: 1px;
+  background: linear-gradient(to left, rgba(235, 242, 255, 0.95), rgba(255, 255, 255, 0));
+  opacity: 0;
+  transform: rotate(-23deg);
+}
+
+.shootA {
+  top: 7%;
+  left: 74%;
+}
+
+.shootB {
+  top: 5%;
+  left: 36%;
+}
+
+/* Distant lightning: only a soft glow in the sky, never a line. */
+.flash {
+  position: absolute;
+  opacity: 0;
+  background: radial-gradient(ellipse 55% 45% at 50% 30%, rgba(225, 235, 255, 0.46), rgba(255, 175, 120, 0.12) 48%, transparent 72%);
+}
+
+.flashA {
+  top: 0;
+  left: 52%;
+  width: 40%;
+  height: calc(var(--ll-band) * 0.92);
+}
+
+.flashB {
+  top: 0;
+  left: 6%;
+  width: 38%;
+  height: calc(var(--ll-band) * 0.85);
+}
+
+/* ---- the stage: the reference's view box, scaled to the hero and fixed to its bottom edge. The shapes never change. ---- */
+
+.stage {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: calc(1710px * var(--ll-sx));
+  height: calc(380px * var(--ll-sy));
+  transform: translateX(-50%);
+}
+
+.art {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  max-width: none; /* the page resets svg to max-width: 100% */
+  height: 100%;
+}
+
+/* The farthest ridge is a little soft: distance. */
+.soft {
+  filter: blur(calc(var(--ll-sx) * 0.45px));
+}
+
+/* The sun rides a "track" as big as the stage, so a percentage move is a move across the scene. */
+.sunTrack {
+  position: absolute;
+  inset: 0;
+  transform: translate(var(--ll-sun-x), var(--ll-sun-y)); /* the reference: only the top cap of the sun above the ridge */
+}
+
+/* The glow around the sun is the ellipse (450 x 125) fitted to the reference, centred a little above the sun. */
+.sunGlow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(900px * var(--ll-sx));
+  height: calc(250px * var(--ll-sy));
+  margin: calc(-161px * var(--ll-sy)) 0 0 calc(-450px * var(--ll-sx));
+}
+
+.glowWarm {
+  background: var(--ll-glow-gradient);
+}
+
+/* A second, wider lobe of the same glow to the right of the sun: the reference's glow reaches further that way
+   (view-box: centre (1138, 235), 380 x 110). */
+.glowLobe {
+  position: absolute;
+  top: 32.9%;
+  left: 44.3%;
+  width: 44.4%;
+  height: 57.9%;
+  background: var(--ll-glow-gradient);
+  opacity: 0.7;
+}
+
+/* Horizon band (from the reference): a broad warm glow along the horizon, strongest to the right of the sun, with a small
+   one to the left. In view-box units: right (1238, 220) 480 x 45; left (628, 225) 140 x 25. */
+.glowBand {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 32.7% 18% at 72.4% 56.6%, rgba(255, 120, 50, 0.34) 0%, rgba(255, 110, 45, 0.22) 45%, transparent 100%),
+    radial-gradient(ellipse 8.2% 6.6% at 36.7% 59.2%, rgba(255, 120, 55, 0.26) 0%, transparent 100%);
+}
+
+.glowDay {
+  background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(255, 246, 214, 0.75) 0%, rgba(255, 236, 190, 0.35) 30%, rgba(255, 228, 170, 0.12) 60%, transparent 100%);
+  opacity: 0;
+}
+
+.sunDisc {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--ll-sun);
+  height: var(--ll-sun);
+  margin: calc(var(--ll-sun) / -2) 0 0 calc(var(--ll-sun) / -2);
+  border-radius: 50%;
+}
+
+/* The reference sun: a pale warm yellow, (254, 212, 122). */
+.sunWarm {
+  background: #fed47a;
+  box-shadow: 0 0 calc(34px * var(--ll-sx)) rgba(255, 150, 50, 0.65);
+}
+
+.sunDay {
+  background: radial-gradient(circle at 40% 38%, #fffdf0 0%, #ffe9a0 70%, #ffd96a 100%);
+  box-shadow: 0 0 calc(40px * var(--ll-sx)) rgba(255, 225, 140, 0.5);
+  opacity: 0;
+}
+
+/* The reference's own two clouds (traced), exactly where it has them. */
+.refClouds {
+  position: absolute;
+  inset: 0;
+  fill: var(--ll-wisp);
+  --ll-cg: var(--ll-wisp-gain);
+}
+
+.far,
+.mountain,
+.dark,
+.black {
+  position: absolute;
+  inset: 0;
+}
+
+/* The sun's warm light on a ridge (the reference: the far ridges and the face of the central mountain), and along its crest. */
+.lit {
+  position: absolute;
+  inset: 0;
+}
+
+/* Haze at the foot of a ridge: its strength at the reference sunset is what the base style shows. */
+.haze {
+  position: absolute;
+  inset: 0;
+  opacity: 0.3;
+}
+
+/* Mist between the ridges: soft patches wider than the stage that drift sideways. */
+.mist {
+  position: absolute;
+  right: 0;
+  left: 0;
+  opacity: 0.35;
+}
+
+.mistFar {
+  top: 52%;
+  height: 28%;
+}
+
+.mistMid {
+  top: 64%;
+  height: 24%;
+}
+
+.mistLow {
+  top: 74%;
+  height: 18%;
+}
+
+.mistDrift {
+  position: absolute;
+  top: 0;
+  left: -20%;
+  width: 140%;
+  height: 100%;
+  background:
+    radial-gradient(ellipse 22% 42% at 16% 56%, rgba(var(--ll-mist-rgb), 0.15), transparent 72%),
+    radial-gradient(ellipse 27% 36% at 50% 62%, rgba(var(--ll-mist-rgb), 0.11), transparent 72%),
+    radial-gradient(ellipse 20% 44% at 84% 52%, rgba(var(--ll-mist-rgb), 0.14), transparent 72%);
+}
+
+.mistMid .mistDrift {
+  background:
+    radial-gradient(ellipse 25% 40% at 30% 58%, rgba(var(--ll-mist-rgb), 0.14), transparent 72%),
+    radial-gradient(ellipse 22% 38% at 66% 50%, rgba(var(--ll-mist-rgb), 0.12), transparent 72%);
+}
+
+.mistRain {
+  top: 44%;
+  height: 46%;
+  opacity: 0;
+}
+
+.mistRain .mistDrift {
+  background:
+    radial-gradient(ellipse 34% 46% at 24% 62%, rgba(var(--ll-mist-rgb), 0.2), transparent 72%),
+    radial-gradient(ellipse 32% 42% at 72% 56%, rgba(var(--ll-mist-rgb), 0.18), transparent 72%),
+    linear-gradient(to top, transparent 0, rgba(var(--ll-mist-rgb), 0.14) 30%, transparent 78%);
+}
+
+.mistLow .mistDrift {
+  background:
+    radial-gradient(ellipse 30% 46% at 22% 60%, rgba(var(--ll-mist-rgb), 0.12), transparent 72%),
+    radial-gradient(ellipse 26% 42% at 70% 56%, rgba(var(--ll-mist-rgb), 0.1), transparent 72%);
+}
+
+/* The light of the hour, laid over the far ridges, the central mountain and the fog (the dark hills and the pines stay silhouettes). */
+.tints {
+  position: absolute;
+  inset: 0;
+}
+
+.tint {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+.tintDay {
+  background: linear-gradient(to top, rgba(180, 205, 235, 0.3) 0%, rgba(180, 205, 235, 0.12) 50%, transparent 85%);
+}
+
+.tintNight {
+  background: linear-gradient(to top, rgba(70, 100, 190, 0.3) 0%, rgba(50, 80, 170, 0.12) 50%, transparent 85%);
+}
+
+.tintStorm {
+  background: linear-gradient(to top, rgba(14, 18, 28, 0.42) 0%, rgba(14, 18, 28, 0.18) 60%, transparent 92%);
+}
+
+:global(html[data-theme='light']) .tintDay {
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.14) 50%, transparent 85%);
+}
+
+:global(html[data-theme='light']) .tintStorm {
+  background: linear-gradient(to top, rgba(40, 52, 76, 0.32) 0%, rgba(40, 52, 76, 0.13) 60%, transparent 92%);
+}
+
+/* Lightning softly lighting the mountains. */
+.flashLand {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: radial-gradient(ellipse 70% 62% at 55% 52%, rgba(205, 222, 255, 0.2), rgba(205, 222, 255, 0.07) 42%, transparent 78%);
+}
+
+/* Fog banks between the ridges (soft ellipses fitted to the reference): they drift sideways and thin and thicken with the weather. */
+.fog {
+  position: absolute;
+  inset: 0;
+}
+
+.fogDrift {
+  position: absolute;
+  inset: 0;
+}
+
+/* Rain in front, across the whole hero: two tiles of streaks, moved by exactly one tile per loop, so it never visibly
+   repeats or jumps. It is weaker over the copy (the mask), so the text stays easy to read; the whole sheet sways a little, as in gusts of wind. */
+.rain {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  visibility: hidden;
+  opacity: 0;
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.3) 25%, rgba(0, 0, 0, 0.2) 70%, #000 86%);
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.3) 25%, rgba(0, 0, 0, 0.2) 70%, #000 86%);
+}
+
+.rainGust {
+  position: absolute;
+  inset: 0;
+}
+
+.rainNear,
+.rainFar {
+  position: absolute;
+  left: 0;
+}
+
+.rainNear {
+  top: calc(var(--ll-near-h) * -1);
+  width: calc(100% + var(--ll-near-w));
+  height: calc(100% + var(--ll-near-h));
+  background-image: var(--ll-rain-near);
+  background-size: var(--ll-near-w) var(--ll-near-h);
+}
+
+.rainFar {
+  top: calc(var(--ll-far-h) * -1);
+  width: calc(100% + var(--ll-far-w));
+  height: calc(100% + var(--ll-far-h));
+  background-image: var(--ll-rain-far);
+  background-size: var(--ll-far-w) var(--ll-far-h);
+}
+
+/* ================================================================================================================== */
+/* Motion. Everything below is skipped when the visitor asks for reduced motion: the scene stays the reference sunset. */
+/* ================================================================================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+  .root {
+    opacity: 0;
+  }
+
+  :global(html[data-ready='true']) .root {
+    animation: ll-in 1.8s ease-out 0.3s both;
+  }
+
+  /* The sky, crossfading. A sky fades in over the one before it and that one leaves once it is covered, so no gap ever shows the hero behind. */
+  .skyDawn {
+    animation: ll-sky-dawn var(--ll-cycle) ease-in-out var(--ll-offset) infinite;
+  }
+
+  .skyDay {
+    animation: ll-sky-day var(--ll-cycle) ease-in-out var(--ll-offset) infinite;
+  }
+
+  .skySunset {
+    animation: ll-sky-sunset var(--ll-cycle) ease-in-out var(--ll-offset) infinite;
+  }
+
+  .skyDusk {
+    animation: ll-sky-dusk var(--ll-cycle) ease-in-out var(--ll-offset) infinite;
+  }
+
+  .skyNight {
+    animation: ll-sky-night var(--ll-cycle) ease-in-out var(--ll-offset) infinite;
+  }
+
+  .skyStorm {
+    animation: ll-sky-storm var(--ll-cycle) ease-in-out var(--ll-offset) infinite;
+  }
+
+  .skyWash {
+    animation: ll-sky-wash var(--ll-cycle) ease-in-out var(--ll-offset) infinite;
+  }
+
+  /* The light of the hour on the land. */
+  .lit {
+    animation: ll-tint-warm var(--ll-cycle) ease-in-out var(--ll-offset) infinite;
+  }
+
+  .haze {
+    animation: ll-haze var(--ll-cycle) ease-in-out var(--ll-offset) infinite;
+  }
+
+  .tintDay {
+    animation: ll-tint-day var(--ll-cycle) ease-in-out var(--ll-offset) infinite;
+  }
+
+  .tintNight {
+    animation: ll-tint-night var(--ll-cycle) ease-in-out var(--ll-offset) infinite;
+  }
+
+  .tintStorm {
+    animation: ll-tint-storm var(--ll-cycle) ease-in-out var(--ll-offset) infinite;
+  }
+
+  /* Sun: a slow arc across the stage, behind the ridges at both ends; the glow goes where the sun goes. */
+  .sunTrack {
+    animation: ll-sun var(--ll-cycle) linear var(--ll-offset) infinite;
+  }
+
+  .glowWarm {
+    animation: ll-glow-warm var(--ll-cycle) ease-in-out var(--ll-offset) infinite;
+  }
+
+  .glowBand,
+  .glowLobe {
+    animation: ll-glow-warm var(--ll-cycle) ease-in-out var(--ll-offset) infinite;
+  }
+
+  .glowDay {
+    animation: ll-glow-day var(--ll-cycle) ease-in-out var(--ll-offset) infinite;
+  }
+
+  .sunWarm {
+    animation: ll-sun-warm var(--ll-cycle) ease-in-out var(--ll-offset) infinite;
+  }
+
+  .sunDay {
+    animation: ll-sun-day var(--ll-cycle) ease-in-out var(--ll-offset) infinite;
+  }
+
+  /* Stars across the whole hero, in five sets that each twinkle on their own rhythm. */
+  .starField {
+    visibility: visible;
+    animation: ll-stars var(--ll-cycle) ease-in-out var(--ll-offset) infinite;
+  }
+
+  .starsA {
+    animation: ll-twinkle-a 9s ease-in-out infinite alternate;
+  }
+
+  .starsB {
+    animation: ll-twinkle-b 6.3s ease-in-out -2.1s infinite alternate;
+  }
+
+  .starsC {
+    animation: ll-twinkle-c 4.4s ease-in-out -1.3s infinite;
+  }
+
+  .starsD {
+    animation: ll-twinkle-d 3.3s ease-in-out -2.4s infinite alternate;
+  }
+
+  .starsE {
+    animation: ll-twinkle-e 5.2s ease-in-out -0.8s infinite;
+  }
+
+  .shootA {
+    animation: ll-shoot-a var(--ll-cycle) linear var(--ll-offset) infinite;
+  }
+
+  .shootB {
+    animation: ll-shoot-b var(--ll-cycle) linear var(--ll-offset) infinite;
+  }
+
+  /* The reference's own two clouds sway a little and come and go with the light. */
+  .refClouds {
+    animation:
+      ll-ref-clouds var(--ll-cycle) ease-in-out var(--ll-offset) infinite,
+      ll-cloud-sway 70s ease-in-out infinite alternate;
+  }
+
+  .flashA {
+    animation: ll-flash-a var(--ll-cycle) ease-in-out var(--ll-offset) infinite;
+  }
+
+  .flashB {
+    animation: ll-flash-b var(--ll-cycle) ease-in-out var(--ll-offset) infinite;
+  }
+
+  .flashLand {
+    animation: ll-flash-land var(--ll-cycle) ease-in-out var(--ll-offset) infinite;
+  }
+
+  /* Parallax: the ridges drift a few pixels, the far one least, and come back to exactly where the reference has them. */
+  .far {
+    animation: ll-drift-far var(--ll-cycle) ease-in-out infinite;
+  }
+
+  .mountain {
+    animation: ll-drift-mid var(--ll-cycle) ease-in-out infinite;
+  }
+
+  .dark {
+    animation: ll-drift-near var(--ll-cycle) ease-in-out infinite;
+  }
+
+  .fogA {
+    animation: ll-fog var(--ll-cycle) ease-in-out var(--ll-offset) infinite;
+  }
+
+  .fogB {
+    animation: ll-fog var(--ll-cycle) ease-in-out calc(var(--ll-offset) - 9s) infinite;
+  }
+
+  .fogA .fogDrift {
+    animation: ll-fog-drift-a 95s ease-in-out infinite alternate;
+  }
+
+  .fogB .fogDrift {
+    animation: ll-fog-drift-b 130s ease-in-out infinite alternate;
+  }
+
+  .mist {
+    animation: ll-mist var(--ll-cycle) ease-in-out var(--ll-offset) infinite;
+  }
+
+  .mistFar .mistDrift {
+    animation: ll-fog-drift-b 150s ease-in-out infinite alternate;
+  }
+
+  .mistMid .mistDrift {
+    animation: ll-fog-drift-a 190s ease-in-out infinite alternate;
+  }
+
+  .mistLow .mistDrift {
+    animation: ll-fog-drift-b 230s ease-in-out -60s infinite alternate;
+  }
+
+  .mistRain {
+    animation: ll-mist-rain var(--ll-cycle) ease-in-out var(--ll-offset) infinite;
+  }
+
+  .mistRain .mistDrift {
+    animation: ll-fog-drift-a 170s ease-in-out infinite alternate;
+  }
+
+  .rain {
+    visibility: visible;
+    animation: ll-rain var(--ll-cycle) ease-in-out var(--ll-offset) infinite;
+  }
+
+  .rainGust {
+    animation: ll-gust 11s ease-in-out infinite alternate;
+  }
+
+  .rainNear {
+    animation: ll-fall-near 1.7s linear infinite;
+  }
+
+  .rainFar {
+    animation: ll-fall-far 2.5s linear infinite;
+  }
+
+  /* Stars and rain only animate in their part of the cycle (data-night / data-rain, set by useLandscapeActivity from the
+     cycle's clock); the rest of the time they are invisible and must cost nothing. */
+  .root:not([data-night='true']) :is(.starsA, .starsB, .starsC, .starsD, .starsE),
+  .root:not([data-rain='true']) :is(.rainNear, .rainFar, .rainGust) {
+    animation: none;
+  }
+
+  /* Phase-driven layers are paused while their part of the cycle is not on (data-idle, set by useLandscapeActivity). */
+  .root[data-idle~='day'] [data-phase='day'],
+  .root[data-idle~='sunset'] [data-phase='sunset'],
+  .root[data-idle~='dusk'] [data-phase='dusk'],
+  .root[data-idle~='night'] [data-phase='night'],
+  .root[data-idle~='storm'] [data-phase='storm'],
+  .root[data-idle~='storm'] [data-phase='storm'] * {
+    animation-play-state: paused !important;
+  }
+
+  /* Paused while the hero is off screen or the tab is hidden (data-paused, set by the component), and until the intro has left. */
+  .root[data-paused='true'],
+  .root[data-paused='true'] *,
+  :global(html:not([data-ready='true'])) .root,
+  :global(html:not([data-ready='true'])) .root * {
+    animation-play-state: paused !important;
+  }
+
+  /* Phones: fewer layers and no drifting, for battery and frame rate. The cycle and its crossfades stay. */
+  @media (max-width: 767px) {
+    .fogB,
+    .mistFar,
+    .mistLow,
+    .starsC,
+    .starsD,
+    .rainFar,
+    .flashB,
+    .shootB {
+      display: none;
+    }
+
+    .far,
+    .mountain,
+    .dark,
+    .starsA,
+    .starsB,
+    .fogA .fogDrift,
+    .mistMid .mistDrift,
+    .rainGust {
+      animation: none;
+    }
+
+    .refClouds {
+      animation: ll-ref-clouds var(--ll-cycle) ease-in-out var(--ll-offset) infinite;
+    }
+
+    .starsA,
+    .starsB {
+      opacity: 0.85;
+    }
+  }
+}
+
+/* ---- keyframes: seconds / 80 * 100, with the cycle's clock starting at sunrise ---- */
+
+@keyframes ll-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Dawn is the sky of the start of the cycle and the floor under the others: it leaves while the sunset covers it and the
+   dusk of the reference (46.875%) stands alone, and is back before the night lets go. */
+@keyframes ll-sky-dawn {
+  0%,
+  40% {
+    opacity: 1;
+  }
+
+  44.5%,
+  52% {
+    opacity: 0;
+  }
+
+  62%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes ll-sky-day {
+  0%,
+  3% {
+    opacity: 0;
+  }
+
+  17%,
+  34% {
+    opacity: 1;
+  }
+
+  42%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* The colourful sky of the sunset: in as the day ends, out again by the time the sky is the reference's (46.875%). */
+@keyframes ll-sky-sunset {
+  0%,
+  28% {
+    opacity: 0;
+  }
+
+  38%,
+  43% {
+    opacity: 1;
+  }
+
+  46.875%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ll-sky-dusk {
+  0%,
+  30% {
+    opacity: 0;
+  }
+
+  44%,
+  56% {
+    opacity: 1;
+  }
+
+  60%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ll-sky-night {
+  0%,
+  47.5% {
+    opacity: 0;
+  }
+
+  60%,
+  74% {
+    opacity: 1;
+  }
+
+  79%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ll-sky-storm {
+  0%,
+  62% {
+    opacity: 0;
+  }
+
+  76%,
+  86% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+/* The warm light of sunrise and sunset spreading up from the horizon (none of it at the reference frame). */
+@keyframes ll-sky-wash {
+  0% {
+    opacity: 0.8;
+  }
+
+  6% {
+    opacity: 1;
+  }
+
+  14% {
+    opacity: 0.5;
+  }
+
+  22%,
+  30% {
+    opacity: 0;
+  }
+
+  37% {
+    opacity: 0.85;
+  }
+
+  41% {
+    opacity: 0.8;
+  }
+
+  44.5% {
+    opacity: 0.15;
+  }
+
+  46.875%,
+  88% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0.8;
+  }
+}
+
+/* The warm light on the ridges: full at the reference sunset (46.9%), a softer version at sunrise. */
+@keyframes ll-tint-warm {
+  0% {
+    opacity: 0.7;
+  }
+
+  10% {
+    opacity: 0.45;
+  }
+
+  20%,
+  32% {
+    opacity: 0;
+  }
+
+  39%,
+  46.875% {
+    opacity: 1;
+  }
+
+  54% {
+    opacity: 0.5;
+  }
+
+  60%,
+  86% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0.7;
+  }
+}
+
+/* Haze: a little at the reference sunset (the reference's own fog carries the distance there), thick by day and in the rain. */
+@keyframes ll-haze {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+
+  14% {
+    opacity: 1;
+  }
+
+  32% {
+    opacity: 0.9;
+  }
+
+  42%,
+  46.875% {
+    opacity: 0.3;
+  }
+
+  58% {
+    opacity: 0.8;
+  }
+
+  74%,
+  90% {
+    opacity: 1;
+  }
+}
+
+@keyframes ll-tint-day {
+  0%,
+  8% {
+    opacity: 0;
+  }
+
+  18%,
+  34% {
+    opacity: 0.9;
+  }
+
+  44%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ll-tint-night {
+  0%,
+  47% {
+    opacity: 0;
+  }
+
+  58%,
+  72% {
+    opacity: 1;
+  }
+
+  80%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ll-tint-storm {
+  0%,
+  64% {
+    opacity: 0;
+  }
+
+  76%,
+  86% {
+    opacity: 1;
+  }
+
+  99%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* The sun: up behind the ridge to the left of the central mountain, across the open sky, and down into the notch the
+   reference has it in (46.875% = (56.9%, 71.3%) of the stage), then out of sight. */
+@keyframes ll-sun {
+  0%,
+  100% {
+    transform: translate(36%, 86%);
+  }
+
+  5% {
+    transform: translate(37.5%, 72%);
+  }
+
+  10% {
+    transform: translate(40.5%, 58%);
+  }
+
+  17.5% {
+    transform: translate(44%, 48%);
+  }
+
+  25% {
+    transform: translate(47%, 45%);
+  }
+
+  32.5% {
+    transform: translate(51%, 49%);
+  }
+
+  37.5% {
+    transform: translate(54%, 57%);
+  }
+
+  43.75% {
+    transform: translate(56%, 66%);
+  }
+
+  46.875% {
+    transform: translate(56.9%, 71.3%);
+  }
+
+  50% {
+    transform: translate(57.5%, 80%);
+  }
+
+  52%,
+  99% {
+    transform: translate(57.6%, 86%);
+  }
+}
+
+@keyframes ll-glow-warm {
+  0% {
+    opacity: 0.9;
+  }
+
+  10% {
+    opacity: 0.45;
+  }
+
+  18%,
+  32% {
+    opacity: 0;
+  }
+
+  38% {
+    opacity: 0.7;
+  }
+
+  43%,
+  46.875% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.75;
+  }
+
+  54%,
+  88% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0.9;
+  }
+}
+
+@keyframes ll-glow-day {
+  0%,
+  2% {
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 0.4;
+  }
+
+  20% {
+    opacity: 0.75;
+  }
+
+  28% {
+    opacity: 0.65;
+  }
+
+  36% {
+    opacity: 0.1;
+  }
+
+  42%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ll-sun-warm {
+  0% {
+    opacity: 1;
+  }
+
+  12% {
+    opacity: 0.25;
+  }
+
+  22%,
+  30% {
+    opacity: 0;
+  }
+
+  37% {
+    opacity: 0.7;
+  }
+
+  43%,
+  50% {
+    opacity: 1;
+  }
+
+  51%,
+  99% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes ll-sun-day {
+  0%,
+  5% {
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 0.55;
+  }
+
+  22% {
+    opacity: 1;
+  }
+
+  29% {
+    opacity: 0.8;
+  }
+
+  37% {
+    opacity: 0.15;
+  }
+
+  42%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ll-stars {
+  0%,
+  51% {
+    opacity: 0;
+  }
+
+  64%,
+  78% {
+    opacity: 1;
+  }
+
+  87%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Five rhythms: slow and wide, quick and shallow, irregular, and a few bright ones that swell. Each is a loop that ends where it began. */
+@keyframes ll-twinkle-a {
+  from {
+    opacity: 0.5;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes ll-twinkle-b {
+  from {
+    opacity: 0.3;
+  }
+
+  to {
+    opacity: 0.95;
+  }
+}
+
+@keyframes ll-twinkle-c {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+
+  30% {
+    opacity: 1;
+  }
+
+  55% {
+    opacity: 0.62;
+  }
+
+  80% {
+    opacity: 0.95;
+  }
+}
+
+@keyframes ll-twinkle-d {
+  from {
+    opacity: 0.8;
+  }
+
+  to {
+    opacity: 0.35;
+  }
+}
+
+@keyframes ll-twinkle-e {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+
+  45% {
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 0.8;
+  }
+}
+
+/* Two shooting stars a night, each about a second long, down and to the left across the upper sky. */
+@keyframes ll-shoot-a {
+  0%,
+  66% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(-23deg);
+  }
+
+  66.4% {
+    opacity: 0.8;
+  }
+
+  67.5%,
+  100% {
+    opacity: 0;
+    transform: translate(calc(var(--ll-sx) * -320px), calc(var(--ll-sx) * 136px)) rotate(-23deg);
+  }
+}
+
+@keyframes ll-shoot-b {
+  0%,
+  73% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(-23deg);
+  }
+
+  73.4% {
+    opacity: 0.7;
+  }
+
+  74.5%,
+  100% {
+    opacity: 0;
+    transform: translate(calc(var(--ll-sx) * -260px), calc(var(--ll-sx) * 110px)) rotate(-23deg);
+  }
+}
+
+/* The reference's own clouds: full at the reference sunset, fainter through the day. */
+@keyframes ll-ref-clouds {
+  0% {
+    opacity: 0.7;
+  }
+
+  10% {
+    opacity: 0.3;
+  }
+
+  20%,
+  30% {
+    opacity: 0;
+  }
+
+  38% {
+    opacity: 0.7;
+  }
+
+  43%,
+  46.875% {
+    opacity: 1;
+  }
+
+  55% {
+    opacity: 0.9;
+  }
+
+  70% {
+    opacity: 0.6;
+  }
+
+  80% {
+    opacity: 0.5;
+  }
+
+  88% {
+    opacity: 0.6;
+  }
+
+  100% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes ll-cloud-sway {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(26px * var(--ll-sx)));
+  }
+}
+
+/* Two distant flashes in the rain, each a slow double swell of a soft glow (about 0.6s up and 1.6s in all). */
+@keyframes ll-flash-a {
+  0%,
+  77% {
+    opacity: 0;
+  }
+
+  77.8% {
+    opacity: 0.5;
+  }
+
+  78.25% {
+    opacity: 0.18;
+  }
+
+  78.6% {
+    opacity: 0.44;
+  }
+
+  80%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ll-flash-b {
+  0%,
+  83.4% {
+    opacity: 0;
+  }
+
+  84.1% {
+    opacity: 0.4;
+  }
+
+  84.5% {
+    opacity: 0.12;
+  }
+
+  84.9% {
+    opacity: 0.36;
+  }
+
+  86.3%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* The same two flashes, as a faint light on the mountains. */
+@keyframes ll-flash-land {
+  0%,
+  77% {
+    opacity: 0;
+  }
+
+  77.8% {
+    opacity: 0.5;
+  }
+
+  78.25% {
+    opacity: 0.18;
+  }
+
+  78.6% {
+    opacity: 0.44;
+  }
+
+  80%,
+  83.4% {
+    opacity: 0;
+  }
+
+  84.1% {
+    opacity: 0.4;
+  }
+
+  84.5% {
+    opacity: 0.1;
+  }
+
+  84.9% {
+    opacity: 0.36;
+  }
+
+  86.3%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Parallax drift: a few pixels either way, back to zero at the start (where the reference has the ridges). */
+@keyframes ll-drift-far {
+  0%,
+  50%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(calc(4px * var(--ll-sx)));
+  }
+
+  75% {
+    transform: translateX(calc(-4px * var(--ll-sx)));
+  }
+}
+
+@keyframes ll-drift-mid {
+  0%,
+  50%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(calc(7px * var(--ll-sx)));
+  }
+
+  75% {
+    transform: translateX(calc(-7px * var(--ll-sx)));
+  }
+}
+
+@keyframes ll-drift-near {
+  0%,
+  50%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(calc(10px * var(--ll-sx)));
+  }
+
+  75% {
+    transform: translateX(calc(-10px * var(--ll-sx)));
+  }
+}
+
+/* The fog is full at the reference sunset, thinner by day, thicker in the rain. */
+@keyframes ll-fog {
+  0%,
+  100% {
+    opacity: 0.85;
+  }
+
+  12% {
+    opacity: 0.5;
+  }
+
+  30% {
+    opacity: 0.45;
+  }
+
+  40%,
+  46.875% {
+    opacity: 1;
+  }
+
+  55% {
+    opacity: 0.75;
+  }
+
+  70% {
+    opacity: 0.95;
+  }
+
+  88% {
+    opacity: 1;
+  }
+}
+
+/* Mist between the ridges: a veil at dawn, gone in the day, back at dusk, and heavier through the rain. */
+@keyframes ll-mist {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+
+  12% {
+    opacity: 0.3;
+  }
+
+  30% {
+    opacity: 0.25;
+  }
+
+  40%,
+  46.875% {
+    opacity: 0.35;
+  }
+
+  58% {
+    opacity: 0.7;
+  }
+
+  74%,
+  90% {
+    opacity: 1;
+  }
+}
+
+/* The extra mist of the rain: in with the rain (as the overcast arrives), out again slowly as it clears. */
+@keyframes ll-mist-rain {
+  0%,
+  64% {
+    opacity: 0;
+  }
+
+  78%,
+  90% {
+    opacity: 0.85;
+  }
+
+  99%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ll-fog-drift-a {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-30px * var(--ll-sx)));
+  }
+}
+
+@keyframes ll-fog-drift-b {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(40px * var(--ll-sx)));
+  }
+}
+
+@keyframes ll-rain {
+  0%,
+  68% {
+    opacity: 0;
+  }
+
+  77%,
+  88% {
+    opacity: 1;
+  }
+
+  95%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* A gust: the whole sheet of rain leans a few pixels one way and back, slowly. */
+@keyframes ll-gust {
+  from {
+    transform: translateX(calc(-6px * var(--ll-sx)));
+  }
+
+  to {
+    transform: translateX(calc(16px * var(--ll-sx)));
+  }
+}
+
+@keyframes ll-fall-near {
+  from {
+    transform: translate(0, 0);
+  }
+
+  to {
+    transform: translate(calc(var(--ll-near-w) * -1), var(--ll-near-h));
+  }
+}
+
+@keyframes ll-fall-far {
+  from {
+    transform: translate(0, 0);
+  }
+
+  to {
+    transform: translate(calc(var(--ll-far-w) * -1), var(--ll-far-h));
+  }
+}

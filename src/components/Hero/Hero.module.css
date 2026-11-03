@@ -32,26 +32,6 @@
 }
 
 /* Everything decorative sits behind the content (z-index 0–1; content is 2). */
-.boltFrame {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-/* Sized from the card height so the bolt keeps the Figma composition at any hero height. */
-.bolt {
-  position: absolute;
-  top: 15.12%;
-  left: 50%;
-  width: auto;
-  height: 94.7%;
-  max-width: none;
-  transform: translateX(-50%);
-  filter: var(--bolt-filter);
-}
-
 .glow {
   position: absolute;
   inset: 0;
@@ -72,6 +52,13 @@
   max-width: var(--content-width);
   padding: 112px 16px 80px;
   text-align: center;
+  /*
+   * The whole group (brand label, name, title, description, call to action) sits this far above where the centred layout
+   * puts it, as in the approved reference: 30px on desktop, scaling down with the width to 14px on phones so the copy keeps
+   * its distance from the header. A transform, so nothing else moves: the header, the card and the page keep their size.
+   */
+  --hero-lift: clamp(14px, 2.9vw, 30px);
+  transform: translateY(calc(var(--hero-lift) * -1));
 }
 
 /* One staged entrance (blur + rise, ~0.45s, staggered) once the intro loader has left. */
