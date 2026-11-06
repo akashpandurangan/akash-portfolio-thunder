@@ -1490,5 +1490,165 @@
 "sonyliv/ds/tokens.webp": [
 1440,
 900
+],
+"unifi-fifa/daily/landing.webp": [
+1200,
+667
+],
+"unifi-fifa/daily/day-page.webp": [
+1200,
+731
+],
+"unifi-fifa/competitors/dazn-plans.webp": [
+843,
+421
+],
+"unifi-fifa/competitors/dazn-billing.webp": [
+851,
+421
+],
+"unifi-fifa/competitors/dazn-payment.webp": [
+841,
+421
+],
+"unifi-fifa/competitors/dazn-card.webp": [
+844,
+421
+],
+"unifi-fifa/competitors/purple-plans.webp": [
+775,
+468
+],
+"unifi-fifa/competitors/purple-account.webp": [
+699,
+468
+],
+"unifi-fifa/daily/access.webp": [
+1200,
+731
+],
+"unifi-fifa/daily/buy-pass.webp": [
+1100,
+782
+],
+"unifi-fifa/daily/payment-details.webp": [
+1000,
+586
+],
+"unifi-fifa/daily/success.webp": [
+500,
+360
+],
+"unifi-fifa/daily/failed.webp": [
+500,
+308
+],
+"unifi-fifa/daily/manage.webp": [
+1200,
+833
+],
+"unifi-fifa/daily/channel-pass.webp": [
+1000,
+563
+],
+"unifi-fifa/auth/sign-in.webp": [
+490,
+380
+],
+"unifi-fifa/auth/email-not-registered.webp": [
+490,
+380
+],
+"unifi-fifa/auth/otp.webp": [
+490,
+380
+],
+"unifi-fifa/auth/otp-hero.webp": [
+900,
+596
+],
+"unifi-fifa/auth/password.webp": [
+490,
+380
+],
+"unifi-fifa/auth/profiles.webp": [
+490,
+380
+],
+"unifi-fifa/auth/contact-details.webp": [
+490,
+380
+],
+"unifi-fifa/season/landing-sign-in.webp": [
+1200,
+667
+],
+"unifi-fifa/season/buy-pass.webp": [
+1100,
+782
+],
+"unifi-fifa/season/voucher.webp": [
+1100,
+782
+],
+"unifi-fifa/season/voucher-error.webp": [
+1100,
+782
+],
+"unifi-fifa/season/pending.webp": [
+1100,
+782
+],
+"unifi-fifa/season/submitted.webp": [
+900,
+702
+],
+"unifi-fifa/season/success.webp": [
+500,
+360
+],
+"unifi-fifa/season/access.webp": [
+1200,
+731
+],
+"unifi-fifa/season/manage.webp": [
+1200,
+833
+],
+"unifi-fifa/season/home.webp": [
+1200,
+925
+],
+"unifi-fifa/states/buy-pass.webp": [
+760,
+370
+],
+"unifi-fifa/states/learn-more.webp": [
+760,
+370
+],
+"unifi-fifa/states/you-have-access.webp": [
+760,
+370
+],
+"unifi-fifa/states/sign-in.webp": [
+760,
+370
+],
+"unifi-fifa/parts/field-error.webp": [
+420,
+226
+],
+"unifi-fifa/parts/notice-delayed.webp": [
+900,
+110
+],
+"unifi-fifa/parts/notice-submitted.webp": [
+840,
+85
+],
+"unifi-fifa/daily/buy-pass-fpx.webp": [
+1100,
+782
 ]
 }

@@ -26,18 +26,34 @@ function TagRow({ label, items }) {
  * optional video are all placed in percentages of the stage's design size, taken straight from the Figma frame.
  */
 export default function CaseStudyCard({ study }) {
-  const { id, title, subtitle, description, platforms, focusAreas, href, to, stage, shots, video } = study
+  const { id, title, subtitle, description, platforms, focusAreas, href, to, stage, shots, video, logo } = study
   const titleId = `case-study-${id}`
+  // A logo that needs a different file on the light theme has a `light` twin; one that reads on both has only `dark`.
+  const themedLogo = Boolean(logo?.light) && logo.light !== logo.dark
+  const heading = (
+    <div className={styles.heading}>
+      <h3 id={titleId} className={styles.title}>
+        {title}
+      </h3>
+      <p className={styles.subtitle}>{subtitle}</p>
+    </div>
+  )
 
   return (
     <article className={styles.card} aria-labelledby={titleId}>
-      <div className={styles.text} data-stack-text="">
-        <div className={styles.heading}>
-          <h3 id={titleId} className={styles.title}>
-            {title}
-          </h3>
-          <p className={styles.subtitle}>{subtitle}</p>
-        </div>
+      <div className={logo ? `${styles.text} ${styles.hasLogo}` : styles.text} style={logo ? { '--logo-max': `${logo.display}px` } : undefined} data-stack-text="">
+        {/* A card with a project logo carries it at the top right, beside the title (above it on phones). */}
+        {logo ? (
+          <div className={styles.top}>
+            {heading}
+            <img className={themedLogo ? `${styles.logo} ${styles.logoDark}` : styles.logo} src={logo.dark} alt={logo.alt} width={logo.width} height={logo.height} decoding="async" draggable="false" />
+            {themedLogo && (
+              <img className={`${styles.logo} ${styles.logoLight}`} src={logo.light} alt="" aria-hidden="true" width={logo.width} height={logo.height} decoding="async" draggable="false" />
+            )}
+          </div>
+        ) : (
+          heading
+        )}
         <p className={styles.description}>{description}</p>
         <TagRow label="Platforms:" items={platforms} />
         <TagRow label="Focus Areas" items={focusAreas} />

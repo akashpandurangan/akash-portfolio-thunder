@@ -1,0 +1,371 @@
+/*
+ * "Explore the Design Process": the FigJam board embed in a dark, rounded viewer with a subtle border. The viewer is dark in
+ * both themes on purpose, like the process map above it. Desktop is about 800px tall (bar + board); smaller screens keep the
+ * board's wide proportions instead of a fixed height, so nothing is cut off, and fullscreen gives it the whole screen.
+ */
+
+.wrap {
+  margin-top: 96px;
+}
+
+.viewer {
+  --bar-h: 56px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 28px;
+  background:
+    radial-gradient(120% 70% at 10% 0%, rgba(255, 255, 255, 0.05), transparent 60%),
+    #0f0f10;
+  color: #f3f3f1;
+  box-shadow: 0 24px 60px -32px rgba(0, 0, 0, 0.6);
+}
+
+/* ---- bar ---- */
+
+.bar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: var(--bar-h);
+  padding: 8px 12px 8px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.barTitle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  white-space: nowrap;
+}
+
+.live {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fc4c01;
+  box-shadow: 0 0 0 4px rgba(252, 76, 1, 0.18);
+}
+
+.barName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.badge {
+  padding: 3px 9px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  color: rgba(243, 243, 241, 0.66);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 14px;
+}
+
+.actions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+}
+
+.action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  color: #f3f3f1;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 20px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease-out,
+    transform 0.2s var(--ease-out);
+}
+
+.action:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.action:active {
+  transform: scale(0.97);
+}
+
+.action:focus-visible,
+.noticeButton:focus-visible,
+.noticeLink:focus-visible,
+.gate:focus-visible {
+  outline: 2px solid #fc4c01;
+  outline-offset: 2px;
+}
+
+.icon {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---- stage ---- */
+
+.stage {
+  position: relative;
+  flex: none;
+  height: calc(800px - var(--bar-h));
+  background:
+    radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.07) 1px, transparent 0) 0 0 / 22px 22px,
+    #151516;
+}
+
+.frame {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+}
+
+.cover {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background:
+    radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.07) 1px, transparent 0) 0 0 / 22px 22px,
+    #151516;
+  color: rgba(243, 243, 241, 0.78);
+  font-size: 15px;
+  font-weight: 500;
+  pointer-events: none;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.18);
+  border-top-color: #fc4c01;
+  border-radius: 50%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .spinner {
+    animation: spin 0.8s linear infinite;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* The slow / blocked notice sits at the bottom edge so a board that is in fact working stays usable above it. */
+.notice {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  left: 16px;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 14px 16px 14px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 18px;
+  background: rgba(20, 20, 21, 0.94);
+  backdrop-filter: blur(10px);
+  color: rgba(243, 243, 241, 0.82);
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.notice p {
+  flex: 1 1 280px;
+  margin: 0;
+}
+
+.notice strong {
+  color: #fff;
+  font-weight: 600;
+}
+
+.noticeActions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+}
+
+.noticeButton,
+.noticeLink {
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 20px;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.noticeButton {
+  background: #fc4c01;
+  color: #fff;
+}
+
+.noticeButton:hover {
+  background: #e64500;
+}
+
+.noticeLink {
+  background: rgba(255, 255, 255, 0.09);
+  color: #f3f3f1;
+}
+
+.noticeLink:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* Touch screens: a veil over the board until it is tapped, so a swipe on it still scrolls the page. */
+.gate {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0 0 24px;
+  border: 0;
+  background: linear-gradient(to top, rgba(15, 15, 16, 0.55), transparent 45%);
+  color: #fff;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.gate span {
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: #fc4c01;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  box-shadow: 0 8px 24px -8px rgba(252, 76, 1, 0.6);
+}
+
+.hint {
+  max-width: 720px;
+  margin: 0;
+  color: var(--color-text-50);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 22px;
+  text-wrap: pretty;
+}
+
+/* ---- fullscreen (the real API, or the full-window fallback) ---- */
+
+.viewer[data-full='true'] {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.viewer[data-full='true'] .stage {
+  flex: 1 1 0;
+  height: auto;
+  min-height: 0;
+}
+
+/* ---- smaller screens: keep the board's proportions rather than a fixed height ---- */
+
+@media (max-width: 1023px) {
+  .wrap {
+    margin-top: 72px;
+  }
+
+  .stage {
+    height: clamp(420px, 62vw, 640px);
+  }
+}
+
+@media (max-width: 599px) {
+  .wrap {
+    margin-top: 56px;
+  }
+
+  .viewer {
+    --bar-h: 52px;
+    border-radius: 22px;
+  }
+
+  .bar {
+    padding-left: 16px;
+  }
+
+  .stage {
+    height: clamp(340px, 100vw, 460px);
+  }
+
+  .action {
+    padding: 0 12px;
+  }
+}
+
+/* Phones: the bar keeps the badge, and Reset view and Fullscreen shrink to their icons (they keep their accessible names). */
+@media (max-width: 479px) {
+  .barName {
+    display: none;
+  }
+
+  .action {
+    justify-content: center;
+    min-width: 40px;
+    padding: 0 12px;
+  }
+
+  .label {
+    display: none;
+  }
+}

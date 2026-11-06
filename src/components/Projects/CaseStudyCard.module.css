@@ -50,6 +50,41 @@
   gap: 14px;
 }
 
+/* A project logo sits at the top right, level with the title; it is white, with a dark twin for the light theme. */
+.top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  align-self: stretch;
+  gap: 32px;
+}
+
+.top > .heading {
+  min-width: 0;
+}
+
+/* --logo-w is a share of the text block's width, which is also the width the description's max-width is measured against. */
+.hasLogo {
+  --logo-w: min(var(--logo-max, 300px), 28%);
+}
+
+.logo {
+  flex: none;
+  width: var(--logo-w);
+  height: auto;
+  margin-top: 2px;
+  user-select: none;
+}
+
+.logoLight,
+:root[data-theme='light'] .logoDark {
+  display: none;
+}
+
+:root[data-theme='light'] .logoLight {
+  display: block;
+}
+
 .title {
   color: var(--color-heading);
   font-size: 36px;
@@ -204,6 +239,13 @@
   white-space: nowrap;
 }
 
+/* On wide cards the description is as wide as the logo's column starts, so it stops 20px short of the logo. */
+@media (min-width: 1024px) and (min-height: 560px) {
+  .hasLogo .description {
+    max-width: min(764px, calc(100% - var(--logo-w) - 20px));
+  }
+}
+
 /* ---- Fit mode: never taller than the window ------------------------------------------------------------------ */
 
 @media (min-width: 768px) and (min-height: 560px) {
@@ -331,6 +373,18 @@
 
   .canvas {
     width: max(calc(100cqw * var(--w) / 1200), calc(var(--w) * 0.4px));
+  }
+}
+
+@media (max-width: 767px), (max-height: 559px) {
+  .top {
+    flex-direction: column-reverse;
+    gap: 16px;
+  }
+
+  .logo {
+    width: min(var(--logo-max, 190px), 190px);
+    margin-top: 0;
   }
 }
 

@@ -6,6 +6,15 @@ import aiRight from '../assets/projects/case-studies/ai-right.webp'
 import unifiPhone from '../assets/projects/case-studies/unifi-phone.webp'
 import unifiTv from '../assets/projects/case-studies/unifi-tv.webp'
 import unifiTablet from '../assets/projects/case-studies/unifi-tablet.webp'
+import unifiFifaDesktop from '../assets/projects/case-studies/unifi-fifa-desktop.webp'
+import unifiFifaLogo from '../assets/projects/case-studies/unifi-fifa-logo.webp'
+import unifiFifaLogoLight from '../assets/projects/case-studies/unifi-fifa-logo-light.webp'
+import sonylivLogo from '../assets/projects/case-studies/sonyliv-logo.webp'
+import aiStudioLogo from '../assets/projects/case-studies/ai-studio-logo.webp'
+import kpostLogo from '../assets/projects/case-studies/kpost-logo.webp'
+import kpostLogoLight from '../assets/projects/case-studies/kpost-logo-light.webp'
+import kampusLogo from '../assets/projects/case-studies/kampus-logo.webp'
+import kampusLogoDark from '../assets/projects/case-studies/kampus-logo-dark.webp'
 import kpostDesktop from '../assets/projects/case-studies/kpost-desktop.webp'
 import kpostMobile from '../assets/projects/case-studies/kpost-mobile.webp'
 import kampusDesktop from '../assets/projects/case-studies/kampus-desktop.webp'
@@ -71,6 +80,36 @@ const tvShots = (phone, tv, tablet) => [
 
 export const CASE_STUDIES = [
   {
+    id: 'unifi-fifa',
+    title: 'Unifi TV × FIFA World Cup 2026',
+    subtitle: 'Football Streaming & Pass-Purchase Experience',
+    description:
+      'Designing a seamless route from discovering the FIFA World Cup 2026 on Unifi TV to choosing a Daily or Season Pass, signing in, paying and watching, with every account and payment state designed.',
+    platforms: ['Mobile App', 'Tablet', 'Web', 'm-Web', 'TV', 'Smart TV'],
+    focusAreas: ['User Flows', 'Information Architecture', 'Authentication & Payment States', 'Developer Handoff'],
+    category: 'Case Study',
+    // The case study has a page of its own (src/components/UnifiFifaCaseStudy). `to` wins over `href`, which is empty
+    // because no prototype link was supplied for this project.
+    to: caseStudyPath('unifi-fifa'),
+    href: '',
+    // The project's lockup (Unifi TV × FIFA World Cup 2026), shown at the top right of the card. It is white, so the light
+    // theme gets the same artwork with its white parts turned near-black.
+    logo: { dark: unifiFifaLogo, light: unifiFifaLogoLight, width: 720, height: 117, display: 300, alt: 'Unifi TV × FIFA World Cup 2026 logos' },
+    stage: { width: 709, height: 504 },
+    shots: [
+      {
+        src: unifiFifaDesktop,
+        alt: 'The Unifi TV home page with the FIFA World Cup 2026 banner and its Buy Pass button',
+        pxWidth: 1426,
+        pxHeight: 913,
+        x: -2,
+        y: 47.532,
+        w: 713,
+        caption: { text: 'Web | FIFA World Cup 2026', x: 262.734, y: 0 },
+      },
+    ],
+  },
+  {
     id: 'sonyliv',
     title: 'SonyLIV',
     subtitle: 'Multi-Platform OTT Experience Design',
@@ -79,6 +118,9 @@ export const CASE_STUDIES = [
     platforms: ['Mobile App', 'Tablet', 'Web', 'm-Web', 'TV', 'Smart TV'],
     focusAreas: ['Design System', 'UI Enhancements', 'UX Improvements', 'Seamless Cross-Platform Experience'],
     category: 'Case Study',
+    // Project logos sit at the top right of a card. `dark` / `light` are the artwork for each theme (one file when it reads on both);
+    // `width` / `height` are the file's own pixels and `display` is the widest it is drawn, in CSS px.
+    logo: { dark: sonylivLogo, width: 144, height: 144, display: 60, alt: 'SonyLIV logo' },
     // The case study has a page of its own (src/components/SonyLivCaseStudy). `to` wins over `href`; delete `to` to send
     // this button back to the Figma prototype below.
     to: caseStudyPath('sonyliv'),
@@ -96,6 +138,7 @@ export const CASE_STUDIES = [
     platforms: ['Web App', 'Dashboard', 'SaaS'],
     focusAreas: ['UX Optimization', 'AI-Powered Workflows', 'Design System', 'UI Enhancements'],
     category: 'Case Study',
+    logo: { dark: aiStudioLogo, width: 480, height: 102, display: 220, alt: 'Ai Studio logo' },
     // The case study has a page of its own (src/components/AiStudioCaseStudy). `to` wins over `href`; delete `to` to send
     // this button back to the Figma prototype below.
     to: caseStudyPath('ai-studio'),
@@ -151,6 +194,7 @@ export const CASE_STUDIES = [
     platforms: ['Web App', 'Mobile App', 'Dashboard'],
     focusAreas: ['Design System', 'UI Enhancements', 'UX Improvements', 'Seamless Communication Experience'],
     category: 'Case Study',
+    logo: { dark: kpostLogo, light: kpostLogoLight, width: 440, height: 108, display: 200, alt: 'KPOST logo' },
     // The case study has a page of its own (src/components/KpostCaseStudy). `to` wins over `href`; delete `to` to send this
     // button back to the Figma prototype below.
     to: caseStudyPath('kpost-communication'),
@@ -189,6 +233,8 @@ export const CASE_STUDIES = [
     platforms: ['Web App', 'Mobile App', 'Dashboard'],
     focusAreas: ['Design System', 'UI Enhancements', 'UX Improvements', 'Seamless Learning Experience'],
     category: 'Case Study',
+    // Drawn for light backgrounds, so the dark theme gets the twin with a white wordmark.
+    logo: { dark: kampusLogoDark, light: kampusLogo, width: 440, height: 135, display: 170, alt: 'KAMPUS UEducate logo' },
     href:
       'https://www.figma.com/proto/ej9eb56rFBPbmGsyIsqh08/Akash-Pandurangan?node-id=742-20704&viewport=383%2C402%2C0.03&t=L9nlnW9JT62IOQnH-1&scaling=scale-down-width&content-scaling=fixed&page-id=589%3A8577',
     stage: { width: 709, height: 504 },

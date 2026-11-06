@@ -21,6 +21,7 @@ const CASE_STUDY_PAGES = {
   'kpost-communication': lazy(() => import('./components/KpostCaseStudy/KpostCaseStudyPage')),
   'ai-studio': lazy(() => import('./components/AiStudioCaseStudy/AiStudioCaseStudyPage')),
   sonyliv: lazy(() => import('./components/SonyLivCaseStudy/SonyLivCaseStudyPage')),
+  'unifi-fifa': lazy(() => import('./components/UnifiFifaCaseStudy/UnifiFifaCaseStudyPage')),
 }
 
 const SECTION_IDS = ['home', 'projects', 'about', 'experience']
