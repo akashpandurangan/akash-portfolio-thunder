@@ -3,7 +3,7 @@ import Chapter from './Chapter'
 import { BACKGROUND } from '../../data/unifiFifaCaseStudy'
 import styles from './Story.module.css'
 
-/** 02: the project context, and the vision and victory of the UX document. */
+/** 02: the project context, then the vision and victory of the UX document side by side in one row. */
 export default function Background() {
   return (
     <Chapter id="background" title="Background">

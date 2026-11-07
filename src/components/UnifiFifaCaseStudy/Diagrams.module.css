@@ -148,6 +148,33 @@
   background: var(--line);
 }
 
+.node > span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.node small {
+  color: var(--color-text-50);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+/* A conditional step ("If payment fails"): dashed like the decisions of the flows, with a return mark instead of a number. */
+.node[data-branch='true'] {
+  background: transparent;
+  box-shadow: none;
+  border: 1.5px dashed var(--line);
+}
+
+.node[data-branch='true']::before {
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--color-accent) 60%, transparent);
+  font-size: 13px;
+}
+
 .node[data-last='true'] {
   background: color-mix(in srgb, var(--color-accent) 10%, var(--color-surface));
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-accent) 35%, transparent);

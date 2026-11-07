@@ -9,7 +9,7 @@ function Case({ item, index }) {
   const openLightbox = useLightbox()
   const picture = asset(`unifi-fifa/${item.image}`)
   return (
-    <Reveal as="li" className={styles.case} delay={(index % 2) * 70}>
+    <Reveal as="li" className={styles.case} delay={(index % 3) * 70}>
       <button
         type="button"
         className={styles.caseMedia}
@@ -27,9 +27,9 @@ function Case({ item, index }) {
   )
 }
 
-/** 13: ten situations the designs cover, each with its screen, and why feedback and status matter. */
+/** 12: ten situations the designs cover, each with its screen, in three columns. */
 export default function EdgeCases() {
-  const { cases, closing, lede } = EDGE_CASES
+  const { cases, lede } = EDGE_CASES
 
   return (
     <Chapter id="edge-cases" title="Interaction & edge cases" lede={lede}>
@@ -38,17 +38,6 @@ export default function EdgeCases() {
           <Case key={item.title} item={item} index={index} />
         ))}
       </ul>
-
-      <Reveal className={styles.closing}>
-        <h3>{closing.title}</h3>
-        <div>
-          {closing.text.map((paragraph) => (
-            <p key={paragraph} className={styles.text}>
-              {paragraph}
-            </p>
-          ))}
-        </div>
-      </Reveal>
     </Chapter>
   )
 }

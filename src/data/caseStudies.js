@@ -86,7 +86,7 @@ export const CASE_STUDIES = [
     description:
       'Designing a seamless route from discovering the FIFA World Cup 2026 on Unifi TV to choosing a Daily or Season Pass, signing in, paying and watching, with every account and payment state designed.',
     platforms: ['Mobile App', 'Tablet', 'Web', 'm-Web', 'TV', 'Smart TV'],
-    focusAreas: ['User Flows', 'Information Architecture', 'Authentication & Payment States', 'Developer Handoff'],
+    focusAreas: ['User Flows', 'Information Architecture', 'Authentication & Payment States'],
     category: 'Case Study',
     // The case study has a page of its own (src/components/UnifiFifaCaseStudy). `to` wins over `href`, which is empty
     // because no prototype link was supplied for this project.

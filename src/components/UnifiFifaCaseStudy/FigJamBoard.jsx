@@ -20,7 +20,7 @@ import styles from './FigJamBoard.module.css'
 
 const FIGMA_HOST = 'figma.com'
 const SLOW_AFTER_MS = 20000 // the embed's document has not even loaded
-const UNCONFIRMED_AFTER_LOAD_MS = 5000 // the document loaded but the board has not said it is ready (an error page, say)
+const UNCONFIRMED_AFTER_LOAD_MS = 15000 // the document loaded but the board has not said it is ready (an error page, say)
 
 const isFigmaOrigin = (origin) => {
   try {

@@ -9,7 +9,6 @@ import Needs from './Needs'
 import Problem from './Problem'
 import Architecture from './Architecture'
 import Flows from './Flows'
-import Exploration from './Exploration'
 import FinalUi from './FinalUi'
 import EdgeCases from './EdgeCases'
 import Outcome from './Outcome'
@@ -21,7 +20,7 @@ const TITLE = 'Unifi TV × FIFA World Cup 2026 | Pass-purchase UX case study | A
  * The Unifi TV × FIFA World Cup 2026 case study, at #/case-studies/unifi-fifa. It shares the page shell of the other case
  * studies (image viewer, chapter links, "More projects") and tells one story from the brief to the final screens: the
  * background, goals and requirements, the design process, research, audience, needs, the problem, the structure and
- * flows, the exploration and the final UI, the edge cases and the outcome. Every screen is a frame from the
+ * flows, the final UI, the edge cases and the outcome. Every screen is a frame from the
  * Daily Pass and Season Pass design boards.
  */
 export default function UnifiFifaCaseStudyPage({ section }) {
@@ -36,7 +35,6 @@ export default function UnifiFifaCaseStudyPage({ section }) {
       <Problem />
       <Architecture />
       <Flows />
-      <Exploration />
       <FinalUi />
       <EdgeCases />
       <Outcome />

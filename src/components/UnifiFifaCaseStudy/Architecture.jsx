@@ -3,19 +3,31 @@ import Chapter from './Chapter'
 import { ARCHITECTURE } from '../../data/unifiFifaCaseStudy'
 import styles from './Diagrams.module.css'
 
-/** One column of the map: the pass's own steps, each in its own grid row so the shared journeys can sit beside them. */
+/**
+ * One column of the map: the pass's own steps, each in its own grid row so the shared journeys can sit beside them. A step
+ * with `branch` is conditional ("If payment fails"): it is drawn dashed and is not numbered.
+ */
 function Steps({ steps, column }) {
-  return steps.map((step, index) => (
-    <div
-      key={step}
-      className={styles.node}
-      data-step={index + 1}
-      data-last={index === steps.length - 1}
-      style={{ gridColumn: column, gridRow: index + 2 }}
-    >
-      {step}
-    </div>
-  ))
+  let number = 0
+  return steps.map((step, index) => {
+    const item = typeof step === 'string' ? { label: step } : step
+    if (!item.branch) number += 1
+    return (
+      <div
+        key={item.label}
+        className={styles.node}
+        data-step={item.branch ? '↩' : number}
+        data-branch={item.branch ? 'true' : undefined}
+        data-last={index === steps.length - 1}
+        style={{ gridColumn: column, gridRow: index + 2 }}
+      >
+        <span>
+          {item.label}
+          {item.note && <small>{item.note}</small>}
+        </span>
+      </div>
+    )
+  })
 }
 
 /** 09: Unifi TV > FIFA World Cup 2026 > Event landing page, then Daily Pass and Season Pass with the account and payment journeys between them. */
@@ -57,7 +69,7 @@ export default function Architecture() {
               ))}
             </ul>
           </div>
-          <div className={styles.support} style={{ gridColumn: 2, gridRow: '6 / span 2' }}>
+          <div className={styles.support} style={{ gridColumn: 2, gridRow: '6 / span 3' }}>
             <h4>{payment.title}</h4>
             <ul>
               {payment.steps.map((step) => (

@@ -17,19 +17,15 @@ import { caseStudyPath } from '../hooks/useHashRoute'
  * The FigJam board (shown as a live embed under the process map, and read directly for the Research, Audience, Needs and
  * Problem chapters) adds: the exploratory-research plan with its Completed / Reviewed and Planned / To Explore lists, the
  * audience tree and the persona summaries, the user needs and potential pain points, the problem statement with five How
- * Might We questions, and a Competitor Analysis group of saved screens (DAZN, plus two purple screens the board does not
- * attribute; FIFA+ is named but has no screens). It holds no written competitor findings.
+ * Might We questions, and a Competitor Analysis group of saved screens (four marked DAZN, two purple ones the board does not
+ * attribute; no written findings). The competitor screens are not shown as cards on the page; they stay visible in the embed.
  *
  * Still not in the material, and therefore not claimed anywhere on the page: interviews, surveys, usability test results,
  * named or validated personas, written competitor findings, wireframes, a separate design-system file, and any metric
  * (conversion, revenue, users). The page says so where a reader would expect them.
  *
- * Design-file discrepancies found while checking the screens (not corrected, and not discussed on the page): the Daily Pass
- * summary shows RM15.00 + RM1.92 tax (8% of 15.00 is 1.20) = RM16.92 while its Pay button says RM15.00; the Season Pass summary
- * shows RM100.00 but its payable table is the Daily one (15.00 / 1.92 / 16.92) on most frames, and RM100.00 / 8.00 / 108.00 on
- * one; the Season validity reads 11 Jun to 19 Jul on the banner, "Valid until Thu, 20 July" in the summary and "11 June - 10
- * July" in the small print; several weekdays do not match 2026 (11 Jun is a Thursday, 12 Jun a Friday, 20 Jul a Monday); the
- * Manage Subscription frames show 29 / 30 Jun 2026 and RM0.00 amounts that match neither pass.
+ * Price, validity and date discrepancies found in the supplied screens are kept, unchanged, in SOURCE_OBSERVATIONS at the bottom of
+ * this file. They are observations about the source files, not corrections: the page shows the screens as supplied.
  */
 
 export const UNIFI_FIFA_SLUG = 'unifi-fifa'
@@ -47,10 +43,9 @@ export const CHAPTERS = [
   { id: 'problem', label: 'Problem definition', number: '08' },
   { id: 'architecture', label: 'Information architecture', number: '09' },
   { id: 'flows', label: 'User flows', number: '10' },
-  { id: 'exploration', label: 'Design exploration', number: '11' },
-  { id: 'final-ui', label: 'Final UI design', number: '12' },
-  { id: 'edge-cases', label: 'Interaction & edge cases', number: '13' },
-  { id: 'outcome', label: 'Outcome & learnings', number: '14' },
+  { id: 'final-ui', label: 'Final UI design', number: '11' },
+  { id: 'edge-cases', label: 'Interaction & edge cases', number: '12' },
+  { id: 'outcome', label: 'Outcome & learnings', number: '13' },
 ]
 
 const chapter = (id) => CHAPTERS.find((item) => item.id === id)
@@ -63,8 +58,10 @@ export const HERO = {
   summary: 'Designing a seamless football streaming and pass-purchase experience.',
   meta: [
     { label: 'Role', values: ['End-to-end UI/UX Designer'] },
-    { label: 'Timeline', values: ['4 weeks'] },
-    { label: 'Scope', values: ['5 platform experiences', '3 key user journeys'] },
+    // "5 platform experiences" and "4 weeks" were in the brief but nothing in the UX document, the boards or the FigJam board
+    // supports them (the screens are the Unifi TV web experience plus one narrow-screen state), so they are not shown until the
+    // project owner confirms them. The three journeys are named in the UX document.
+    { label: 'Scope', values: ['3 key user journeys'] },
   ],
   primaryLink: { label: 'See the final UI', to: chapterPath('final-ui') },
   secondaryLink: { label: 'Read the process', to: chapterPath('process') },
@@ -98,7 +95,7 @@ export const BACKGROUND = {
 /* ---------------------------------------------------------------------------------------------- 03 Goals */
 
 export const GOALS = {
-  lede: 'Three views of the same brief: what the business wanted, what the product should feel like, and what it had to do.',
+  lede: 'Four views of the same brief: what the business wanted, what the product should feel like, what it should achieve, and what it had to do.',
   business: [
     { title: 'More pass purchases', text: 'Increase FIFA World Cup 2026 pass purchases.' },
     { title: 'New customers', text: 'Attract new customers to Unifi TV.' },
@@ -106,6 +103,12 @@ export const GOALS = {
     { title: 'Subscription revenue', text: 'Generate revenue through pass subscriptions.' },
   ],
   vision: ['A seamless FIFA viewing experience.', 'Flexible tournament access.', 'Pass discovery and purchasing that feel simple.'],
+  // The "Product Goals" card of the FigJam board's Understanding Project Goals group, as written there.
+  productGoals: [
+    'Simplify Daily Pass and Season Pass selection.',
+    'Reduce friction during registration and payment.',
+    'Provide clear purchase confirmation and content access.',
+  ],
   requirements: [
     'Daily Pass selection and purchase',
     'Season Pass selection and purchase',
@@ -124,14 +127,14 @@ export const GOALS = {
 
 /*
  * The six stages of the UX document, with the brief's names. `status` of each activity:
- *   evidence — there is something in the project files for it (the UX document, the design boards or the brief);
- *   listed   — it is part of the process in the UX document, but no artefact was supplied, so nothing is claimed about it;
- *   none     — it is not mentioned in the supplied material.
+ *   evidence — there is something in the project files for it (the UX document, the design boards or the brief): a solid dot;
+ *   listed   — it is part of the process in the UX document or the board's plan, but no artefact was supplied, so nothing is
+ *              claimed about it: a half-filled dot. The intro of the chapter explains both dots.
  */
 export const PROCESS = {
   lede: [
     'The UX document organises the work around three pillars, Business, User and Technology, and six stages that move from understanding the problem to implementation.',
-    'This is the map of that work. It also marks, activity by activity, what I can show evidence for, what the process lists but no artefact exists for, and what is not documented, so the page does not claim research or testing that is not in the material.',
+    'A solid dot marks an activity with an artefact in the project files. A half-filled dot marks one that is only named in the UX document or the board’s plan, so the page does not claim research or testing that is not in the material.',
   ],
   note: 'The arrows can run both ways: findings from a later stage send the work back to an earlier one.',
   stages: [
@@ -200,7 +203,6 @@ export const PROCESS = {
         { label: 'Interface design', status: 'evidence' },
         { label: 'Interaction design', status: 'evidence' },
         { label: 'Design system', status: 'listed' },
-        { label: 'Component exploration', status: 'none' },
         { label: 'Responsive considerations (one narrow-screen state)', status: 'evidence' },
       ],
     },
@@ -272,22 +274,7 @@ export const RESEARCH = {
     items: ['Gather user insights', 'Understand viewing behaviour', 'Define user personas', 'Analyse competitors', 'Identify user pain points'],
   },
   statusNote:
-    'The board’s Research Insights & Opportunities card names four headings, business insights, competitor observations, potential user expectations and design opportunities, with no entries under them. Competitor screens and persona summaries do exist on the board, shown below and in the next chapter; the research that would test them is the planned part.',
-  competitors: {
-    title: 'Competitor analysis',
-    status: 'evidence',
-    statusText: 'Screens saved on the board, no written findings',
-    text: 'The board has a Competitor Analysis group: three names, DAZN, beIN CONNECT and FIFA+, and six saved screens. Four of the screens carry the DAZN mark. The other two are purple and the board does not say which service they come from; FIFA+ has no screens. These are references, shown here as the board holds them.',
-    screens: [
-      { image: 'competitors/dazn-plans.webp', title: 'DAZN: choose a plan', text: 'Two plans side by side, each with its own Continue button and a list of what it includes.' },
-      { image: 'competitors/dazn-billing.webp', title: 'DAZN: choose billing', text: 'Three ways to pay for the chosen plan: monthly, annual paid monthly, annual paid up front.' },
-      { image: 'competitors/dazn-payment.webp', title: 'DAZN: choose how to pay', text: 'Payment methods beside a purchase summary, with Redeem promo code as a row of its own and a Change link.' },
-      { image: 'competitors/dazn-card.webp', title: 'DAZN: card details', text: 'The same screen with the card form open: card number, expiry, CVC, name on card, Pay Now.' },
-      { image: 'competitors/purple-plans.webp', title: 'Purple screen: plans and voucher', text: 'A monthly pass with Select Plan, next to a Have a Voucher Code? card with Redeem.' },
-      { image: 'competitors/purple-account.webp', title: 'Purple screen: subscription details', text: 'The plan, what it includes, the next billing date with auto-renew, the payment method, View receipts and Cancel Subscription.' },
-    ],
-    note: 'The board lists Analyse Competitors under Planned / To explore and leaves its competitor-observations heading empty, so I describe what the screens show and draw no conclusions from them. The screens belong to their services.',
-  },
+    'The board’s Research Insights & Opportunities card names four headings, business insights, competitor observations, potential user expectations and design opportunities, with no entries under them.',
   hypothesesTitle: 'Potential pain points to investigate',
   hypothesesText: 'The board calls these potential pain points. Nothing in the material shows users confirming them, so I treat them as hypotheses the design has to answer.',
   hypotheses: [
@@ -303,7 +290,7 @@ export const RESEARCH = {
 /* ---------------------------------------------------------------------------------------------- 06 Audience */
 
 export const AUDIENCE = {
-  lede: 'The board names three audience segments and gives each a persona summary: a profile, a goal, needs and potential pain points. They are planning assumptions written at the start, not validated personas.',
+  lede: 'The board names three audience segments and gives each a persona summary: a profile, a goal, needs and potential pain points. They are planning assumptions, not validated personas.',
   root: 'FIFA World Cup 2026 Audience',
   branches: [
     {
@@ -340,7 +327,7 @@ export const AUDIENCE = {
       ],
     },
   ],
-  note: 'Persona summaries from the FigJam board. They have no names, quotes or user data behind them, and the board still lists Define User Personas under Planned / To explore.',
+  note: 'Persona summaries from the FigJam board. Define User Personas is still listed under Planned / To explore, and these summaries have no names, quotes or user data behind them.',
 }
 
 /* ---------------------------------------------------------------------------------------------- 07 Needs */
@@ -353,7 +340,7 @@ export const NEEDS = {
     { title: 'Simple registration', response: 'One email-first screen offers sign-in, sign-up and Continue as Guest.', go: 'edge-cases' },
     { title: 'Secure payment', response: 'Credit card, FPX and voucher redemption, chosen before anything is charged.', go: 'flows' },
     { title: 'Instant access confirmation', response: 'A success state with Go to Events and Manage Subscription, then a You have Access banner.', go: 'edge-cases' },
-    { title: 'Easy content discovery', response: 'The banner leads the home page; channels and highlights sit under it.', go: 'exploration' },
+    { title: 'Easy content discovery', response: 'The banner leads the home page; channels and highlights sit under it.', go: 'final-ui' },
   ],
   pains: [
     { title: 'Confusing pass options', response: 'A Daily Pass or Season Pass badge on the banner, and a separate journey for each.', go: 'final-ui' },
@@ -395,11 +382,29 @@ export const ARCHITECTURE = {
   trunk: ['Unifi TV', 'FIFA World Cup 2026', 'Event landing page'],
   daily: {
     title: 'Daily Pass',
-    steps: ['Select match day', 'View pass information', 'Buy Pass', 'Account / purchase handling', 'Payment', 'Purchase confirmation', 'Access available content'],
+    steps: [
+      'Select match day',
+      'View pass information',
+      'Buy Pass',
+      'Account / purchase handling',
+      'Payment',
+      { label: 'If payment fails', note: 'Change Payment Method or Go Back, then back to Payment', branch: true },
+      'Purchase confirmation',
+      'Access available content',
+    ],
   },
   season: {
     title: 'Season Pass',
-    steps: ['View Season Pass details', 'Buy Pass', 'Sign in / Sign up / Continue as Guest', 'Account verification', 'Payment', 'Purchase confirmation', 'Tournament content access'],
+    steps: [
+      'View Season Pass details',
+      'Buy Pass',
+      'Sign in / Sign up / Continue as Guest',
+      'Account verification',
+      'Payment',
+      { label: 'If payment fails', note: 'Change Payment Method or Go Back, then back to Payment', branch: true },
+      'Purchase confirmation',
+      'Tournament content access',
+    ],
   },
   shared: [
     { title: 'Account', steps: ['Sign in', 'Sign up', 'Continue as Guest', 'OTP verification', 'Choose profile'] },
@@ -426,6 +431,7 @@ export const FLOWS = {
         { label: 'Buy Pass', kind: 'action' },
         { label: 'Documented purchase and account route', kind: 'decision', note: 'See journey 3' },
         { label: 'Payment' },
+        { label: 'If payment fails', kind: 'decision', note: 'Change Payment Method or Go Back, then back to Payment' },
         { label: 'Purchase confirmation' },
         { label: 'Access selected match-day content', kind: 'end' },
       ],
@@ -444,6 +450,7 @@ export const FLOWS = {
         { label: 'Sign in / Sign up / Continue as Guest' },
         { label: 'OTP verification, where applicable', kind: 'decision' },
         { label: 'Payment' },
+        { label: 'If payment fails', kind: 'decision', note: 'Change Payment Method or Go Back, then back to Payment' },
         { label: 'Purchase confirmation' },
         { label: 'Access tournament content', kind: 'end' },
       ],
@@ -483,34 +490,7 @@ export const FLOWS = {
   ],
 }
 
-/* ---------------------------------------------------------------------------------------------- 11 Exploration */
-
-export const EXPLORATION = {
-  lede: [
-    'The supplied material holds final designs, not wireframes, so I am not showing wireframe iterations that I cannot show. What it does show is how the layout was explored: one page structure carried through every state of the journey.',
-  ],
-  topics: [
-    { title: 'Content hierarchy', text: 'The event banner leads. Under it come the apps, the channels the pass includes and the highlights, in the same order on the home page and on each pass page.' },
-    { title: 'Pass information', text: 'A badge names the pass, Daily Pass or Season Pass. Dates, validity and what is included live in a summary card at the moment of purchase, not scattered across the page.' },
-    { title: 'Finding the purchase action', text: 'One orange button in the banner, in the same place on every page. Its label is the state: Buy Pass, Learn more, Sign In, You have Access.' },
-    { title: 'Account states', text: 'Sign-in, sign-up, guest, OTP, password and profile choice are each their own centred screen, so a user always knows the one thing being asked.' },
-    { title: 'Payment and confirmation', text: 'Method choice, details, and outcome are separate steps. Outcomes are explicit screens with next actions, and uncertain outcomes get a banner that says so.' },
-  ],
-  statesTitle: 'One banner, four states',
-  statesText: 'The same banner, the same position, with the button doing the explaining.',
-  states: [
-    { image: 'states/buy-pass.webp', label: 'Buy Pass', text: 'A pass is on sale.' },
-    { image: 'states/learn-more.webp', label: 'Learn more', text: 'An alternative state, with the pass badge beside the genre line.' },
-    { image: 'states/sign-in.webp', label: 'Sign In', text: 'Season Pass, before the user is signed in.' },
-    { image: 'states/you-have-access.webp', label: 'You have Access', text: 'The pass is active.' },
-  ],
-  filesNotes: [
-    'Frames are laid out as connected flows, with numbered hotspots (1 to 5, 1 to 7) on the screens that need a tap target explained.',
-    'Some frames carry the note "This screen is not actual reference", so the files separate placeholder context from the screens to build.',
-  ],
-}
-
-/* ---------------------------------------------------------------------------------------------- 12 Final UI */
+/* ---------------------------------------------------------------------------------------------- 11 Final UI */
 
 export const FINAL_UI = {
   lede: 'The final screens of the two boards, in the order a user meets them. Each group says what the screens decide, and the pins on the larger ones point at the details.',
@@ -642,7 +622,7 @@ export const FINAL_UI = {
   },
 }
 
-/* ---------------------------------------------------------------------------------------------- 13 Edge cases */
+/* ---------------------------------------------------------------------------------------------- 12 Edge cases */
 
 export const EDGE_CASES = {
   lede: 'A purchase is mostly the moments when something is not quite as planned. These are the ones the designs cover, in the words the screens use.',
@@ -658,21 +638,13 @@ export const EDGE_CASES = {
     { title: 'Purchase request submission', image: 'parts/notice-submitted.webp', text: '“Your purchase request has been submitted! It will be effective within 15 mins.”' },
     { title: 'Access after purchase', image: 'daily/channel-pass.webp', text: 'Success sends the user to Go to Events or Manage Subscription. Gated content says what is missing: “You need an active daily pass to watch this channel.”' },
   ],
-  closing: {
-    title: 'Why feedback and status matter',
-    text: [
-      'In a streaming purchase the user hands over money and then waits for an entitlement to appear somewhere else. The gap between those two moments is where trust is won or lost.',
-      'So every outcome is a screen or a message with a next step, and every uncertain outcome says what is happening and how long it might take. The design never leaves the user guessing whether they paid.',
-    ],
-  },
 }
 
-/* ---------------------------------------------------------------------------------------------- 14 Outcome */
+/* ---------------------------------------------------------------------------------------------- 13 Outcome */
 
 export const OUTCOME = {
   lede: 'No conversion, revenue or audience numbers are part of this project’s material, so I am not quoting any. What I can say is what was delivered.',
   delivered: [
-    'Five platform experiences designed in four weeks, from concept to delivery.',
     'Three key journeys mapped end to end: Daily Pass, Season Pass, and authentication and purchase.',
     'More than 100 screens and states across the Daily Pass and Season Pass boards, including the exception states that most purchase flows leave out.',
     'Developer notes written into the boards, so the design and the build rules travel together.',
@@ -682,6 +654,46 @@ export const OUTCOME = {
     'A multi-step streaming purchase is really three designs at once: a commercial one, a human one and a technical one. The Business, User and Technology pillars of the UX document were my check on each decision.',
     'The happy path is the easy part. Account states, voucher codes, delayed confirmations and gated content decide whether the purchase feels safe, so I designed those with the same care as the success screen.',
     'Technical constraints, like entitlements that take minutes to appear, are better said out loud than hidden. A banner that explains the delay is part of the design.',
-    'I would add what the material does not have: interviews or surveys behind the persona summaries, written findings from the competitor screens, user feedback on the hypotheses, usability testing, and measured results after launch. The board lists the first of these as planned; none of them is something I can claim today.',
+    'I would add what the material does not have: interviews or surveys behind the persona summaries, written competitor findings, user feedback on the hypotheses, usability testing, and measured results after launch. The board lists the first of these as planned; none of them is something I can claim today.',
   ],
 }
+
+/* ---------------------------------------------------------------------------------------------- Source observations */
+
+/*
+ * What the supplied design boards show that does not add up, recorded as found and NOT corrected anywhere on the page (the screens
+ * are exported as supplied). `frames` are the frame names in the board exports (Daily pass.pdf, Season Pass.pdf). Not rendered; kept
+ * so the project owner can resolve them with the people who own the values.
+ */
+export const SOURCE_OBSERVATIONS = [
+  {
+    topic: 'Daily Pass amount',
+    observation:
+      'The Buy Pass summary lists Price of pass RM15.00 and Service Tax (8%) RM1.92, Grand Total RM16.92. 8% of RM15.00 is RM1.20, and the Pay button on the payment-details screen reads RM15.00, not the grand total.',
+    frames: ['daily_21', 'daily_22', 'daily_26', 'daily_27'],
+  },
+  {
+    topic: 'Season Pass amount',
+    observation:
+      'The Season Pass summary headline is RM100.00, but on most frames its payable table is the Daily Pass one (RM15.00, RM1.92, RM16.92). One frame shows RM100.00, RM8.00, RM108.00, which is consistent with 8%. The Pay button reads RM15.00 on every frame, including the RM108.00 one.',
+    frames: ['season_38', 'season_39', 'season_43', 'season_44', 'season_11', 'daily_36', 'daily_41', 'daily_42'],
+  },
+  {
+    topic: 'Season Pass validity',
+    observation:
+      'The banner reads 11 Jun 2026 to 19 Jul 2026, the summary reads Start from Wed, 11 Jun and Valid until Thu, 20 July, and the small print reads 11 June - 10 July.',
+    frames: ['season_00', 'season_38', 'daily_36'],
+  },
+  {
+    topic: 'Weekdays',
+    observation:
+      'In 2026, 11 June is a Thursday, 12 June a Friday and 20 July a Monday. The frames read Fri, 11 June; Thu, 12 Jun; Wed, 11 Jun and Thu, 20 July (Fri, 12 June is correct).',
+    frames: ['daily_01', 'daily_21', 'season_38'],
+  },
+  {
+    topic: 'Manage Subscription',
+    observation:
+      'The Daily Pass and Season Pass rows show 29 and 30 Jun 2026 as their dates and Subscription Amount RM0.00, which match neither pass. Other rows show Started on 15 Aug 2025.',
+    frames: ['daily_09', 'daily_10', 'season_28'],
+  },
+]

@@ -1,5 +1,5 @@
 /*
- * The screen chapters: design exploration (11), the final UI (12), and interaction and edge cases (13).
+ * The screen chapters: the final UI (11) and interaction and edge cases (12).
  * Screens are shown as real exports from the two design boards, so their frames are always dark; everything around them
  * follows the site's theme.
  */
@@ -21,15 +21,6 @@
   list-style: none;
 }
 
-.h3 {
-  margin: 0;
-  color: var(--color-heading);
-  font-size: 28px;
-  font-weight: 700;
-  line-height: 34px;
-  letter-spacing: -0.025em;
-}
-
 .text {
   margin: 0;
   color: var(--color-text-60);
@@ -39,79 +30,7 @@
   text-wrap: pretty;
 }
 
-/* ---- 11 Exploration ---- */
-
-.topics {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0 56px;
-}
-
-.topic {
-  padding: 24px 0;
-  border-top: 1px solid var(--color-divider);
-}
-
-.topic h4 {
-  margin: 0 0 8px;
-  color: var(--color-heading);
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 28px;
-  letter-spacing: -0.015em;
-}
-
-.topic p {
-  margin: 0;
-  color: var(--color-text-60);
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 26px;
-  text-wrap: pretty;
-}
-
-.block {
-  margin-top: 96px;
-}
-
-.blockHead {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  max-width: 680px;
-  margin-bottom: 32px;
-}
-
-.fileNotes {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 40px;
-  padding: 22px 26px;
-  border-radius: 16px;
-  box-shadow: inset 0 0 0 1px var(--color-divider);
-}
-
-.fileNotes li {
-  position: relative;
-  padding-left: 22px;
-  color: var(--color-text-60);
-  font-size: 15px;
-  font-weight: 500;
-  line-height: 24px;
-}
-
-.fileNotes li::before {
-  content: '';
-  position: absolute;
-  top: 11px;
-  left: 0;
-  width: 12px;
-  height: 2px;
-  background: var(--color-accent);
-}
-
-/* ---- 12 Final UI ---- */
+/* ---- 11 Final UI ---- */
 
 .group + .group {
   margin-top: 128px;
@@ -290,11 +209,11 @@
   letter-spacing: -0.02em;
 }
 
-/* ---- 13 Edge cases ---- */
+/* ---- 12 Edge cases ---- */
 
 .cases {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
 }
 
@@ -308,20 +227,24 @@
 }
 
 .caseMedia {
-  display: grid;
-  place-items: center;
-  aspect-ratio: 16 / 9;
-  padding: 18px;
+  position: relative;
+  display: block;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  padding: 0;
+  border: 0;
   background: #111;
   cursor: zoom-in;
 }
 
+/* The screen is laid inside a fixed box, so every card in a row has the same media height whatever the screen's own shape. */
 .caseMedia img {
+  position: absolute;
+  inset: 14px;
   display: block;
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
-  height: auto;
+  width: calc(100% - 28px);
+  height: calc(100% - 28px);
   object-fit: contain;
   border-radius: 6px;
 }
@@ -331,7 +254,7 @@
   flex: 1;
   flex-direction: column;
   gap: 8px;
-  padding: 22px 24px 26px;
+  padding: 20px 22px 24px;
 }
 
 .caseIndex {
@@ -360,40 +283,13 @@
   text-wrap: pretty;
 }
 
-.closing {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
-  gap: 48px;
-  margin-top: 96px;
-  padding-top: 40px;
-  border-top: 1px solid var(--color-divider);
-}
-
-.closing h3 {
-  margin: 0;
-  color: var(--color-heading);
-  font-size: clamp(28px, 3.6vw, 40px);
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
-}
-
-.closing div p + p {
-  margin-top: 16px;
-}
-
 @media (max-width: 1023px) {
-  .closing {
-    grid-template-columns: 1fr;
-    gap: 24px;
+  .cases {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 899px) {
-  .topics {
-    grid-template-columns: 1fr;
-  }
-
   .annotated,
   .annotated[data-flip='true'] {
     grid-template-columns: 1fr;

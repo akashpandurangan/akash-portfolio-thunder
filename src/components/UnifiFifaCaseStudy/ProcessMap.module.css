@@ -1,6 +1,6 @@
 /*
  * The design-process map (chapter 04): a dark charcoal canvas, hand-drawn circles and arrows, and the activities of each
- * stage marked, by the dot before each, as evidenced, listed, or not documented. The canvas keeps a fixed drawing (900 x 905 units) and its labels
+ * stage marked, by the dot before each, as having an artefact in the project files or only being planned. The canvas keeps a fixed drawing (900 x 905 units) and its labels
  * are placed on it in percentages, so it scales as one piece; the panel is a size container, and below 860px it becomes a
  * plain stack of the same stages. The panel is dark in both themes on purpose.
  */
@@ -66,10 +66,22 @@
   stroke-width: 1.6;
 }
 
-.loop {
-  stroke-width: 1.3;
-  stroke-dasharray: 5 7;
-  opacity: 0.75;
+/* forward: solid white, a little heavier than the rings */
+.forward {
+  stroke: var(--stroke);
+  stroke-width: 2.1;
+}
+
+/* return: dashed orange, so it reads as a different movement even without the colour */
+.returnLine {
+  stroke: #fc4c01;
+  stroke-width: 1.7;
+  stroke-dasharray: 6 6;
+}
+
+.returnHead {
+  stroke: #fc4c01;
+  stroke-width: 1.9;
 }
 
 .stage {
@@ -148,10 +160,6 @@
 
 .dot[data-status='listed'] {
   background: linear-gradient(90deg, #fc4c01 50%, transparent 50%);
-}
-
-.dot[data-status='none'] {
-  box-shadow: inset 0 0 0 1.5px var(--ink-3);
 }
 
 .hand {
@@ -253,16 +261,106 @@
   top: 1px;
 }
 
-.down {
+.connector {
   display: block;
-  width: 24px;
-  height: 44px;
-  margin: 4px 0 8px 20px;
+  width: 64px;
+  height: 50px;
+  margin: 2px 0 8px;
   overflow: visible;
   fill: none;
-  stroke: var(--stroke);
-  stroke-width: 1.6;
   stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.stackLoop {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 8px 0 0 4px;
+  padding-top: 18px;
+  border-top: 1px dashed rgba(252, 76, 1, 0.55);
+}
+
+.stackLoop p {
+  margin: 0;
+  color: var(--ink-2);
+  font-family: var(--hand);
+  font-size: 15px;
+  line-height: 1.3;
+}
+
+.stackLoop p::before {
+  content: '↺ ';
+  color: #fc4c01;
+  font-family: var(--font-mono);
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---- key ---- */
+
+.keys {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.arrowKey {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 28px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.arrowKey li {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  color: var(--ink-3);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.arrowKey li > span:last-child {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.arrowKey strong {
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.sample {
+  flex: none;
+  width: 54px;
+  height: 20px;
+  margin-top: 0;
+  overflow: visible;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@container (max-width: 700px) {
+  .arrowKey {
+    grid-template-columns: 1fr;
+  }
 }
 
 @container (min-width: 860px) {

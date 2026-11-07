@@ -1,6 +1,4 @@
 import Reveal from '../ui/Reveal'
-import { asset } from '../../data/caseStudyAssets'
-import { useLightbox } from '../CaseStudy/ui/lightboxContext'
 import Chapter from './Chapter'
 import { RESEARCH } from '../../data/unifiFifaCaseStudy'
 import styles from './Story.module.css'
@@ -20,33 +18,11 @@ function StatusCard({ group }) {
   )
 }
 
-function Screen({ screen }) {
-  const openLightbox = useLightbox()
-  const picture = asset(`unifi-fifa/${screen.image}`)
-  return (
-    <Reveal as="li" className={styles.screen}>
-      <button
-        type="button"
-        className={styles.screenMedia}
-        onClick={() => openLightbox({ ...picture, alt: screen.title, title: screen.title, caption: screen.text })}
-        aria-label={`${screen.title}. Open full size`}
-      >
-        <img src={picture.src} width={picture.width} height={picture.height} alt={`${screen.title}. ${screen.text}`} loading="lazy" decoding="async" draggable="false" />
-      </button>
-      <div className={styles.screenBody}>
-        <h4>{screen.title}</h4>
-        <p>{screen.text}</p>
-      </div>
-    </Reveal>
-  )
-}
-
 /**
- * 05: the research as the FigJam board records it: the plan, what was completed and what is still to explore, the competitor
- * screens the board holds, and the pain points as hypotheses. No user finding is claimed.
+ * 05: the research as the FigJam board records it: the plan, what was completed and what is still to explore, and the pain
+ * points as hypotheses. No user finding is claimed.
  */
 export default function Research() {
-  const { competitors } = RESEARCH
   return (
     <Chapter id="research" title="Exploratory research" lede={RESEARCH.lede}>
       <Reveal>
@@ -79,24 +55,6 @@ export default function Research() {
         </Reveal>
       </div>
       <p className={`${styles.body} ${styles.fineNote}`}>{RESEARCH.statusNote}</p>
-
-      <Reveal className={styles.researchBlock}>
-        <span className={styles.mark} data-status={competitors.status}>
-          {competitors.statusText}
-        </span>
-        <h3 className={styles.groupTitle} style={{ marginTop: 12 }}>
-          {competitors.title}
-        </h3>
-        <p className={styles.body} style={{ marginTop: 10, maxWidth: 720 }}>
-          {competitors.text}
-        </p>
-      </Reveal>
-      <ul className={`${styles.plain} ${styles.screens}`}>
-        {competitors.screens.map((screen) => (
-          <Screen key={screen.image} screen={screen} />
-        ))}
-      </ul>
-      <p className={`${styles.body} ${styles.fineNote}`}>{competitors.note}</p>
 
       <Reveal className={styles.hypotheses}>
         <div>

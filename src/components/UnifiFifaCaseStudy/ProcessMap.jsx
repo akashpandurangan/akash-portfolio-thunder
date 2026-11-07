@@ -6,7 +6,9 @@ import { handArrow, handLoop, wobblyCircle } from './handDrawn'
 import { PROCESS } from '../../data/unifiFifaCaseStudy'
 import styles from './ProcessMap.module.css'
 
-// The drawing is 900 x 905 units: six circles in two rows, read left to right and then back right to left.
+// The drawing is 900 x 905 units: six circles in two rows, read left to right and then back right to left. Solid arrows go forward
+// from stage to stage; dashed orange arrows come back, one under each forward arrow, one up the middle from the fourth stage to
+// the third, and one long loop up the left from the last stage to the first, because later findings send the work back.
 const W = 900
 const H = 905
 const R = 88
@@ -22,7 +24,23 @@ const CENTRES = [
 const pctX = (x) => `${(x / W) * 100}%`
 const pctY = (y) => `${(y / H) * 100}%`
 
-/** The strokes of the map, drawn once: two passes round each circle, the arrows between them, and the loop back. */
+/** A dashed return arrow that dips under the gap between two circles: from (x1, y) to (x2, y), `dip` units below. */
+function under(x1, x2, y, dip, seed) {
+  const span = x2 - x1
+  return handLoop(
+    [
+      [x1, y],
+      [x1 + span * 0.2, y + dip * 0.78],
+      [x1 + span * 0.5, y + dip],
+      [x1 + span * 0.8, y + dip * 0.78],
+      [x2, y],
+    ],
+    seed,
+    { head: 13 },
+  )
+}
+
+/** The strokes of the map, drawn once: two passes round each circle, the forward arrows, and every way back. */
 function useDrawing() {
   return useMemo(() => {
     const rings = CENTRES.map(([x, y], index) => ({
@@ -30,9 +48,9 @@ function useDrawing() {
       light: wobblyCircle(x, y, R + 4, 41 + index, { jitter: 0.045, overshoot: 0.1 }),
     }))
     const gap = R + 12
-    const arrows = [
-      handArrow([CENTRES[0][0] + gap, 126], [CENTRES[1][0] - gap, 134], 3, { bend: 0.05 }),
-      handArrow([CENTRES[1][0] + gap, 134], [CENTRES[2][0] - gap, 126], 4, { bend: -0.05 }),
+    const forward = [
+      handArrow([CENTRES[0][0] + gap, 126], [CENTRES[1][0] - gap, 134], 3, { bend: 0.05, head: 15 }),
+      handArrow([CENTRES[1][0] + gap, 134], [CENTRES[2][0] - gap, 126], 4, { bend: -0.05, head: 15 }),
       // down the right-hand side, round the lists, into the first circle of the second row
       handLoop(
         [
@@ -43,22 +61,44 @@ function useDrawing() {
           [820, 540],
         ],
         5,
+        { head: 15 },
       ),
-      handArrow([CENTRES[3][0] - gap, 606], [CENTRES[4][0] + gap, 594], 6, { bend: 0.05 }),
-      handArrow([CENTRES[4][0] - gap, 594], [CENTRES[5][0] + gap, 606], 7, { bend: -0.05 }),
+      handArrow([CENTRES[3][0] - gap, 606], [CENTRES[4][0] + gap, 594], 6, { bend: 0.05, head: 15 }),
+      handArrow([CENTRES[4][0] - gap, 594], [CENTRES[5][0] + gap, 606], 7, { bend: -0.05, head: 15 }),
     ]
-    const loop = handLoop(
-      [
-        [66, 626],
-        [24, 584],
-        [8, 410],
-        [18, 232],
-        [62, 160],
-      ],
-      9,
-    )
+    const back = [
+      under(370, 230, 167, 30, 21), // 2 back to 1
+      under(670, 530, 167, 30, 22), // 3 back to 2
+      // 4 back to 3, up the corridor between the second and third lists
+      handLoop(
+        [
+          [674, 557],
+          [632, 522],
+          [603, 462],
+          [600, 330],
+          [618, 246],
+          [697, 201],
+        ],
+        25,
+        { head: 13 },
+      ),
+      under(530, 670, 637, 30, 23), // 5 back to 4
+      under(230, 370, 637, 30, 24), // 6 back to 5
+      // 6 all the way back to 1, up the left-hand side
+      handLoop(
+        [
+          [66, 626],
+          [24, 584],
+          [8, 410],
+          [18, 232],
+          [62, 160],
+        ],
+        9,
+        { head: 13 },
+      ),
+    ]
     const start = handArrow([112, 24], [136, 50], 12, { bend: 0.2, head: 10 })
-    return { rings, arrows, loop, start }
+    return { rings, forward, back, start }
   }, [])
 }
 
@@ -75,12 +115,63 @@ function Badge({ number, index }) {
   )
 }
 
-function DownArrow() {
-  const { shaft, head } = useMemo(() => handArrow([12, 2], [12, 40], 33, { bend: 0.12 }), [])
+/** Between two stacked stages: a solid arrow down, and a dashed one curving back up beside it. */
+function Connector() {
+  const down = useMemo(() => handArrow([22, 2], [22, 44], 33, { bend: 0.1, head: 11 }), [])
+  const up = useMemo(
+    () =>
+      handLoop(
+        [
+          [40, 46],
+          [52, 36],
+          [52, 14],
+          [41, 4],
+        ],
+        34,
+        { head: 10 },
+      ),
+    [],
+  )
   return (
-    <svg className={styles.down} viewBox="0 0 24 44" aria-hidden="true">
-      <path d={shaft} />
-      <path d={head} />
+    <svg className={styles.connector} viewBox="0 0 64 50" aria-hidden="true">
+      <path className={styles.forward} d={down.shaft} />
+      <path className={styles.forward} d={down.head} />
+      <path className={styles.returnLine} d={up.shaft} />
+      <path className={styles.returnHead} d={up.head} />
+    </svg>
+  )
+}
+
+/** A short sample stroke for the key: a solid forward arrow or a dashed return arrow. */
+function KeySample({ kind }) {
+  const forward = useMemo(() => handArrow([2, 10], [50, 10], 51, { bend: 0.02, head: 9 }), [])
+  const back = useMemo(
+    () =>
+      handLoop(
+        [
+          [50, 6],
+          [38, 16],
+          [14, 16],
+          [3, 8],
+        ],
+        52,
+        { head: 8 },
+      ),
+    [],
+  )
+  return (
+    <svg className={styles.sample} viewBox="0 0 54 20" aria-hidden="true">
+      {kind === 'forward' ? (
+        <>
+          <path className={styles.forward} d={forward.shaft} />
+          <path className={styles.forward} d={forward.head} />
+        </>
+      ) : (
+        <>
+          <path className={styles.returnLine} d={back.shaft} />
+          <path className={styles.returnHead} d={back.head} />
+        </>
+      )}
     </svg>
   )
 }
@@ -88,7 +179,7 @@ function DownArrow() {
 /** 04: the design process as a hand-drawn journey map, then the project's FigJam board to explore it in full. */
 export default function ProcessMap() {
   const { stages, lede, note, notes } = PROCESS
-  const { rings, arrows, loop, start } = useDrawing()
+  const { rings, forward, back, start } = useDrawing()
 
   return (
     <Chapter id="process" title="Design process overview" lede={lede}>
@@ -103,14 +194,18 @@ export default function ProcessMap() {
                 <path className={styles.ring} d={ring.main} />
               </g>
             ))}
-            {arrows.map((arrow) => (
+            {back.map((arrow) => (
               <g key={arrow.shaft}>
-                <path className={styles.arrow} d={arrow.shaft} />
-                <path className={styles.arrow} d={arrow.head} />
+                <path className={styles.returnLine} d={arrow.shaft} />
+                <path className={styles.returnHead} d={arrow.head} />
               </g>
             ))}
-            <path className={styles.loop} d={loop.shaft} />
-            <path className={styles.arrow} d={loop.head} />
+            {forward.map((arrow) => (
+              <g key={arrow.shaft}>
+                <path className={styles.forward} d={arrow.shaft} />
+                <path className={styles.forward} d={arrow.head} />
+              </g>
+            ))}
             <path className={styles.arrow} d={start.shaft} />
             <path className={styles.arrow} d={start.head} />
           </svg>
@@ -162,10 +257,33 @@ export default function ProcessMap() {
                   </ul>
                 </div>
               </div>
-              {index < stages.length - 1 && <DownArrow />}
+              {index < stages.length - 1 && <Connector />}
             </li>
           ))}
+          <li className={styles.stackLoop}>
+            <span className={styles.visuallyHidden}>Findings from the last stage can send the work back to the first.</span>
+            <p aria-hidden="true">{notes.loop}</p>
+          </li>
         </ol>
+
+        <div className={styles.keys}>
+          <ul className={styles.arrowKey} aria-label="Arrows">
+            <li>
+              <KeySample kind="forward" />
+              <span>
+                <strong>Forward</strong>
+                On to the next stage.
+              </span>
+            </li>
+            <li>
+              <KeySample kind="back" />
+              <span>
+                <strong>Return</strong>
+                What a later stage finds sends the work back.
+              </span>
+            </li>
+          </ul>
+        </div>
       </Reveal>
 
       <FigJamBoard />
